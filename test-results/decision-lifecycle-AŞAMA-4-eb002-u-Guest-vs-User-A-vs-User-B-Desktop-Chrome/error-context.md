@@ -1,0 +1,529 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: decision-lifecycle.spec.ts >> AŞAMA 42.2 — Gerçek Browser UI Karar & Yaşam Döngüsü E2E >> 2. Çoklu BrowserContext İzolasyonu: Guest vs User A vs User B
+- Location: e2e/decision-lifecycle.spec.ts:151:3
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic "Gelecek Portalı Ana Ekranı" [ref=e7] [cursor=pointer]:
+          - generic [ref=e14]:
+            - generic [ref=e15]: TEKNOLOJİK EVRİM
+            - generic [ref=e16]: 2026—2060
+        - generic [ref=e17]: Kuantum Gelecek Ağı // 2026—2060
+      - generic [ref=e20]:
+        - textbox "Yıl veya teknoloji ara..." [ref=e25]
+        - button "TR" [ref=e26] [cursor=pointer]
+        - button "0 + Kredi" [ref=e31] [cursor=pointer]:
+          - generic [ref=e37]: "0"
+          - generic [ref=e38]:
+            - generic [ref=e39]: +
+            - generic [ref=e40]: Kredi
+        - button "Giriş" [ref=e41] [cursor=pointer]
+        - button "Ana Portal" [ref=e47] [cursor=pointer]
+        - button "Kontrol Merkezi Menüsü" [ref=e52] [cursor=pointer]:
+          - generic [ref=e54]: Menü
+  - main [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - button "← Merkez" [ref=e58] [cursor=pointer]:
+          - generic [ref=e59]: ←
+          - generic [ref=e60]: Merkez
+        - generic [ref=e61]: "|"
+        - generic [ref=e62]:
+          - generic [ref=e63]: "Aktif Görünüm:"
+          - generic [ref=e64]: 🕒 2026—2060 Zaman Çizelgesi
+      - button "50 Canlı İstihbarat Sinyali" [ref=e66] [cursor=pointer]
+    - generic [ref=e69]:
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - heading "2026—2060 timeline_view" [level=2] [ref=e76]
+            - generic [ref=e77]: 35 Yıl
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - button "Dünya Geleceği" [ref=e80] [cursor=pointer]
+              - button "Benim Geleceğim" [ref=e85] [cursor=pointer]
+            - generic [ref=e90]:
+              - button "Baz" [ref=e91] [cursor=pointer]
+              - button "İyimser" [ref=e92] [cursor=pointer]
+              - button "Distopik" [ref=e93] [cursor=pointer]
+          - generic [ref=e94]:
+            - generic [ref=e95]: 2026 • Yapay Zeka Ajanları Çağı
+            - generic [ref=e96]:
+              - button "Önceki Yıl" [disabled] [ref=e97] [cursor=pointer]
+              - button "Sonraki Yıl" [ref=e100] [cursor=pointer]
+        - generic [ref=e104]:
+          - button "2026" [ref=e105] [cursor=pointer]
+          - button "2027" [ref=e108] [cursor=pointer]
+          - button "2028" [ref=e111] [cursor=pointer]
+          - button "2029" [ref=e114] [cursor=pointer]
+          - button "2030" [ref=e117] [cursor=pointer]
+          - button "2031" [ref=e120] [cursor=pointer]
+          - button "2032" [ref=e123] [cursor=pointer]
+          - button "2033" [ref=e126] [cursor=pointer]
+          - button "2034" [ref=e129] [cursor=pointer]
+          - button "2035" [ref=e132] [cursor=pointer]
+          - button "2036" [ref=e135] [cursor=pointer]
+          - button "2037" [ref=e138] [cursor=pointer]
+          - button "2038" [ref=e141] [cursor=pointer]
+          - button "2039" [ref=e144] [cursor=pointer]
+          - button "2040" [ref=e147] [cursor=pointer]
+          - button "2041" [ref=e150] [cursor=pointer]
+          - button "2042" [ref=e153] [cursor=pointer]
+          - button "2043" [ref=e156] [cursor=pointer]
+          - button "2044" [ref=e159] [cursor=pointer]
+          - button "2045" [ref=e162] [cursor=pointer]
+          - button "2046" [ref=e165] [cursor=pointer]
+          - button "2047" [ref=e168] [cursor=pointer]
+          - button "2048" [ref=e171] [cursor=pointer]
+          - button "2049" [ref=e174] [cursor=pointer]
+          - button "2050" [ref=e177] [cursor=pointer]
+          - button "2051" [ref=e180] [cursor=pointer]
+          - button "2052" [ref=e183] [cursor=pointer]
+          - button "2053" [ref=e186] [cursor=pointer]
+          - button "2054" [ref=e189] [cursor=pointer]
+          - button "2055" [ref=e192] [cursor=pointer]
+          - button "2056" [ref=e195] [cursor=pointer]
+          - button "2057" [ref=e198] [cursor=pointer]
+          - button "2058" [ref=e201] [cursor=pointer]
+          - button "2059" [ref=e204] [cursor=pointer]
+          - button "2060" [ref=e207] [cursor=pointer]
+      - generic [ref=e212]:
+        - generic [ref=e213]:
+          - generic [ref=e214]:
+            - generic [ref=e215]: Faz 01 • 2026 - 2035
+            - generic [ref=e221]: Yapay Zeka & Bilişim
+            - generic "Canlı istihbarat akışından gelen sinyaller" [ref=e226]: 7 Sinyal
+            - button "1 Çelişki" [ref=e234] [cursor=pointer]
+          - generic "Mevcut patent ve açık bilim literatürüne dayalı sistem tahmini (%99 model olasılığı)." [ref=e238]: "%99 Model Olasılık Skoru"
+        - generic [ref=e242]:
+          - generic [ref=e243]:
+            - generic [ref=e244]: "2026"
+            - generic [ref=e245]: KİLOMETRE TAŞI
+          - generic [ref=e248]:
+            - heading "Yapay Zeka Ajanları Çağı" [level=2] [ref=e249]
+            - paragraph [ref=e250]:
+              - generic [ref=e251]: "#Yapay Zeka & Bilişim"
+              - generic [ref=e252]: •
+              - generic [ref=e253]: "Etki Seviyesi: %35"
+              - generic [ref=e254]: •
+              - generic [ref=e255]: "Öngörü Güveni: 99/100"
+        - generic [ref=e256]:
+          - generic [ref=e257]:
+            - generic [ref=e258]:
+              - generic [ref=e259]: Bu Yılda Neler Yaşanacak? (Gelecek Senaryosu)
+              - paragraph [ref=e263]: Yapay zeka sadece metin yazmakla kalmaz; otonom şirketler kurar, kendi başına yazılım kodlar ve insan gözetimi olmadan finansal kararlar alır.
+            - generic [ref=e264]:
+              - generic [ref=e265]: "2026 Gündelik Yaşamından Bir Kesit:"
+              - paragraph [ref=e270]: "\"Sabah saat 08:30'da akıllı cihazınızı açtığınızda, finans ajanınız geceden bu yana 14 borsa işlemi gerçekleştirdiğini, yazılım ajanınızın yeni mikro-hizmeti yayına aldığını ve müşteri ilişkileri ajanınızın 340 destek talebini %99 memnuniyetle çözdüğünü raporlar.\""
+            - generic [ref=e271]:
+              - generic [ref=e272]: "Bireysel Hayata Etkisi:"
+              - generic [ref=e273]: "\"Sıradan bir çalışan kişisel yapay zeka ajanlarına 10 farklı şirketi otonom yönettirebilir.\""
+          - generic [ref=e274]:
+            - generic [ref=e275]:
+              - generic [ref=e276]:
+                - generic [ref=e277]: Temel İtici Güçler
+                - generic [ref=e278]: "2026"
+              - generic [ref=e279]:
+                - generic [ref=e280]: "#Multi-Agent Sistemler"
+                - generic [ref=e281]: "#Otonom İş Akışları"
+                - generic [ref=e282]: "#LLM Entegrasyonu"
+              - generic [ref=e283]:
+                - generic [ref=e284]:
+                  - generic [ref=e285]: "İşgücü Otomasyonu:"
+                  - strong [ref=e286]: "%45"
+                - generic [ref=e287]:
+                  - generic [ref=e288]: "Biyo-Dijital Entegrasyon:"
+                  - strong [ref=e289]: "%15"
+            - button "Tüm Metrikleri İncele" [ref=e291] [cursor=pointer]
+        - generic [ref=e297]:
+          - generic [ref=e298]:
+            - generic [ref=e299]: Bu Gelecek İçin Ne Yapmak İstersiniz?
+            - generic [ref=e304]: 3 ANA AKSİYON
+          - generic [ref=e305]:
+            - button "Gelecek Senaryosu Tüm derin hikaye, belgesel simülasyonu ve analizi oku." [ref=e306] [cursor=pointer]:
+              - generic [ref=e307]: Gelecek Senaryosu
+              - paragraph [ref=e314]: Tüm derin hikaye, belgesel simülasyonu ve analizi oku.
+            - button "2026 İnsanıyla Konuş Zaman Tüneli 2026 çağında yaşayan bir vatandaşla (Yapay Zeka Ajanları Çağı sonrasını) canlı konuş." [ref=e315] [cursor=pointer]:
+              - generic [ref=e316]:
+                - generic [ref=e317]: 2026 İnsanıyla Konuş
+                - generic [ref=e327]: Zaman Tüneli
+              - paragraph [ref=e328]: 2026 çağında yaşayan bir vatandaşla (Yapay Zeka Ajanları Çağı sonrasını) canlı konuş.
+            - button "Bu Gelişme Beni Nasıl Etkiler? Kişisel Etki Bu teknolojinin (Yapay Zeka Ajanları Çağı) yaşınıza, kariyerinize, yol haritanıza ve risklerinize etkisini görün." [ref=e329] [cursor=pointer]:
+              - generic [ref=e330]:
+                - generic [ref=e331]: Bu Gelişme Beni Nasıl Etkiler?
+                - generic [ref=e336]: Kişisel Etki
+              - paragraph [ref=e337]: Bu teknolojinin (Yapay Zeka Ajanları Çağı) yaşınıza, kariyerinize, yol haritanıza ve risklerinize etkisini görün.
+        - generic [ref=e338]:
+          - generic [ref=e340]:
+            - button "Genel Bakış" [ref=e341] [cursor=pointer]
+            - button "Sistem Beyni (Canlı AI)" [ref=e346] [cursor=pointer]
+            - button "Kanıtlar & Makaleler (2)" [ref=e356] [cursor=pointer]
+            - button "Telemetri & Riskler" [ref=e361] [cursor=pointer]
+            - button "Neden-Sonuç Alt Ağacı" [ref=e365] [cursor=pointer]
+          - generic [ref=e369]:
+            - generic [ref=e370]:
+              - generic [ref=e371]:
+                - generic [ref=e372]: Teknoloji Hazırlığı
+                - generic [ref=e377]: TRL 8 (Model Tahmini)
+                - generic [ref=e378]: "Model konsensus projeksiyonu: %95"
+              - generic [ref=e379]:
+                - generic [ref=e380]: Ekonomi & İşgücü
+                - generic [ref=e385]: "%48 Otonom"
+                - generic [ref=e386]: Kuzey Amerika & Doğu Asya Hibrit Çip-Yapay Zeka Aksı
+              - generic [ref=e387]:
+                - generic [ref=e388]: Makro Kırılganlık
+                - generic [ref=e392]: 56/100 Risk
+                - generic [ref=e393]: Otonom ajanların finansal piyasalarda oluşturabileceği ani çöküşler (flash crash) ve sentetik medya dezenformasyonu.
+            - generic [ref=e394]:
+              - generic [ref=e395]: "💡 2026 Günlük Yaşam Senaryosu & Bireye Yansıması:"
+              - paragraph [ref=e396]: Akıllı lensiniz ve kulak içi biyo-asistanınız siz uyanmadan günlük kan tahlilinizi ve otonom ajansınızın gece yaptığı 40 işlemi önünüze fısıldar.
+      - generic [ref=e397]:
+        - generic [ref=e398]:
+          - heading "Yapay Zeka Mantıksal Sıradaki Adım ÇAPRAZ ANALİZ" [level=4] [ref=e405]:
+            - generic [ref=e406]: Yapay Zeka Mantıksal Sıradaki Adım
+            - generic [ref=e407]: ÇAPRAZ ANALİZ
+          - generic [ref=e408]:
+            - generic [ref=e414]: "Bakiye:"
+            - generic [ref=e415]: "0"
+        - generic [ref=e416]:
+          - generic [ref=e417]:
+            - generic [ref=e418]:
+              - generic [ref=e419]:
+                - generic [ref=e420]: Kişisel Tehdit Analizi
+                - generic [ref=e421]: 🔥 %87 İlgi Görüyor
+              - heading "2026 (Yapay Zeka Ajanları Çağı) Mesleğinizi Nasıl Etkileyecek?" [level=5] [ref=e422]
+              - paragraph [ref=e423]: Bu teknolojinin otomasyon dalgasında mesleğinizin hayatta kalma ve dönüşüm katsayısını hemen hesaplayın.
+            - generic [ref=e424]:
+              - generic [ref=e425]: 15 Kredi
+              - button "Giriş Yap & Başlat" [ref=e430] [cursor=pointer]
+          - generic [ref=e435]:
+            - generic [ref=e436]:
+              - generic [ref=e437]:
+                - generic [ref=e438]: Kelebek Etkisi Simülatörü
+                - generic [ref=e439]: ⚡ Popüler
+              - heading "Ya 2026 Yılındaki Bu Kırılma Yaşanmasaydı?" [level=5] [ref=e440]
+              - paragraph [ref=e441]: Bu kilometre taşını tarihten silin; domino etkisiyle sonraki teknolojilerin nasıl çöktüğünü simüle edin.
+            - generic [ref=e442]:
+              - generic [ref=e443]: 15 Kredi
+              - button "Giriş Yap & Başlat" [ref=e448] [cursor=pointer]
+          - generic [ref=e453]:
+            - generic [ref=e454]:
+              - generic [ref=e455]: Gelecekten Canlı İletişim
+              - heading "2026 Çağında Yaşayan Bir İnsanla Konuş" [level=5] [ref=e457]
+              - paragraph [ref=e458]: Bu teknolojinin gündelik hayatı nasıl değiştirdiğini o dönemin bilinciyle canlı sohbet ederek öğrenin.
+            - generic [ref=e459]:
+              - generic [ref=e460]: 20 Kredi
+              - button "Giriş Yap & Başlat" [ref=e465] [cursor=pointer]
+      - generic [ref=e470]:
+        - generic [ref=e471]:
+          - heading "timeline_view 2026—2060" [level=3] [ref=e472]:
+            - generic [ref=e473]: timeline_view
+            - generic [ref=e474]: 2026—2060
+          - paragraph [ref=e475]: select_milestone
+        - generic [ref=e476]:
+          - generic [ref=e477]:
+            - button "Tüm Yıllar (35)" [ref=e478] [cursor=pointer]
+            - 'button "Aşama 1: 2026–2030 (10)" [ref=e479] [cursor=pointer]'
+            - 'button "Aşama 2: 2031–2040 (10)" [ref=e480] [cursor=pointer]'
+            - 'button "Aşama 3: 2041–2060 (15)" [ref=e481] [cursor=pointer]'
+          - generic [ref=e482]:
+            - button "Kartlar" [ref=e483] [cursor=pointer]
+            - button "Kompakt" [ref=e490] [cursor=pointer]
+        - generic [ref=e493]:
+          - generic [ref=e494]:
+            - generic [ref=e495] [cursor=pointer]:
+              - generic [ref=e496]:
+                - generic [ref=e497]:
+                  - generic [ref=e498]: 2026 // PHASE 01
+                  - generic [ref=e499]: Yapay Zeka & Bilişim
+                - generic [ref=e506]:
+                  - heading "Yapay Zeka Ajanları Çağı" [level=4] [ref=e507]
+                  - paragraph [ref=e508]: Yapay zeka sadece metin yazmakla kalmaz; otonom şirketler kurar, kendi başına yazılım kodlar ve insan gözetimi olmadan finansal kararlar alır.
+              - generic [ref=e509]:
+                - generic [ref=e510]:
+                  - generic [ref=e511]: Model TRL / Konsensus
+                  - generic [ref=e512]: TRL 8 (Tahmin) · %95
+                - generic [ref=e513]:
+                  - generic [ref=e514]: İşgücü Otomasyonu
+                  - generic [ref=e515]: "%48 Ajan"
+                - generic [ref=e516]:
+                  - generic [ref=e517]: Kırılganlık
+                  - generic [ref=e518]: 56/100 Risk
+              - generic [ref=e519]:
+                - generic "Mevcut patent ve açık bilim literatürüne dayalı sistem tahmini (%99 model olasılığı)." [ref=e520]: "%99 Model Skoru (Yakın Ufuk Projeksiyonu)"
+                - generic [ref=e521]:
+                  - button "Spotlight" [ref=e522]
+                  - button "Detayları Aç" [ref=e526]
+            - generic [ref=e530] [cursor=pointer]:
+              - generic [ref=e531]:
+                - generic [ref=e532]:
+                  - generic [ref=e533]: 2027 // PHASE 01
+                  - generic [ref=e534]: Sosyoloji & Ekonomi
+                - generic [ref=e540]:
+                  - heading "Sentetik Gerçeklik Krizi" [level=4] [ref=e541]
+                  - paragraph [ref=e542]: Deepfake ve yapay medya o kadar kusursuz hale gelir ki, internetteki içeriklerin gerçekliğini kanıtlamak için 'Dijital DNA' (filigran) yasaları küresel olarak zorunlu kılınır.
+              - generic [ref=e543]:
+                - generic [ref=e544]:
+                  - generic [ref=e545]: Model TRL / Konsensus
+                  - generic [ref=e546]: TRL 8 (Tahmin) · %93
+                - generic [ref=e547]:
+                  - generic [ref=e548]: İşgücü Otomasyonu
+                  - generic [ref=e549]: "%53 Ajan"
+                - generic [ref=e550]:
+                  - generic [ref=e551]: Kırılganlık
+                  - generic [ref=e552]: 59/100 Risk
+              - generic [ref=e553]:
+                - generic "Mevcut patent ve açık bilim literatürüne dayalı sistem tahmini (%95 model olasılığı)." [ref=e554]: "%95 Model Skoru (Yakın Ufuk Projeksiyonu)"
+                - generic [ref=e555]:
+                  - button "Spotlight" [ref=e556]
+                  - button "Detayları Aç" [ref=e560]
+            - generic [ref=e564] [cursor=pointer]:
+              - generic [ref=e565]:
+                - generic [ref=e566]:
+                  - generic [ref=e567]: 2028 // PHASE 01
+                  - generic [ref=e568]: Enerji & Çevre
+                - generic [ref=e574]:
+                  - heading "Katı Hal (Solid-State) Batarya Devrimi" [level=4] [ref=e575]
+                  - paragraph [ref=e576]: Enerji depolamada lityum-iyonun yerini katı hal pilleri alır. Termodinamik ve hücre yoğunluğu sınırları gereği yüksek enerji yoğunluğu ve olmasa da, 2 kat daha yüksek enerji yoğunluğu, yüksek güvenlik ve 10 dakikada şarj imkanı sunar.
+              - generic [ref=e577]:
+                - generic [ref=e578]:
+                  - generic [ref=e579]: Model TRL / Konsensus
+                  - generic [ref=e580]: TRL 8 (Tahmin) · %92
+                - generic [ref=e581]:
+                  - generic [ref=e582]: İşgücü Otomasyonu
+                  - generic [ref=e583]: "%56 Ajan"
+                - generic [ref=e584]:
+                  - generic [ref=e585]: Kırılganlık
+                  - generic [ref=e586]: 63/100 Risk
+              - generic [ref=e587]:
+                - generic "Mevcut patent ve açık bilim literatürüne dayalı sistem tahmini (%87 model olasılığı)." [ref=e588]: "%87 Model Skoru (Yakın Ufuk Projeksiyonu)"
+                - generic [ref=e589]:
+                  - button "Spotlight" [ref=e590]
+                  - button "Detayları Aç" [ref=e594]
+            - generic [ref=e598] [cursor=pointer]:
+              - generic [ref=e599]:
+                - generic [ref=e600]:
+                  - generic [ref=e601]: 2029 // PHASE 01
+                  - generic [ref=e602]: Yapay Zeka & Bilişim
+                - generic [ref=e618]:
+                  - heading "Yapay Genel Zeka (AGI) & Mantıksal Akıl Yürütme" [level=4] [ref=e619]
+                  - paragraph [ref=e620]: Turing Testi günümüz LLM'leri tarafından zaten aşılmış olup AGI için yetersizdir. 2029 projeksiyonu; çok modlu nedensel akıl yürütme, otonom hedef planlama ve sürekli öğrenme yeteneği sergileyen AGI protokollerine odaklanır.
+              - generic [ref=e621]:
+                - generic [ref=e622]:
+                  - generic [ref=e623]: Model TRL / Konsensus
+                  - generic [ref=e624]: TRL 6 (Tahmin) · %90
+                - generic [ref=e625]:
+                  - generic [ref=e626]: İşgücü Otomasyonu
+                  - generic [ref=e627]: "%67 Ajan"
+                - generic [ref=e628]:
+                  - generic [ref=e629]: Kırılganlık
+                  - generic [ref=e630]: 71/100 Risk
+              - generic [ref=e631]:
+                - generic "Mevcut patent ve açık bilim literatürüne dayalı sistem tahmini (%77 model olasılığı)." [ref=e632]: "%77 Model Skoru (Yakın Ufuk Projeksiyonu)"
+                - generic [ref=e633]:
+                  - button "Spotlight" [ref=e634]
+                  - button "Detayları Aç" [ref=e638]
+            - generic [ref=e642] [cursor=pointer]:
+              - generic [ref=e643]:
+                - generic [ref=e644]:
+                  - generic [ref=e645]: 2030 // PHASE 01
+                  - generic [ref=e646]: İnsan-Makine Arayüzü
+                - generic [ref=e656]:
+                  - heading "Giyilebilir Nöroteknoloji & BCI Sinyal İşleme" [level=4] [ref=e657]
+                  - paragraph [ref=e658]: Giyilebilir sensörler (EEG/fNIRS) dışarıdan zihinsel odaklanma ve basit komutları okur. Kafatası sinyal gürültüsü nedeniyle hassas metin yazımı yeteneği hibrit AI niyet tahminleyicileriyle desteklenir.
+              - generic [ref=e659]:
+                - generic [ref=e660]:
+                  - generic [ref=e661]: Model TRL / Konsensus
+                  - generic [ref=e662]: TRL 6 (Tahmin) · %89
+                - generic [ref=e663]:
+                  - generic [ref=e664]: İşgücü Otomasyonu
+                  - generic [ref=e665]: "%70 Ajan"
+                - generic [ref=e666]:
+                  - generic [ref=e667]: Kırılganlık
+                  - generic [ref=e668]: 66/100 Risk
+              - generic [ref=e669]:
+                - generic "Mevcut patent ve açık bilim literatürüne dayalı sistem tahmini (%77 model olasılığı)." [ref=e670]: "%77 Model Skoru (Yakın Ufuk Projeksiyonu)"
+                - generic [ref=e671]:
+                  - button "Spotlight" [ref=e672]
+                  - button "Detayları Aç" [ref=e676]
+            - generic [ref=e680] [cursor=pointer]:
+              - generic [ref=e681]:
+                - generic [ref=e682]:
+                  - generic [ref=e683]: 2031 // PHASE 01
+                  - generic [ref=e684]: Biyoloji & Tıp
+                - generic [ref=e700]:
+                  - heading "CRISPR'ın Ticarileşmesi" [level=4] [ref=e701]
+                  - paragraph [ref=e702]: Kalıtsal hastalıklar için gen düzenleme tedavileri FDA onaylarını tamamlar. Sadece hastalıklar değil, kozmetik genetik müdahalelerin ilk adımları atılır.
+              - generic [ref=e703]:
+                - generic [ref=e704]:
+                  - generic [ref=e705]: Model TRL / Konsensus
+                  - generic [ref=e706]: TRL 6 (Tahmin) · %87
+                - generic [ref=e707]:
+                  - generic [ref=e708]: İşgücü Otomasyonu
+                  - generic [ref=e709]: "%73 Ajan"
+                - generic [ref=e710]:
+                  - generic [ref=e711]: Kırılganlık
+                  - generic [ref=e712]: 68/100 Risk
+              - generic [ref=e713]:
+                - generic "10 yıllık projeksiyon penceresinde akademik literatür ve teknoloji yol haritası modellemesi (%80 model olasılığı)." [ref=e714]: "%80 Model Skoru (Orta Vadeli Sistem Tahmini)"
+                - generic [ref=e715]:
+                  - button "Spotlight" [ref=e716]
+                  - button "Detayları Aç" [ref=e720]
+            - generic [ref=e724] [cursor=pointer]:
+              - generic [ref=e725]:
+                - generic [ref=e726]:
+                  - generic [ref=e727]: 2032 // PHASE 01
+                  - generic [ref=e728]: Otonom & Lojistik
+                - generic [ref=e739]:
+                  - heading "Otonom Sistemlerin Hakimiyeti" [level=4] [ref=e740]
+                  - paragraph [ref=e741]: Gelişmiş metropollerde Seviye 5 (direksiyonsuz ve pedalsız) otonom araçlar standart hale gelir. Küresel lojistik tamamen insansızlaşır.
+              - generic [ref=e742]:
+                - generic [ref=e743]:
+                  - generic [ref=e744]: Model TRL / Konsensus
+                  - generic [ref=e745]: TRL 6 (Tahmin) · %85
+                - generic [ref=e746]:
+                  - generic [ref=e747]: İşgücü Otomasyonu
+                  - generic [ref=e748]: "%77 Ajan"
+                - generic [ref=e749]:
+                  - generic [ref=e750]: Kırılganlık
+                  - generic [ref=e751]: 69/100 Risk
+              - generic [ref=e752]:
+                - generic "10 yıllık projeksiyon penceresinde akademik literatür ve teknoloji yol haritası modellemesi (%76 model olasılığı)." [ref=e753]: "%76 Model Skoru (Orta Vadeli Sistem Tahmini)"
+                - generic [ref=e754]:
+                  - button "Spotlight" [ref=e755]
+                  - button "Kilidi Aç" [ref=e759]
+            - generic [ref=e763] [cursor=pointer]:
+              - generic [ref=e764]:
+                - generic [ref=e765]:
+                  - generic [ref=e766]: 2033 // PHASE 01
+                  - generic [ref=e767]: Biyoloji & Tıp
+                - generic [ref=e778]:
+                  - heading "Kişiselleştirilmiş Yapay Hekimler" [level=4] [ref=e779]
+                  - paragraph [ref=e780]: Her insanın genetik haritasına, akıllı saatlerinden gelen anlık kan verilerine ve yaşam tarzına göre 7/24 teşhis koyan yapay zeka doktorları devreye girer.
+              - generic [ref=e781]:
+                - generic [ref=e782]:
+                  - generic [ref=e783]: Model TRL / Konsensus
+                  - generic [ref=e784]: TRL 6 (Tahmin) · %84
+                - generic [ref=e785]:
+                  - generic [ref=e786]: İşgücü Otomasyonu
+                  - generic [ref=e787]: "%80 Ajan"
+                - generic [ref=e788]:
+                  - generic [ref=e789]: Kırılganlık
+                  - generic [ref=e790]: 72/100 Risk
+              - generic [ref=e791]:
+                - generic "10 yıllık projeksiyon penceresinde akademik literatür ve teknoloji yol haritası modellemesi (%73 model olasılığı)." [ref=e792]: "%73 Model Skoru (Orta Vadeli Sistem Tahmini)"
+                - generic [ref=e793]:
+                  - button "Spotlight" [ref=e794]
+                  - button "Kilidi Aç" [ref=e798]
+          - generic [ref=e802]:
+            - generic [ref=e803]:
+              - generic [ref=e809]:
+                - generic [ref=e810]:
+                  - heading "2035—2060 Dönemlerini ve 29+ Gelecek Simülasyonunu Açın" [level=4] [ref=e811]
+                  - generic [ref=e812]: +50 ÜCRETSİZ KREDİ
+                - paragraph [ref=e813]: Ücretsiz hesabınızı oluşturarak kuantum simülasyonlarına ve derin gelecek analizlerine anında erişin.
+              - button "Ücretsiz Giriş Yap / Kayıt Ol" [ref=e814] [cursor=pointer]
+            - generic [ref=e821]:
+              - generic [ref=e822]: "Kilitli Gelecek Teknolojileri (29 Adet):"
+              - generic [ref=e826]:
+                - generic [ref=e827]: Kuantum İnternet (2038)
+                - generic [ref=e828]: AGI Seviye 5 (2042)
+                - generic [ref=e829]: Nükleer Füzyon Ağı (2045)
+                - generic [ref=e830]: Zihin Yükleme (2050)
+      - button "Yukarı / 2026 Odak" [ref=e831] [cursor=pointer]
+  - generic [ref=e836]:
+    - generic [ref=e837]:
+      - button "Spotlight'a Git" [ref=e838] [cursor=pointer]
+      - button "Paylaş" [ref=e842] [cursor=pointer]
+      - button "Kapat" [ref=e850] [cursor=pointer]
+    - generic [ref=e854]:
+      - generic [ref=e855]:
+        - generic [ref=e856]: FAZ 01 • 2026 - 2035
+        - generic [ref=e857]: Yapay Zeka & Bilişim
+        - generic [ref=e858]: "%99 Model Olasılık Skoru"
+      - generic [ref=e864]:
+        - text: "2026"
+        - heading "Yapay Zeka Ajanları Çağı" [level=2] [ref=e865]
+    - generic [ref=e866]:
+      - generic [ref=e867]:
+        - generic [ref=e868]:
+          - generic [ref=e869]:
+            - generic [ref=e870]: SEKME
+            - generic [ref=e871]: 2 / 5
+          - generic "Sekmeler arası hızlı geçiş" [ref=e872]:
+            - 'button "Sekme 1: 🌍 Dünya & Küresel Etki" [ref=e873] [cursor=pointer]'
+            - 'button "Sekme 2: 👤 Benim İçin (Nasıl Etkiler?)" [active] [ref=e874] [cursor=pointer]'
+            - 'button "Sekme 3: 5 Katmanlı Dünya & Biyo-Yaşam" [ref=e875] [cursor=pointer]'
+            - 'button "Sekme 4: Gelecek Hikayesi & Senaryo" [ref=e876] [cursor=pointer]'
+            - 'button "Sekme 5: TRL & Bilimsel Radar" [ref=e877] [cursor=pointer]'
+        - button "👉 1 Sekme Daha Var" [ref=e878] [cursor=pointer]
+      - generic [ref=e882]:
+        - button "Sola kaydır" [ref=e883] [cursor=pointer]
+        - button "Sağa kaydır (Daha fazla sekme)" [ref=e886] [cursor=pointer]
+        - generic [ref=e889]:
+          - button "🌍 Dünya & Küresel Etki 01" [ref=e890] [cursor=pointer]:
+            - generic [ref=e894]: 🌍 Dünya & Küresel Etki
+            - generic [ref=e895]: "01"
+          - button "👤 Benim İçin (Nasıl Etkiler?) 02" [ref=e896] [cursor=pointer]:
+            - generic [ref=e900]: 👤 Benim İçin (Nasıl Etkiler?)
+            - generic [ref=e901]: "02"
+          - button "5 Katmanlı Dünya & Biyo-Yaşam 03" [ref=e902] [cursor=pointer]:
+            - generic [ref=e907]: 5 Katmanlı Dünya & Biyo-Yaşam
+            - generic [ref=e908]: "03"
+          - button "Gelecek Hikayesi & Senaryo 04" [ref=e909] [cursor=pointer]:
+            - generic [ref=e912]: Gelecek Hikayesi & Senaryo
+            - generic [ref=e913]: "04"
+          - button "TRL & Bilimsel Radar 05" [ref=e914] [cursor=pointer]:
+            - generic [ref=e918]: TRL & Bilimsel Radar
+            - generic [ref=e919]: "05"
+    - generic [ref=e921]:
+      - generic [ref=e926]:
+        - text: KİŞİYE ÖZEL GELECEK ETKİSİ
+        - heading "Kişisel Gelecek Analizi İçin Giriş Yapın" [level=4] [ref=e927]
+        - paragraph [ref=e928]: Bu dönüm noktasının yaşınıza, mesleğinize ve kariyer hedeflerinize özel doğrudan etkilerini, kişisel risk puanını ve somut eylem planını görmek için ücretsiz giriş yapın.
+      - button "Giriş Yap / Ücretsiz Kayıt Ol" [ref=e930] [cursor=pointer]
+  - contentinfo [ref=e935]:
+    - generic [ref=e936]:
+      - generic [ref=e937]: © 2026 - 2060 Teknolojik Evrim Takvimi. Tüm Hakları Saklıdır.
+      - generic [ref=e942]:
+        - button "Gizlilik & Çerezler" [ref=e943] [cursor=pointer]
+        - generic [ref=e948]: "|"
+        - button "Kullanım Koşulları" [ref=e949] [cursor=pointer]
+        - generic [ref=e954]: "|"
+        - button "Yardım & Destek Merkezi" [ref=e955] [cursor=pointer]
+  - generic [ref=e960]:
+    - generic [ref=e962]:
+      - generic [ref=e963]: TIMELINE-SYS-01
+      - generic [ref=e966]:
+        - generic [ref=e967]: 1 / 3
+        - button "Turu Kapat" [ref=e968] [cursor=pointer]
+    - generic [ref=e972]:
+      - generic [ref=e978]:
+        - heading "Kronolojik 2026—2060 Kırılma Noktaları" [level=4] [ref=e979]
+        - paragraph [ref=e980]: 2026'dan 2060'a uzanan 16 ana dönüm noktasını zaman şeridi üzerinde yatay kaydırarak veya yıl adımlarıyla inceleyebilirsiniz.
+      - generic [ref=e981]: "İpucu: Kartlara tıklayarak 5 katmanlı dünya durumu ve patent dokümanlarını görüntüleyin."
+    - generic [ref=e986]:
+      - generic [ref=e987]:
+        - button "Adım 1" [ref=e988] [cursor=pointer]
+        - button "Adım 2" [ref=e989] [cursor=pointer]
+        - button "Adım 3" [ref=e990] [cursor=pointer]
+      - button "Sonraki" [ref=e992] [cursor=pointer]
+```

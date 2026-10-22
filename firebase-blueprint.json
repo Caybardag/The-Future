@@ -1,0 +1,214 @@
+{
+  "entities": {
+    "users": {
+      "title": "User Profiles",
+      "description": "User accounts with credits, plan, and verification details",
+      "properties": {
+        "email": { "type": "string" },
+        "fullName": { "type": "string" },
+        "phone": { "type": "string" },
+        "isEmailVerified": { "type": "boolean" },
+        "isPhoneVerified": { "type": "boolean" },
+        "credits": { "type": "number" },
+        "plan": { "type": "string" },
+        "joinedDate": { "type": "string" },
+        "profession": { "type": "string" }
+      },
+      "required": ["email", "fullName"]
+    },
+    "userRoadmaps": {
+      "title": "User Personal Roadmaps",
+      "description": "Saved personal roadmap data and AI generated career projections",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "age": { "type": "number" },
+        "profession": { "type": "string" },
+        "selectedCategories": { "type": "array", "items": { "type": "string" } },
+        "goals": { "type": "string" },
+        "roadmapText": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userEmail"]
+    },
+    "userPredictions": {
+      "title": "Community Future Predictions",
+      "description": "User submitted technological milestone predictions",
+      "properties": {
+        "title": { "type": "string" },
+        "year": { "type": "number" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "userName": { "type": "string" },
+        "suggestedProbability": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "year", "userEmail"]
+    },
+    "agent_reports": {
+      "title": "Autonomous Agent Scan Reports",
+      "description": "User saved autonomous telemetry scan reports with confidence score and next step recommendations",
+      "properties": {
+        "id": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "milestoneYear": { "type": "number" },
+        "milestoneTitle": { "type": "string" },
+        "milestoneCategory": { "type": "string" },
+        "trend": { "type": "string" },
+        "trendLabel": { "type": "string" },
+        "confidenceScore": { "type": "number" },
+        "summary": { "type": "string" },
+        "reasoning": { "type": "string" },
+        "evidenceSummary": { "type": "string" },
+        "sources": { "type": "array" },
+        "risksAndSignals": { "type": "array" },
+        "rescanRecommendation": { "type": "string" },
+        "nextStepRecommendations": { "type": "array" },
+        "createdAt": { "type": "string" },
+        "createdAtTimestamp": { "type": "number" },
+        "isOfflineSimulated": { "type": "boolean" },
+        "disclaimer": { "type": "string" }
+      },
+      "required": ["id", "userEmail", "milestoneYear", "milestoneTitle", "createdAt"]
+    },
+    "evidenceProofs": {
+      "title": "Verified Evidence Proofs",
+      "description": "Multi-signal verified technology and scientific proof records contributed by users and autonomous agents",
+      "properties": {
+        "id": { "type": "string" },
+        "year": { "type": "number" },
+        "milestoneTitle": { "type": "string" },
+        "status": { "type": "string" },
+        "sourceUrl": { "type": "string" },
+        "sourceTitle": { "type": "string" },
+        "userSummary": { "type": "string" },
+        "aiVerificationScore": { "type": "number" },
+        "aiVerdict": { "type": "string" },
+        "aiCritique": { "type": "string" },
+        "submittedAt": { "type": "string" },
+        "submittedBy": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "sourceTier": { "type": "string" },
+        "tierLabel": { "type": "string" },
+        "sourceTrustScore": { "type": "number" },
+        "verificationMultiplier": { "type": "number" },
+        "isSystemAutoVerified": { "type": "boolean" },
+        "verifierType": { "type": "string" }
+      },
+      "required": ["id", "year", "milestoneTitle", "sourceUrl"]
+    },
+    "userPredictionHistory": {
+      "title": "User Prediction History",
+      "description": "Isolated per-user AI simulation, career risk, and timeline thought process history",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "featureKey": { "type": "string" },
+        "featureName": { "type": "string" },
+        "queryTitle": { "type": "string" },
+        "queryInput": { "type": "object" },
+        "generatedOutcome": { "type": "string" },
+        "summarySnippet": { "type": "string" },
+        "category": { "type": "string" },
+        "targetYear": { "type": "number" },
+        "scenarioMode": { "type": "string" },
+        "creditsSpent": { "type": "number" },
+        "metrics": { "type": "object" },
+        "userEngagement": { "type": "object" },
+        "tags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["id", "userId", "userEmail"]
+    },
+    "brain_knowledge_vault": {
+      "title": "Autonomous System Brain Knowledge Vault",
+      "description": "Durable multi-domain AI synthesized cognitive nodes with TRL, causal dependencies, and thermodynamic limits",
+      "properties": {
+        "id": { "type": "string" },
+        "year": { "type": "number" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "trlLevel": { "type": "string" },
+        "scientificFeasibilityScore": { "type": "number" },
+        "groundingProofSummary": { "type": "string" },
+        "causalDependencies": { "type": "array", "items": { "type": "string" } },
+        "bottlenecksAndLimits": { "type": "array", "items": { "type": "string" } },
+        "crossDomainImpacts": { "type": "array" },
+        "lastEvaluatedAt": { "type": "string" },
+        "evaluatedByModel": { "type": "string" },
+        "isAuthentic": { "type": "boolean" }
+      },
+      "required": ["id", "year", "title"]
+    },
+    "telegram_intelligence": {
+      "title": "Telegram Real-time News Intelligence",
+      "description": "Parsed and verified breakthrough news from real Telegram channels integrated into the cognitive knowledge matrix",
+      "properties": {
+        "id": { "type": "string" },
+        "telegramMessageId": { "type": "string" },
+        "channelTitle": { "type": "string" },
+        "receivedAt": { "type": "string" },
+        "extractedYear": { "type": "number" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "summary": { "type": "string" },
+        "trlLevel": { "type": "number" },
+        "confidenceScore": { "type": "number" },
+        "impactVerdict": { "type": "string" },
+        "sourceUrl": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "title", "receivedAt"]
+    },
+    "credit_reservations": {
+      "title": "Credit Reservations",
+      "description": "Atomic two-phase credit reservations holding credits during Gemini execution",
+      "properties": {
+        "reservationId": { "type": "string" },
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "amount": { "type": "number" },
+        "feature": { "type": "string" },
+        "status": { "type": "string", "enum": ["reserved", "completed", "refunded"] },
+        "idempotencyKey": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "expiresAt": { "type": "number" }
+      },
+      "required": ["reservationId", "userId", "amount", "status"]
+    },
+    "credit_transactions": {
+      "title": "Credit Audit Transactions",
+      "description": "Authoritative immutable audit log of credit allocations, deductions, and refunds",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "delta": { "type": "number" },
+        "resultingCredits": { "type": "number" },
+        "feature": { "type": "string" },
+        "reason": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "reservationId": { "type": "string" },
+        "status": { "type": "string" }
+      },
+      "required": ["id", "userId", "userEmail", "delta", "resultingCredits"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "User profiles with credits balance"
+    },
+    "/credit_reservations/{reservationId}": {
+      "schema": "credit_reservations",
+      "description": "Active in-flight credit reservations"
+    },
+    "/credit_transactions/{txId}": {
+      "schema": "credit_transactions",
+      "description": "Authoritative ledger transactions"
+    }
+  }
+}

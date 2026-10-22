@@ -1,0 +1,582 @@
+[
+  {
+    "id": "TX-1788817021935-EXBSC",
+    "email": "testuser@example.com",
+    "delta": -10,
+    "resultingCredits": 40,
+    "feature": "ai_simulation",
+    "reason": "Sunucu Atomik Düşüm: ai_simulation",
+    "timestamp": "2026-09-07T21:37:01.935Z",
+    "meta": {
+      "path": "/api/gemini/simulate"
+    }
+  },
+  {
+    "id": "TX-1789125432487-7EGQN",
+    "email": "guest@anonymous.local",
+    "delta": -3,
+    "resultingCredits": 47,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:17:12.487Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789125449455-BV9QY",
+    "email": "guest@anonymous.local",
+    "delta": -3,
+    "resultingCredits": 44,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:17:29.455Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789125465840-94WL7",
+    "email": "guest@anonymous.local",
+    "delta": -3,
+    "resultingCredits": 41,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:17:45.840Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789125889709-DSM51",
+    "email": "guest@unverified-visitor.local",
+    "delta": -3,
+    "resultingCredits": 47,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:24:49.709Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789126074655-FAQ4D",
+    "email": "guest@anonymous.local",
+    "delta": -3,
+    "resultingCredits": 38,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:27:54.655Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789126112674-EZ2P9",
+    "email": "guest@anonymous.local",
+    "delta": -3,
+    "resultingCredits": 35,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:28:32.674Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789126139349-DSAMX",
+    "email": "guest@anonymous.local",
+    "delta": -3,
+    "resultingCredits": 32,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:28:59.349Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789126174492-SQLP9",
+    "email": "guest@anonymous.local",
+    "delta": -3,
+    "resultingCredits": 29,
+    "feature": "job_risk_analysis",
+    "reason": "Sunucu Atomik Düşüm: job_risk_analysis",
+    "timestamp": "2026-09-11T11:29:34.492Z",
+    "meta": {
+      "path": "/api/gemini/milestone-job-impact"
+    }
+  },
+  {
+    "id": "TX-1789402264100-IZK22",
+    "email": "guest@anonymous.local",
+    "delta": -10,
+    "resultingCredits": 90,
+    "feature": "ai_simulation",
+    "reason": "Sunucu Atomik Düşüm: ai_simulation",
+    "timestamp": "2026-09-14T16:11:04.100Z",
+    "meta": {
+      "path": "/api/gemini/simulate"
+    }
+  },
+  {
+    "id": "TX-1790070340600-K52J4",
+    "email": "commit_test@example.com",
+    "delta": -10,
+    "resultingCredits": 10,
+    "feature": "career_advisor",
+    "reason": "Atomik Rezervasyon Onayı: career_advisor",
+    "timestamp": "2026-09-22T09:45:40.600Z",
+    "meta": {
+      "reservationId": "res_9bd551cc6914523f7d1f73de77c78d7c",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790070340602-EOBXJ",
+    "email": "refund_test@example.com",
+    "delta": 10,
+    "resultingCredits": 20,
+    "feature": "career_advisor",
+    "reason": "Rezervasyon İadesi (Gemini 503 Service Unavailable): career_advisor",
+    "timestamp": "2026-09-22T09:45:40.602Z",
+    "meta": {
+      "reservationId": "res_ebd9e8aa5db02b0a067c981327b476f1",
+      "status": "refunded",
+      "reason": "Gemini 503 Service Unavailable"
+    }
+  },
+  {
+    "id": "TX-1790070360200-35Z6I",
+    "email": "commit_test@example.com",
+    "delta": -10,
+    "resultingCredits": 10,
+    "feature": "career_advisor",
+    "reason": "Atomik Rezervasyon Onayı: career_advisor",
+    "timestamp": "2026-09-22T09:46:00.200Z",
+    "meta": {
+      "reservationId": "res_50b0a651cd2cd4721985444df2141334",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790070360202-2A1YQ",
+    "email": "refund_test@example.com",
+    "delta": 10,
+    "resultingCredits": 20,
+    "feature": "career_advisor",
+    "reason": "Rezervasyon İadesi (Gemini 503 Service Unavailable): career_advisor",
+    "timestamp": "2026-09-22T09:46:00.202Z",
+    "meta": {
+      "reservationId": "res_ef85842a49cde89bbc33052bcac7e8af",
+      "status": "refunded",
+      "reason": "Gemini 503 Service Unavailable"
+    }
+  },
+  {
+    "id": "TX-1790070360207-BTXWJ",
+    "email": "usera_security_test@example.com",
+    "delta": -10,
+    "resultingCredits": 0,
+    "feature": "job_risk_analysis",
+    "reason": "Atomik Rezervasyon Onayı: job_risk_analysis",
+    "timestamp": "2026-09-22T09:46:00.207Z",
+    "meta": {
+      "reservationId": "res_d80053bd095f8c3442f9ac7daef2c4cc",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790070360208-UOE6L",
+    "email": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Model overloaded): job_risk_analysis",
+    "timestamp": "2026-09-22T09:46:00.208Z",
+    "meta": {
+      "reservationId": "res_ab9f98b6b8f16ceb3ac78d5bcd529903",
+      "status": "refunded",
+      "reason": "Model overloaded"
+    }
+  },
+  {
+    "id": "TX-1790070360210-G9KI2",
+    "email": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Aborted): job_risk_analysis",
+    "timestamp": "2026-09-22T09:46:00.210Z",
+    "meta": {
+      "reservationId": "res_add5b4b122516330d884ac2369430416",
+      "status": "refunded",
+      "reason": "Aborted"
+    }
+  },
+  {
+    "id": "TX-1790071736159-RIDZ3",
+    "email": "commit_test@example.com",
+    "delta": -10,
+    "resultingCredits": 10,
+    "feature": "career_advisor",
+    "reason": "Atomik Rezervasyon Onayı: career_advisor",
+    "timestamp": "2026-09-22T10:08:56.159Z",
+    "meta": {
+      "reservationId": "res_a6b43d3cda2b9b91ace6deb3accdb55d",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790071736161-PRIMI",
+    "email": "refund_test@example.com",
+    "delta": 10,
+    "resultingCredits": 20,
+    "feature": "career_advisor",
+    "reason": "Rezervasyon İadesi (Gemini 503 Service Unavailable): career_advisor",
+    "timestamp": "2026-09-22T10:08:56.161Z",
+    "meta": {
+      "reservationId": "res_4cf21b90c0818a6d622b12ab74ff3895",
+      "status": "refunded",
+      "reason": "Gemini 503 Service Unavailable"
+    }
+  },
+  {
+    "id": "TX-1790071736167-MLYOS",
+    "email": "usera_security_test@example.com",
+    "delta": -10,
+    "resultingCredits": 0,
+    "feature": "job_risk_analysis",
+    "reason": "Atomik Rezervasyon Onayı: job_risk_analysis",
+    "timestamp": "2026-09-22T10:08:56.167Z",
+    "meta": {
+      "reservationId": "res_3da9b805ca26e43531cfa5bd363e9de8",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790071736169-AD4OQ",
+    "email": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Model overloaded): job_risk_analysis",
+    "timestamp": "2026-09-22T10:08:56.169Z",
+    "meta": {
+      "reservationId": "res_f3467128aaea53d9f500d9c472956d2c",
+      "status": "refunded",
+      "reason": "Model overloaded"
+    }
+  },
+  {
+    "id": "TX-1790071736170-GV8A5",
+    "email": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Aborted): job_risk_analysis",
+    "timestamp": "2026-09-22T10:08:56.170Z",
+    "meta": {
+      "reservationId": "res_222558319a2373db11bfa86628b3d6ec",
+      "status": "refunded",
+      "reason": "Aborted"
+    }
+  },
+  {
+    "id": "TX-1790072339083-SAMKH",
+    "userId": "usr_ded3716049b4",
+    "email": "test_isolated@example.com",
+    "userEmail": "test_isolated@example.com",
+    "delta": -10,
+    "resultingCredits": 0,
+    "feature": "test_feature",
+    "reason": "Atomik Rezervasyon Onayı: test_feature",
+    "timestamp": "2026-09-22T10:18:59.083Z",
+    "createdAt": "2026-09-22T10:18:59.083Z",
+    "reservationId": "res_e2de0702fb75b7ae14320c5c841aadde",
+    "status": "completed",
+    "meta": {
+      "reservationId": "res_e2de0702fb75b7ae14320c5c841aadde",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790153588056-27P8M",
+    "userId": "usr_7f7bca6e8ed8",
+    "email": "commit_test@example.com",
+    "userEmail": "commit_test@example.com",
+    "delta": -10,
+    "resultingCredits": 10,
+    "feature": "career_advisor",
+    "reason": "Atomik Rezervasyon Onayı: career_advisor",
+    "timestamp": "2026-09-23T08:53:08.056Z",
+    "createdAt": "2026-09-23T08:53:08.056Z",
+    "reservationId": "res_4a1cc905d7e18601e088310b527eb37d",
+    "status": "completed",
+    "meta": {
+      "reservationId": "res_4a1cc905d7e18601e088310b527eb37d",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790153588059-UJZ42",
+    "userId": "usr_723492293828",
+    "email": "refund_test@example.com",
+    "userEmail": "refund_test@example.com",
+    "delta": 10,
+    "resultingCredits": 20,
+    "feature": "career_advisor",
+    "reason": "Rezervasyon İadesi (Gemini 503 Service Unavailable): career_advisor",
+    "timestamp": "2026-09-23T08:53:08.059Z",
+    "createdAt": "2026-09-23T08:53:08.059Z",
+    "reservationId": "res_4892f9dc5084c5b1f878b784c469407f",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_4892f9dc5084c5b1f878b784c469407f",
+      "status": "refunded",
+      "reason": "Gemini 503 Service Unavailable"
+    }
+  },
+  {
+    "id": "TX-1790153588069-H0DA9",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": -10,
+    "resultingCredits": 0,
+    "feature": "job_risk_analysis",
+    "reason": "Atomik Rezervasyon Onayı: job_risk_analysis",
+    "timestamp": "2026-09-23T08:53:08.069Z",
+    "createdAt": "2026-09-23T08:53:08.069Z",
+    "reservationId": "res_46a0c9142aeae67c9bacd55b30f20c42",
+    "status": "completed",
+    "meta": {
+      "reservationId": "res_46a0c9142aeae67c9bacd55b30f20c42",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790153588072-3LQHS",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Model overloaded): job_risk_analysis",
+    "timestamp": "2026-09-23T08:53:08.072Z",
+    "createdAt": "2026-09-23T08:53:08.072Z",
+    "reservationId": "res_7e82b8035c4278f4ba5af90b17fd3a78",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_7e82b8035c4278f4ba5af90b17fd3a78",
+      "status": "refunded",
+      "reason": "Model overloaded"
+    }
+  },
+  {
+    "id": "TX-1790153588074-HP251",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Aborted): job_risk_analysis",
+    "timestamp": "2026-09-23T08:53:08.074Z",
+    "createdAt": "2026-09-23T08:53:08.074Z",
+    "reservationId": "res_e97aff6f019eae8c19b1c58a6a1df56c",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_e97aff6f019eae8c19b1c58a6a1df56c",
+      "status": "refunded",
+      "reason": "Aborted"
+    }
+  },
+  {
+    "id": "TX-1790153594370-A4R4G",
+    "userId": "usr_7f7bca6e8ed8",
+    "email": "commit_test@example.com",
+    "userEmail": "commit_test@example.com",
+    "delta": -10,
+    "resultingCredits": 10,
+    "feature": "career_advisor",
+    "reason": "Atomik Rezervasyon Onayı: career_advisor",
+    "timestamp": "2026-09-23T08:53:14.370Z",
+    "createdAt": "2026-09-23T08:53:14.370Z",
+    "reservationId": "res_86cda01ae94490071b990f7a1111b48a",
+    "status": "completed",
+    "meta": {
+      "reservationId": "res_86cda01ae94490071b990f7a1111b48a",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790153594373-J60CK",
+    "userId": "usr_723492293828",
+    "email": "refund_test@example.com",
+    "userEmail": "refund_test@example.com",
+    "delta": 10,
+    "resultingCredits": 20,
+    "feature": "career_advisor",
+    "reason": "Rezervasyon İadesi (Gemini 503 Service Unavailable): career_advisor",
+    "timestamp": "2026-09-23T08:53:14.373Z",
+    "createdAt": "2026-09-23T08:53:14.373Z",
+    "reservationId": "res_2bb549f11bde2d0092871ead49709cd3",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_2bb549f11bde2d0092871ead49709cd3",
+      "status": "refunded",
+      "reason": "Gemini 503 Service Unavailable"
+    }
+  },
+  {
+    "id": "TX-1790153594386-QW8YT",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": -10,
+    "resultingCredits": 0,
+    "feature": "job_risk_analysis",
+    "reason": "Atomik Rezervasyon Onayı: job_risk_analysis",
+    "timestamp": "2026-09-23T08:53:14.386Z",
+    "createdAt": "2026-09-23T08:53:14.386Z",
+    "reservationId": "res_036c81caa7a9164da8a0d7bf243dd413",
+    "status": "completed",
+    "meta": {
+      "reservationId": "res_036c81caa7a9164da8a0d7bf243dd413",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790153594389-YJEYH",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Model overloaded): job_risk_analysis",
+    "timestamp": "2026-09-23T08:53:14.389Z",
+    "createdAt": "2026-09-23T08:53:14.389Z",
+    "reservationId": "res_d10c8dac69ed1a546288ebf3c1c9ece5",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_d10c8dac69ed1a546288ebf3c1c9ece5",
+      "status": "refunded",
+      "reason": "Model overloaded"
+    }
+  },
+  {
+    "id": "TX-1790153594391-KWVB9",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Aborted): job_risk_analysis",
+    "timestamp": "2026-09-23T08:53:14.391Z",
+    "createdAt": "2026-09-23T08:53:14.391Z",
+    "reservationId": "res_ec1d4fa0db5f428ac1ed6d684e53fe5a",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_ec1d4fa0db5f428ac1ed6d684e53fe5a",
+      "status": "refunded",
+      "reason": "Aborted"
+    }
+  },
+  {
+    "id": "TX-1790153755684-5NTI5",
+    "userId": "usr_7f7bca6e8ed8",
+    "email": "commit_test@example.com",
+    "userEmail": "commit_test@example.com",
+    "delta": -10,
+    "resultingCredits": 10,
+    "feature": "career_advisor",
+    "reason": "Atomik Rezervasyon Onayı: career_advisor",
+    "timestamp": "2026-09-23T08:55:55.684Z",
+    "createdAt": "2026-09-23T08:55:55.684Z",
+    "reservationId": "res_ad91745da561cadfe5de861de6f41c19",
+    "status": "completed",
+    "meta": {
+      "reservationId": "res_ad91745da561cadfe5de861de6f41c19",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790153755688-RUS81",
+    "userId": "usr_723492293828",
+    "email": "refund_test@example.com",
+    "userEmail": "refund_test@example.com",
+    "delta": 10,
+    "resultingCredits": 20,
+    "feature": "career_advisor",
+    "reason": "Rezervasyon İadesi (Gemini 503 Service Unavailable): career_advisor",
+    "timestamp": "2026-09-23T08:55:55.688Z",
+    "createdAt": "2026-09-23T08:55:55.688Z",
+    "reservationId": "res_d18993085542ebefed0f80d3eb82b803",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_d18993085542ebefed0f80d3eb82b803",
+      "status": "refunded",
+      "reason": "Gemini 503 Service Unavailable"
+    }
+  },
+  {
+    "id": "TX-1790153755698-C6CZI",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": -10,
+    "resultingCredits": 0,
+    "feature": "job_risk_analysis",
+    "reason": "Atomik Rezervasyon Onayı: job_risk_analysis",
+    "timestamp": "2026-09-23T08:55:55.698Z",
+    "createdAt": "2026-09-23T08:55:55.698Z",
+    "reservationId": "res_d6057edbd40d6fd5f30921d6aa27c253",
+    "status": "completed",
+    "meta": {
+      "reservationId": "res_d6057edbd40d6fd5f30921d6aa27c253",
+      "status": "completed"
+    }
+  },
+  {
+    "id": "TX-1790153755701-MINY7",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Model overloaded): job_risk_analysis",
+    "timestamp": "2026-09-23T08:55:55.701Z",
+    "createdAt": "2026-09-23T08:55:55.701Z",
+    "reservationId": "res_63ea3f3fd4a5d3334aa875db94bde4c3",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_63ea3f3fd4a5d3334aa875db94bde4c3",
+      "status": "refunded",
+      "reason": "Model overloaded"
+    }
+  },
+  {
+    "id": "TX-1790153755704-EREBA",
+    "userId": "usr_b1e91547e7c1",
+    "email": "usera_security_test@example.com",
+    "userEmail": "usera_security_test@example.com",
+    "delta": 10,
+    "resultingCredits": 10,
+    "feature": "job_risk_analysis",
+    "reason": "Rezervasyon İadesi (Aborted): job_risk_analysis",
+    "timestamp": "2026-09-23T08:55:55.704Z",
+    "createdAt": "2026-09-23T08:55:55.704Z",
+    "reservationId": "res_fb8c6474d31bde970fca357502a6da02",
+    "status": "refunded",
+    "meta": {
+      "reservationId": "res_fb8c6474d31bde970fca357502a6da02",
+      "status": "refunded",
+      "reason": "Aborted"
+    }
+  }
+]

@@ -1,0 +1,107 @@
+{
+  "warfacelove46@gmail.com": {
+    "email": "warfacelove46@gmail.com",
+    "credits": 9999,
+    "plan": "quantum_vip",
+    "role": "superadmin",
+    "isSuperAdmin": true,
+    "totalSpent": 0,
+    "updatedAt": "2026-09-22T10:08:56.113Z"
+  },
+  "victim@test.com": {
+    "email": "victim@test.com",
+    "credits": 50,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-09-21T08:38:52.137Z"
+  },
+  "attacker@test.com": {
+    "email": "attacker@test.com",
+    "credits": 0,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-09-21T08:39:02.976Z"
+  },
+  "victim_security_test@example.com": {
+    "email": "victim_security_test@example.com",
+    "credits": 50,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-09-22T10:08:56.169Z"
+  },
+  "attacker_security_test@example.com": {
+    "email": "attacker_security_test@example.com",
+    "credits": 0,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-09-22T10:08:56.169Z"
+  },
+  "usera_security_test@example.com": {
+    "email": "usera_security_test@example.com",
+    "credits": 10,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 20,
+    "updatedAt": "2026-09-22T10:08:56.170Z",
+    "lastDeductionAt": "2026-09-22T10:08:56.169Z"
+  },
+  "concurrency_race_test@example.com": {
+    "email": "concurrency_race_test@example.com",
+    "credits": 0,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 30,
+    "updatedAt": "2026-09-22T10:08:56.140Z",
+    "lastDeductionAt": "2026-09-22T10:08:56.140Z"
+  },
+  "multi_concurrency_test@example.com": {
+    "email": "multi_concurrency_test@example.com",
+    "credits": 0,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 30,
+    "updatedAt": "2026-09-22T10:08:56.157Z",
+    "lastDeductionAt": "2026-09-22T10:08:56.157Z"
+  },
+  "commit_test@example.com": {
+    "email": "commit_test@example.com",
+    "credits": 10,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 30,
+    "updatedAt": "2026-09-22T10:08:56.159Z",
+    "lastDeductionAt": "2026-09-22T10:08:56.158Z"
+  },
+  "refund_test@example.com": {
+    "email": "refund_test@example.com",
+    "credits": 20,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-09-22T10:08:56.161Z",
+    "lastDeductionAt": "2026-09-22T10:08:56.161Z"
+  },
+  "idempotency_test@example.com": {
+    "email": "idempotency_test@example.com",
+    "credits": 40,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 30,
+    "updatedAt": "2026-09-22T10:08:56.163Z",
+    "lastDeductionAt": "2026-09-22T10:08:56.163Z"
+  }
+}

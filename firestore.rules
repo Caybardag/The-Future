@@ -1,0 +1,156 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'warfacelove46@gmail.com' ||
+        request.auth.token.admin == true
+      );
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && (
+        request.auth.uid == userId ||
+        request.auth.token.email == resource.data.email ||
+        request.auth.token.email == resource.data.userEmail
+      );
+    }
+
+    // 1. USERS COLLECTION
+    // Safe authenticated profile storage: users can only read and update their own document.
+    // Writes strictly restricted: normal users CANNOT grant themselves credits, escalate role, or change plan.
+    match /users/{userId} {
+      allow read: if isSuperAdmin() ||
+        (isAuthenticated() && (
+          request.auth.uid == userId ||
+          (resource != null && request.auth.token.email != null && request.auth.token.email == resource.data.email)
+        ));
+      allow create: if isSuperAdmin() || 
+        (isAuthenticated() &&
+         request.auth.uid == userId &&
+         (request.auth.token.email == null || request.resource.data.email == request.auth.token.email) &&
+         (!('role' in request.resource.data) || request.resource.data.role == 'user') &&
+         (!('credits' in request.resource.data) || request.resource.data.credits == 0) &&
+         (!('plan' in request.resource.data) || request.resource.data.plan == 'free'));
+      allow update: if isSuperAdmin() || 
+        (isAuthenticated() &&
+         (request.auth.uid == userId || (resource != null && request.auth.token.email != null && request.auth.token.email == resource.data.email)) &&
+         (request.resource.data.email == resource.data.email) &&
+         (!('role' in request.resource.data) || request.resource.data.role == resource.data.role) &&
+         (!('credits' in request.resource.data) || request.resource.data.credits == resource.data.credits) &&
+         (!('plan' in request.resource.data) || request.resource.data.plan == resource.data.plan));
+      allow delete: if isSuperAdmin();
+    }
+
+    // 2. CREDIT RESERVATIONS
+    // Atomically managed during AI generation lifecycle. Client write completely denied.
+    match /credit_reservations/{reservationId} {
+      allow read: if isSuperAdmin() || (isAuthenticated() && request.auth.uid == resource.data.userId);
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // 3. CREDIT TRANSACTIONS
+    // Read restricted to admin and owner. Client write completely denied.
+    match /credit_transactions/{txId} {
+      allow read: if isSuperAdmin() || (isAuthenticated() && (
+        request.auth.token.email == resource.data.userEmail ||
+        request.auth.token.email == resource.data.email ||
+        request.auth.uid == resource.data.userId
+      ));
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // 3. BANNED EMAILS
+    // Readable by client during login flow to check status, writeable ONLY by SuperAdmin (or appeal submission)
+    match /banned_emails/{emailId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || (request.resource.data.appealText != null);
+    }
+
+    // 4. SUPPORT TICKETS
+    match /support_tickets/{ticketId} {
+      allow read: if isSuperAdmin() || 
+        (isAuthenticated() && (request.auth.token.email == resource.data.userEmail || request.auth.token.email == resource.data.email)) ||
+        resource.data.userEmail == null;
+      allow create: if request.resource.data.title != null || request.resource.data.message != null || request.resource.data.userEmail != null;
+      allow update: if isSuperAdmin() || (isAuthenticated() && request.auth.token.email == resource.data.userEmail);
+      allow delete: if isSuperAdmin();
+    }
+
+    // 5. ROADMAPS, PREDICTIONS, AND REPORTS
+    match /userRoadmaps/{docId} {
+      allow read: if true;
+      allow create, update: if isSuperAdmin() || (request.resource.data.userEmail != null);
+      allow delete: if isSuperAdmin() || isOwner(docId);
+    }
+
+    match /userPredictions/{docId} {
+      allow read: if true;
+      allow create: if request.resource.data.title != null && request.resource.data.year != null;
+      allow update: if isSuperAdmin() || (request.resource.data.userEmail == resource.data.userEmail);
+      allow delete: if isSuperAdmin();
+    }
+
+    match /agent_reports/{docId} {
+      allow read: if true;
+      allow create, update: if isSuperAdmin() || (request.resource.data.userEmail != null);
+      allow delete: if isSuperAdmin();
+    }
+
+    match /evidenceProofs/{docId} {
+      allow read: if true;
+      allow create: if request.resource.data.year != null && request.resource.data.sourceUrl != null;
+      allow update, delete: if isSuperAdmin();
+    }
+
+    match /userPredictionHistory/{docId} {
+      allow read: if isSuperAdmin() || (isAuthenticated() && request.auth.token.email == resource.data.userEmail);
+      allow create, update: if isSuperAdmin() || (request.resource.data.userEmail != null);
+      allow delete: if isSuperAdmin();
+    }
+
+    // 6. CROWDFUND POOL
+    match /crowdfund_pool/{docId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.contributedAmount != null || isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // 7. BRAIN KNOWLEDGE VAULT & TELEGRAM INTELLIGENCE
+    match /brain_knowledge_vault/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || request.auth != null;
+    }
+
+    match /telegram_intelligence/{docId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isSuperAdmin();
+    }
+
+    // 8. SPONSOR CAMPAIGNS & SPONSORSHIP INQUIRIES
+    match /sponsor_campaigns/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin();
+    }
+
+    match /sponsorship_inquiries/{docId} {
+      allow read: if isSuperAdmin();
+      allow create: if request.resource.data.email != null || request.resource.data.companyName != null;
+      allow update, delete: if isSuperAdmin();
+    }
+
+    // 9. ACADEMIC KNOWLEDGE CACHE
+    match /academic_knowledge_cache/{docId} {
+      allow read: if true;
+      allow write: if isSuperAdmin() || request.resource.data.milestoneYear != null || request.resource.data.works != null;
+    }
+  }
+}
+

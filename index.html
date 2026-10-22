@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B0F19" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="2026-2060 yılları arasındaki 34 yıllık küresel teknolojik, biyolojik ve yapay zeka dönüşüm takvimi ve simülatörü." />
+    <meta property="og:title" content="Teknolojik Evrim Takvimi (2026-2060)" />
+    <meta property="og:description" content="2026-2060 yılları arasındaki 34 yıllık küresel teknolojik, biyolojik ve yapay zeka dönüşüm takvimi ve simülatörü." />
+    <link rel="icon" type="image/png" href="/icon-192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>Teknolojik Evrim Takvimi (2026-2060)</title>
+  </head>
+  <body class="bg-[#0B0F19] text-slate-100 antialiased overflow-x-hidden selection:bg-cyan-500 selection:text-slate-950">
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #0B0F19; color: #38bdf8; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 24px; text-align: center;">
+        <div style="width: 44px; height: 44px; border: 3px solid rgba(56, 189, 248, 0.15); border-top-color: #38bdf8; border-radius: 50%; animation: evrim-spin 0.9s linear infinite; margin-bottom: 16px;"></div>
+        <div style="font-size: 15px; font-weight: 700; letter-spacing: 0.5px; color: #f8fafc;">Teknolojik Evrim Takvimi</div>
+        <div style="font-size: 12px; color: #64748b; margin-top: 6px;">2026—2060 Gelecek Arayüzü Başlatılıyor...</div>
+        <style>@keyframes evrim-spin { to { transform: rotate(360deg); } }</style>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Production-grade PWA Service Worker Registration
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          // In sandboxed/iframe preview environments (e.g. AI Studio iframe), service worker fetch can be blocked by browser security policies.
+          const isIframe = (() => {
+            try {
+              return window.self !== window.top;
+            } catch (e) {
+              return true;
+            }
+          })();
+
+          if (isIframe) {
+            // Clean up any dangling workers in iframe to avoid console noise
+            navigator.serviceWorker.getRegistrations().then((regs) => {
+              regs.forEach((r) => r.unregister().catch(() => {}));
+            }).catch(() => {});
+            return;
+          }
+
+          navigator.serviceWorker
+            .register('/sw.js', { scope: '/' })
+            .then((reg) => {
+              // Listen for new worker installations gracefully without forcing aggressive reg.update()
+              reg.onupdatefound = () => {
+                const installingWorker = reg.installing;
+                if (installingWorker) {
+                  installingWorker.onstatechange = () => {
+                    if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      console.log('[PWA] New version installed and ready.');
+                    }
+                  };
+                }
+              };
+            })
+            .catch((err) => {
+              console.warn('[PWA] ServiceWorker registration note:', err?.message || err);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
+

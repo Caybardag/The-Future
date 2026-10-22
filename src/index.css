@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+body {
+  background-color: #050507;
+  color: #e2e8f0;
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(-4deg); }
+  40% { transform: skew(3deg); }
+  60% { transform: skew(-2deg); }
+  80% { transform: skew(4deg); }
+  100% { transform: skew(0deg); }
+}
+
+@keyframes glitch-split-1 {
+  0% { clip-path: inset(40% 0 61% 0); transform: translate(-3px, -2px); }
+  20% { clip-path: inset(92% 0 1% 0); transform: translate(3px, 1px); }
+  40% { clip-path: inset(10% 0 85% 0); transform: translate(-2px, 3px); }
+  60% { clip-path: inset(65% 0 20% 0); transform: translate(4px, -1px); }
+  80% { clip-path: inset(25% 0 58% 0); transform: translate(-3px, 2px); }
+  100% { clip-path: inset(0% 0 0% 0); transform: translate(0, 0); }
+}
+
+@keyframes glitch-split-2 {
+  0% { clip-path: inset(25% 0 58% 0); transform: translate(3px, 2px); }
+  20% { clip-path: inset(65% 0 20% 0); transform: translate(-4px, -1px); }
+  40% { clip-path: inset(92% 0 1% 0); transform: translate(2px, -3px); }
+  60% { clip-path: inset(10% 0 85% 0); transform: translate(-3px, 1px); }
+  80% { clip-path: inset(40% 0 61% 0); transform: translate(3px, -2px); }
+  100% { clip-path: inset(0% 0 0% 0); transform: translate(0, 0); }
+}
+
+@keyframes scanline-pass {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { transform: translateY(200%); opacity: 0; }
+}
+
+@keyframes edge-sweep-left {
+  0% { transform: scaleY(0); opacity: 0; }
+  50% { transform: scaleY(1); opacity: 1; filter: drop-shadow(0 0 12px #06b6d4); }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+
+@keyframes edge-sweep-right {
+  0% { transform: scaleY(0); opacity: 0; }
+  50% { transform: scaleY(1); opacity: 1; filter: drop-shadow(0 0 12px #06b6d4); }
+  100% { transform: scaleY(0); opacity: 0; }
+}
+
+@keyframes edge-sweep-top {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { transform: scaleX(1); opacity: 1; filter: drop-shadow(0 0 12px #06b6d4); }
+  100% { transform: scaleX(0); opacity: 0; }
+}
+
+@keyframes edge-sweep-bottom {
+  0% { transform: scaleX(0); opacity: 0; }
+  50% { transform: scaleX(1); opacity: 1; filter: drop-shadow(0 0 12px #06b6d4); }
+  100% { transform: scaleX(0); opacity: 0; }
+}
+
+@keyframes data-stream-flicker {
+  0% { opacity: 0.1; }
+  25% { opacity: 0.8; }
+  50% { opacity: 0.2; }
+  75% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+.glitch-active {
+  animation: glitch-skew 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.glitch-layer-1 {
+  animation: glitch-split-1 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.glitch-layer-2 {
+  animation: glitch-split-2 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.scanline-sweep {
+  animation: scanline-pass 0.6s ease-out forwards;
+}
+
+.edge-scanline-v {
+  animation: edge-sweep-left 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.edge-scanline-h {
+  animation: edge-sweep-top 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.data-stream-effect {
+  animation: data-stream-flicker 0.48s ease-in-out forwards;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+@keyframes floatSlow {
+  0% { transform: translate(0px, 0px) scale(1); }
+  50% { transform: translate(30px, -25px) scale(1.08); }
+  100% { transform: translate(-25px, 20px) scale(0.95); }
+}
+
+/* Mobile responsive overflow protection */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* WCAG Accessibility: prefers-reduced-motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .glitch-active,
+  .glitch-layer-1,
+  .glitch-layer-2,
+  .scanline-sweep,
+  .edge-scanline-v,
+  .edge-scanline-h,
+  .data-stream-effect,
+  .animate-fadeIn {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* Custom sleek horizontal scrollbar for admin tabs */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.4);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.8);
+}
+
+
+

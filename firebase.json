@@ -1,0 +1,8 @@
+{
+  "firestore": {
+    "databaseId": "ai-studio-teknolojikevrimt-cced5396-5278-4fd0-a641-6f512e3c0cc3",
+    "rules": "firestore.rules",
+    "edition": "ENTERPRISE",
+    "dataAccessMode": "FIRESTORE_NATIVE"
+  }
+}
