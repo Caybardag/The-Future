@@ -154,10 +154,12 @@ const activeAdminSessions = new Map<string, AdminSessionRecord>();
 const adminLoginAttempts = new Map<string, { count: number; lockedUntil: number }>();
 
 const SUPER_ADMIN_EMAIL = "warfacelove46@gmail.com";
-// Production-safe admin passcodes: only allow secure environment configuration or strong dedicated passcode
+// Production-safe admin passcodes: only allow secure environment configuration or strong dedicated passcode. Fail closed in production.
 const ADMIN_ALLOWED_PASSCODES = new Set(
   process.env.ADMIN_SECRET_PASSCODE
     ? [process.env.ADMIN_SECRET_PASSCODE.trim()]
+    : process.env.NODE_ENV === "production"
+    ? []
     : ["admin2026", "warface46"]
 );
 
@@ -6836,7 +6838,7 @@ app.get("/api/academic/search", async (req, res) => {
     // OpenAlex Arama Yapılandırması (Global hakemli makale & DOI doğrulaması)
     try {
       const openAlexMailto = process.env.OPENALEX_MAILTO || "warfacelove46@gmail.com";
-      const openAlexKey = process.env.OPENALEX_API_KEY || "CdtW8d9jRO3uBYsoucRZWs";
+      const openAlexKey = process.env.OPENALEX_API_KEY || "";
       let openAlexUrl = `https://api.openalex.org/works?search=${encodeURIComponent(englishQuery)}&per_page=5&sort=cited_by_count:desc`;
       if (openAlexKey) {
         openAlexUrl += `&api_key=${openAlexKey}`;
@@ -6960,8 +6962,11 @@ app.get("/api/academic/stats", (req, res) => {
 
 // ALL /api/academic/sync-all - 35 dönüm noktasını OpenAlex üzerinden otonom çekip kalıcı belleğe kaydeder
 app.all("/api/academic/sync-all", async (req, res) => {
+  if (!isReqAdmin(req)) {
+    return res.status(403).json({ success: false, error: "Yetkisiz işlem: Toplu akademik senkronizasyon için yönetici doğrulaması gereklidir." });
+  }
   try {
-    const key = (req.query.key as string) || (req.body?.key as string) || process.env.OPENALEX_API_KEY || "CdtW8d9jRO3uBYsoucRZWs";
+    const key = (req.query.key as string) || (req.body?.key as string) || process.env.OPENALEX_API_KEY || "";
     const result = await bulkIngestAllMilestonesOpenAlex(key);
     return res.json(result);
   } catch (err: any) {
@@ -7156,6 +7161,9 @@ app.get("/api/telegram/feed", (req, res) => {
 
 // POST /api/telegram/rescan-group - Actively rescan connected supergroup for missing historical messages
 app.post("/api/telegram/rescan-group", async (req, res) => {
+  if (!isReqAdmin(req)) {
+    return res.status(403).json({ success: false, error: "Yetkisiz işlem: Yönetici doğrulaması gereklidir." });
+  }
   try {
     const ai = getAI();
     const result = await rescanSupergroupMessages(ai);
@@ -7172,6 +7180,15 @@ app.post("/api/telegram/rescan-group", async (req, res) => {
 
 // POST /api/telegram/deep-analyze - Perform deep futurist AI analysis on a specific signal
 app.post("/api/telegram/deep-analyze", async (req, res) => {
+  const isAdmin = isReqAdmin(req);
+  const verifiedUser = await resolveVerifiedUser(req, isReqAdmin);
+  if (!isAdmin && !verifiedUser) {
+    return res.status(401).json({
+      success: false,
+      error: "UNAUTHORIZED",
+      message: "Derinlemesine yapay zeka analizi için oturum açmış kullanıcı veya yönetici yetkisi gereklidir."
+    });
+  }
   try {
     const ai = getAI();
     const { id, targetYear, item: clientPayload } = req.body;
@@ -7372,8 +7389,10 @@ app.post("/api/telegram/webhook", async (req, res) => {
 // POST /api/telegram/ingest - Telethon/GramJS bridge client'ından mesaj kabul et
 app.post("/api/telegram/ingest", async (req, res) => {
   const bridgeKey = req.headers["x-telegram-bridge-key"] || req.query.bridgeKey;
-  const validBridgeSecret = process.env.TELEGRAM_BRIDGE_SECRET || "futuristic-telegram-bridge-2026";
-  if (!isReqAdmin(req) && bridgeKey !== validBridgeSecret) {
+  const configuredBridgeSecret = process.env.TELEGRAM_BRIDGE_SECRET;
+  const isAuthorizedBridge = !!(configuredBridgeSecret && bridgeKey === configuredBridgeSecret);
+
+  if (!isReqAdmin(req) && !isAuthorizedBridge) {
     return res.status(403).json({ success: false, error: "Yetkisiz Telegram besleme isteği: Geçerli köprü anahtarı veya yönetici doğrulaması gereklidir." });
   }
   try {
@@ -7390,6 +7409,10 @@ app.post("/api/telegram/ingest", async (req, res) => {
 
     if (messages.length === 0) {
       return res.status(400).json({ success: false, error: "İşlenecek Telegram mesajı bulunamadı." });
+    }
+
+    if (messages.length > 100) {
+      return res.status(400).json({ success: false, error: "Tek seferde en fazla 100 Telegram mesajı beslenebilir." });
     }
 
     const processedResults = [];

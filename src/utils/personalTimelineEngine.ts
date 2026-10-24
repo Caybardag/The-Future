@@ -1,4 +1,4 @@
-import { Milestone } from "../types";
+import { Milestone, MilestoneDecisionHistoryEntry, DynamicImpactAssessment, OutcomeSemanticsType } from "../types";
 import { UserProfile } from "../components/UserAuthModal";
 import { PredictionHistoryRecord } from "./predictionHistory";
 import { safeStorage } from "./safeStorage";
@@ -907,9 +907,15 @@ export interface MilestoneActionPlan {
   decisionOptions?: MilestoneActionPlanOption[];
   selectedOptionId?: "A" | "B" | "C";
   selectedOption?: MilestoneActionPlanOption;
+  userDecision?: "A" | "B" | "C" | null;
+  modelRecommendation?: "A" | "B" | "C";
+  recommendedOption?: "A" | "B" | "C";
+  decisionHistory?: MilestoneDecisionHistoryEntry[];
+  outcomeSemantics?: OutcomeSemanticsType;
+  dynamicImpactAssessment?: DynamicImpactAssessment;
   isExplicitUserChoice?: boolean;
   actionStatus?: ActionProgressStatus;
-  outcomeStage?: "initial_assessment" | "preparation" | "active_execution" | "completed_mastery" | "completed_pivot_needed";
+  outcomeStage?: "initial_assessment" | "preparation" | "active_execution" | "completed_mastery" | "completed_pivot_needed" | "completed_unreviewed" | "friction_pivot_needed";
   outcomeFollowUpAdvice?: string;
   userReflectionNote?: string;
   employmentContext?: string;
@@ -1191,6 +1197,106 @@ export function getDomainContextualDecisionOptions(
 }
 
 /**
+ * Calculates a multi-dimensional dynamic impact assessment for an intelligence-milestone pairing.
+ * Evaluates readiness, regulatory friction, Capex/infrastructure dependencies, and evidence contradiction.
+ * Strictly guarantees MODEL PROJECTION ≠ FACT epistemic boundary.
+ */
+export function calculateDynamicImpactAssessment(
+  arg1: any,
+  arg2?: any,
+  arg3?: number
+): DynamicImpactAssessment {
+  let matchingLiveSignals: any[] = [];
+  let milestone: Milestone | undefined = undefined;
+  let targetYear: number = 2026;
+
+  if (Array.isArray(arg1)) {
+    matchingLiveSignals = arg1;
+    milestone = arg2;
+    targetYear = arg3 || milestone?.year || 2026;
+  } else {
+    milestone = arg1;
+    matchingLiveSignals = Array.isArray(arg2) ? arg2 : [];
+    targetYear = arg3 || milestone?.year || 2026;
+  }
+
+  const top = matchingLiveSignals[0];
+  const trl = top?.trlLevel || 5;
+  const confidence = top?.confidenceScore || 70;
+  const isBottleneck = top?.impactVerdict === "DECELERATING_BOTTLENECK";
+  const isBreakthrough = top?.impactVerdict === "HIGH_BREAKTHROUGH" || trl >= 7;
+  const hasConflict = matchingLiveSignals.some((s) => s.impactVerdict === "DECELERATING_BOTTLENECK") &&
+                      matchingLiveSignals.some((s) => s.impactVerdict === "HIGH_BREAKTHROUGH" || (s.trlLevel && s.trlLevel >= 6));
+
+  const adoptionReadiness: DynamicImpactAssessment["dimensions"]["adoptionReadiness"] =
+    trl >= 8 ? "COMMERCIAL_SCALE" : trl >= 5 ? "PILOT_VALIDATED" : "EARLY_LAB";
+
+  const regulatoryFriction: DynamicImpactAssessment["dimensions"]["regulatoryFriction"] =
+    isBottleneck ? "HIGH_RESTRICTIVE" : trl >= 8 ? "MODERATE" : "LOW";
+
+  const infrastructureDependency: DynamicImpactAssessment["dimensions"]["infrastructureDependency"] =
+    targetYear >= 2040 ? "ECOSYSTEM_BLOCKER" : targetYear >= 2032 ? "NEW_CAPEX_NEEDED" : "EXISTING_INFRA";
+
+  const commercialReadiness: DynamicImpactAssessment["dimensions"]["commercialReadiness"] =
+    trl >= 8 ? "MASS_MARKET" : trl >= 6 ? "NICHE_DEPLOYED" : "PRE_REVENUE";
+
+  const manufacturingReadiness: DynamicImpactAssessment["dimensions"]["manufacturingReadiness"] =
+    trl >= 8 ? "HIGH_YIELD_FOUNDRY" : trl >= 6 ? "PILOT_FOUNDRY" : "LAB_PROTOTYPE";
+
+  const deploymentFriction: DynamicImpactAssessment["dimensions"]["deploymentFriction"] =
+    (milestone.category || "").includes("Biyoloji") || (milestone.category || "").includes("Enerji")
+      ? "HEAVY_CAPEX_GRID"
+      : (milestone.category || "").includes("Kuantum") || (milestone.category || "").includes("Otonom")
+      ? "HARDWARE_DEPLOYMENT"
+      : "FRICTIONLESS_SOFTWARE";
+
+  const signalStrength: DynamicImpactAssessment["dimensions"]["signalStrength"] =
+    isBreakthrough ? "STRONG_BREAKTHROUGH" : trl >= 5 ? "MODERATE_PILOT" : "WEAK_EARLY";
+
+  const evidenceQuality: DynamicImpactAssessment["dimensions"]["evidenceQuality"] =
+    top?.isVerifiedSignal ? "HIGH_PEER_REVIEWED" : top?.sourceUrl ? "MODERATE_INDUSTRY" : "UNVERIFIED_CLAIM";
+
+  const contradictionLevel: DynamicImpactAssessment["dimensions"]["contradictionLevel"] =
+    hasConflict ? "HIGH_CONTRADICTORY" : "NONE";
+
+  let primaryShift = 0;
+  if (hasConflict) {
+    primaryShift = 0;
+  } else if (isBottleneck) {
+    primaryShift = +1;
+  } else if (isBreakthrough) {
+    primaryShift = trl >= 9 ? -2 : -1;
+  }
+
+  return {
+    epistemicStatus: "MODEL_PROJECTION_NOT_FACT",
+    projectionMethodology: "multi_dimensional_heuristic",
+    primaryShiftEstimateYears: primaryShift,
+    dimensions: {
+      adoptionReadiness,
+      regulatoryFriction,
+      infrastructureDependency,
+      commercialReadiness,
+      manufacturingReadiness,
+      deploymentFriction,
+      signalStrength,
+      evidenceQuality,
+      confidenceScore: confidence,
+      contradictionLevel,
+    },
+    trlLevel: trl,
+    readinessDimensions: {
+      adoptionReadiness: Math.min(100, Math.round((trl / 9) * 100)),
+      infrastructureReadiness: targetYear >= 2040 ? 30 : targetYear >= 2032 ? 60 : 85,
+      regulatoryReadiness: isBottleneck ? 35 : trl >= 8 ? 75 : 60,
+      commercialReadiness: trl >= 8 ? 90 : trl >= 6 ? 60 : 30,
+      overallReadinessScore: Math.min(100, Math.round((trl / 9) * 70 + (confidence / 100) * 30)),
+    },
+    disclaimer: "Bu tahmin bir kesinlik veya harici gerçek değil, algoritmik bir model projeksiyonudur (MODEL PROJECTION ≠ FACT).",
+  };
+}
+
+/**
  * Derives a concrete, milestone-contextual action plan deterministically from existing data.
  * ZERO new AI calls, ZERO external dependencies, ZERO hallucination.
  */
@@ -1416,7 +1522,7 @@ export function deriveMilestoneActionPlan(
     roadmapActionText = "Kişisel profilinizi tamamlayıp bu gelişmeyi yol haritanıza ekleyin.";
   }
 
-  // 4. Closed-Loop Strategic Decision Options Alignment (Aşama 39)
+  // 4. Closed-Loop Strategic Decision Options Alignment (Aşama 39 & Aşama 43 Decision Invariants)
   let defaultRecommendedOption: "A" | "B" | "C" = "B";
   const isSecurityGoal = goalStr.includes("güvenlik") || goalStr.includes("security") || goalStr.includes("istikrar") || goalStr.includes("koruma") || goalStr.includes("risk_avoidance");
   const isGrowthGoal = goalStr.includes("büyüme") || goalStr.includes("growth") || goalStr.includes("liderlik") || goalStr.includes("sıçrama") || goalStr.includes("girişim") || goalStr.includes("leadership");
@@ -1429,9 +1535,12 @@ export function deriveMilestoneActionPlan(
     defaultRecommendedOption = "B";
   }
 
+  // Pure separation: user decision is ONLY what the user selected, never auto-assigned
   const savedOption = profile?.email ? getMilestoneSelectedOption(targetYear, profile.email) : null;
-  const activeOptionId: "A" | "B" | "C" = selectedOptionIdOverride || savedOption || defaultRecommendedOption;
-  const isExplicitUserChoice = !!(selectedOptionIdOverride || savedOption);
+  const userDecision: "A" | "B" | "C" | null = selectedOptionIdOverride || savedOption || null;
+  const recommendedOption: "A" | "B" | "C" = defaultRecommendedOption;
+  const isExplicitUserChoice = userDecision !== null;
+  const activeOptionId: "A" | "B" | "C" = userDecision || defaultRecommendedOption;
 
   const decisionOptions = getDomainContextualDecisionOptions(
     profDisplay,
@@ -1543,47 +1652,57 @@ export function deriveMilestoneActionPlan(
     noteLower.includes("tıkanma") ||
     noteLower.includes("tıkanıklık") ||
     noteLower.includes("zorlandım") ||
+    noteLower.includes("zorluk") ||
+    noteLower.includes("engel") ||
+    noteLower.includes("darboğaz") ||
     noteLower.includes("verimsiz") ||
     noteLower.includes("aksadı") ||
+    noteLower.includes("farklı bir yol") ||
     noteLower.includes("pivot");
 
   const hasPositiveOutcomeFeedback =
     !hasFrictionOrLowYield && (
+      noteLower.includes("başarı") ||
       noteLower.includes("başarılı") ||
       noteLower.includes("verimli") ||
       noteLower.includes("harika") ||
       noteLower.includes("oturdu") ||
       noteLower.includes("fayda sağladı") ||
       noteLower.includes("entegre ettik") ||
+      noteLower.includes("tamamladık") ||
+      noteLower.includes("devreye aldık") ||
       noteLower.includes("pipeline")
     );
+
+  let outcomeSemantics: OutcomeSemanticsType = "INITIAL_ASSESSMENT_PENDING";
 
   if (actionStatus === "completed") {
     if (hasFrictionOrLowYield) {
       outcomeStage = "completed_pivot_needed";
       realWorldOutcomeStatus = "low_yield_friction";
       outcomeVerificationEvidence = "USER_REPORTED_SIGNAL";
-    } else if (hasPositiveOutcomeFeedback) {
-      outcomeStage = "completed_mastery";
-      realWorldOutcomeStatus = "user_reported_positive";
-      outcomeVerificationEvidence = "USER_REPORTED_SIGNAL";
+      outcomeSemantics = "USER_REPORTED_FRICTION";
     } else {
       outcomeStage = "completed_mastery";
-      realWorldOutcomeStatus = "not_reported";
-      outcomeVerificationEvidence = "NOT_COMPUTED";
+      realWorldOutcomeStatus = hasPositiveOutcomeFeedback ? "user_reported_positive" : "not_reported";
+      outcomeVerificationEvidence = hasPositiveOutcomeFeedback ? "USER_REPORTED_SIGNAL" : "NOT_COMPUTED";
+      outcomeSemantics = hasPositiveOutcomeFeedback ? "USER_REPORTED_POSITIVE_RESULT" : "ACTION_COMPLETED_PENDING_REVIEW";
     }
   } else if (actionStatus === "in_progress") {
-    outcomeStage = "active_execution";
+    outcomeStage = hasFrictionOrLowYield ? "friction_pivot_needed" : "active_execution";
     realWorldOutcomeStatus = hasFrictionOrLowYield ? "low_yield_friction" : "not_reported";
     outcomeVerificationEvidence = userReflectionNote ? "USER_REPORTED_SIGNAL" : "NOT_COMPUTED";
+    outcomeSemantics = hasFrictionOrLowYield ? "PIVOT_NEEDED" : "EXECUTION_IN_PROGRESS";
   } else if (actionStatus === "planned") {
     outcomeStage = "preparation";
     realWorldOutcomeStatus = "not_reported";
     outcomeVerificationEvidence = "NOT_COMPUTED";
+    outcomeSemantics = "PREPARATION_PLANNED";
   } else {
     outcomeStage = "initial_assessment";
     realWorldOutcomeStatus = "not_reported";
     outcomeVerificationEvidence = "NOT_COMPUTED";
+    outcomeSemantics = "INITIAL_ASSESSMENT_PENDING";
   }
 
   if (!isProfilePending) {
@@ -1597,13 +1716,25 @@ export function deriveMilestoneActionPlan(
       reviewCheckpoint = "Acil Yeniden Değerlendirme & Yöntem Revizyonu: 14–30 Gün Sonra (Kullanıcı Geri Bildirimi Kaynaklı Erken Gözden Geçirme).";
       outcomeFollowUpAdvice = "Eylemi tamamladınız ancak bildirilen deneyim beklenen çıktıyı sağlamadı. Stratejinizi yeniden kalibre etmeniz tavsiye edilir.";
     } else if (outcomeStage === "completed_mastery") {
-      actionTypeLabel = `${actionTypeLabel} (Tamamlandı ✓ — İleri Aşama Denetimi)`;
-      concreteAction = `Kazanılan Yetkinlik Doğrulaması: ${keyCapability} odağındaki temel eylemi başarıyla tamamladınız. Sonraki adım: Bu yetkinliğin günlük iş akışınızdaki verimlilik metriklerini izleyin, süreç optimizasyonunu sabitleyin ve ekibinize/portfolyonuza yaygınlaştırın.`;
-      expectedValue = `Kazanılmış yetkinlik doğrulaması ve operasyonel stabilizasyon (Model Projeksiyonu: Temel entegrasyon tamamlandı; artık marjinal verimlilik artışı ve ileri seviye araç orkestrasyonu aşamasına geçildi).`;
-      timeCost = "Haftalık ~30 dk stabilizasyon & metrik takibi (Model Heuristic - Tamamlandı Sonrası)";
-      risk = "Düşük Risk (Yetkinlik kazanıldı; temel risk kazanılan pratiğin güncel model sürümleriyle güncellenmemesi ve atıl kalmasıdır). Risk Düzeyi: Düşük";
-      reviewCheckpoint = "Tamamlandı ✓ — Sonraki Yıllık Stabilizasyon ve Derinleşme Denetimi: 12 Ay Sonra.";
-      outcomeFollowUpAdvice = "Bu dönüm noktası için belirlediğiniz eylemi başarıyla tamamladınız. Objektif gerçek dünya çıktısı harici olarak doğrulanmamıştır (NOT_COMPUTED). Bir sonraki ufuktaki dönüm noktalarına odaklanabilirsiniz.";
+      actionTypeLabel = `${actionTypeLabel} (Tamamlandı ✓)`;
+      if (hasPositiveOutcomeFeedback) {
+        concreteAction = `Kazanılan Yetkinlik Doğrulaması & Pekiştirmesi (Kullanıcı Bildirimli Olumlu Sonuç): ${keyCapability} odağındaki eyleminizle ilgili olumlu deneyim ve fayda bildirdiniz ("${userReflectionNote?.slice(0, 50)}..."). Sonraki adım: Bu yetkinliğin günlük iş akışınızdaki verimlilik metriklerini izleyin, süreç optimizasyonunu sabitleyin ve ekibinize/portfolyonuza yaygınlaştırın.`;
+        expectedValue = `Temel entegrasyon tamamlandı ve kullanıcı bildirimli yetkinlik pekiştirmesi (Model Projeksiyonu: Olumlu kullanıcı deneyimi bildirildi; objektif harici denetim bağımsız bir süreçtir).`;
+        timeCost = "Haftalık ~30 dk stabilizasyon & metrik takibi (Model Heuristic - Tamamlandı Sonrası)";
+        risk = "Düşük Risk (Yetkinlik kazanıldı; temel risk kazanılan pratiğin güncel model sürümleriyle güncellenmemesi ve atıl kalmasıdır). Risk Düzeyi: Düşük";
+        reviewCheckpoint = "Tamamlandı ✓ — Sonraki Yıllık Stabilizasyon ve Derinleşme Denetimi: 12 Ay Sonra.";
+        outcomeFollowUpAdvice = "Bu dönüm noktası için eylemi başarıyla tamamladınız ve olumlu deneyim bildirdiniz. Objektif harici sonuç ve yetkinlik çıktısı bağımsız bir süreçtir (NOT_COMPUTED).";
+      } else {
+        concreteAction = `Kazanılan Yetkinlik Doğrulaması & Pekiştirmesi: ${keyCapability} odağındaki eylemi tamamlandı olarak işaretlediniz. Sonraki adım: Günlük iş akışınızdaki verim çıktılarını gözlemleyerek iş akışınıza sabitleyin.`;
+        expectedValue = `Temel entegrasyon tamamlandı ve kazanılan yetkinliğin iş akışına entegrasyonu (Model Projeksiyonu: Eylem tamamlandı; objektif harici etki değerlendirmesi bağımsız bir süreçtir).`;
+        timeCost = "Haftalık ~30 dk stabilizasyon & metrik takibi (Model Heuristic - Tamamlandı Sonrası)";
+        risk = "Düşük Risk (Eylem tamamlandı; temel risk kazanılan pratiğin güncel model sürümleriyle güncellenmemesidir). Risk Düzeyi: Düşük";
+        reviewCheckpoint = "Tamamlandı ✓ — Sonraki Yıllık Stabilizasyon ve Derinleşme Denetimi: 12 Ay Sonra.";
+        outcomeFollowUpAdvice = "Bu dönüm noktası için belirlediğiniz eylemi başarıyla tamamladınız ancak objektif harici sonuç ve yetkinlik çıktısı bağımsız bir süreçtir (NOT_COMPUTED).";
+      }
+    } else if (outcomeStage === "friction_pivot_needed") {
+      reviewCheckpoint = "Uygulama Darboğazı ⚠️ — Yöntem & Karar Revizyonu: 14 Gün Sonra.";
+      outcomeFollowUpAdvice = "Uygulama sürecinde darboğaz veya tıkanıklık bildirdiniz. Stratejinizi veya kullandığınız araçları gözden geçirip gerekirse alternatif karar yoluna geçmeniz önerilir.";
     } else if (outcomeStage === "active_execution") {
       reviewCheckpoint = "Eylemde ⚡ — Aktif Uygulama Kontrolü: 30 Gün Sonra. Pilot çıktıları ve araç adaptasyonunu değerlendirin.";
       outcomeFollowUpAdvice = "Eylem şu an aktif uygulama aşamasında. Haftalık odaklanma saatlerinizi koruyun.";
@@ -1857,6 +1988,12 @@ export function deriveMilestoneActionPlan(
     : `${profDisplay} (${profile?.age ? `${profile.age} Yaş, ` : ""}${profile?.seniority ? profile.seniority.toUpperCase() : "Uzman"})`;
   const reviewDate = reviewCheckpoint;
 
+  const dynamicImpactAssessment = calculateDynamicImpactAssessment(matchingLiveSignals, milestone, targetYear);
+  const modelRecommendation: "A" | "B" | "C" = decisionReassessment?.needsReassessment
+    ? decisionReassessment.recommendedAlternativeOption
+    : defaultRecommendedOption;
+  const decisionHistory = profile?.email ? getMilestoneDecisionHistory(targetYear, profile.email) : [];
+
   return {
     urgencyBand,
     urgencyTitle,
@@ -1885,6 +2022,12 @@ export function deriveMilestoneActionPlan(
     decisionOptions,
     selectedOptionId: activeOptionId,
     selectedOption: activeOption,
+    userDecision,
+    modelRecommendation,
+    recommendedOption: defaultRecommendedOption,
+    decisionHistory,
+    outcomeSemantics,
+    dynamicImpactAssessment,
     isExplicitUserChoice,
     actionStatus,
     outcomeStage,
@@ -1968,6 +2111,41 @@ export function getAllMilestoneActionNotes(userEmail?: string | null): Record<nu
  * Lightweight user selected strategic decision option ("A" | "B" | "C") tracking using safeStorage.
  * Completely client-isolated per user. ZERO server calls, ZERO database creation.
  */
+export function getMilestoneDecisionHistory(year: number, userEmail?: string | null): MilestoneDecisionHistoryEntry[] {
+  const cleanEmail = (userEmail || "guest").toLowerCase().replace(/[^a-z0-9]/g, "_");
+  const key = `user_milestone_decision_history_${cleanEmail}`;
+  const allHistory = safeStorage.getJSON<Record<number, MilestoneDecisionHistoryEntry[]>>(key, {});
+  return allHistory[year] || [];
+}
+
+export function recordMilestoneDecisionHistory(
+  year: number,
+  selectedOptionId: "A" | "B" | "C",
+  trigger: "user_manual_selection" | "recommendation_adopted" | "reassessment_retained" = "user_manual_selection",
+  reason?: string,
+  userEmail?: string | null
+): void {
+  const cleanEmail = (userEmail || "guest").toLowerCase().replace(/[^a-z0-9]/g, "_");
+  const key = `user_milestone_decision_history_${cleanEmail}`;
+  const allHistory = safeStorage.getJSON<Record<number, MilestoneDecisionHistoryEntry[]>>(key, {});
+  const currentList = allHistory[year] || [];
+  const previousOptionId = currentList.length > 0 ? currentList[currentList.length - 1].selectedOptionId : null;
+  const entry: MilestoneDecisionHistoryEntry = {
+    year,
+    selectedOptionId,
+    previousOptionId,
+    selectedAt: new Date().toISOString(),
+    trigger,
+    reason,
+  };
+  allHistory[year] = [...currentList, entry];
+  safeStorage.setJSON(key, allHistory);
+}
+
+/**
+ * Lightweight user selected strategic decision option ("A" | "B" | "C") tracking using safeStorage.
+ * Completely client-isolated per user. ZERO server calls, ZERO database creation.
+ */
 export function getMilestoneSelectedOption(year: number, userEmail?: string | null): "A" | "B" | "C" | null {
   const cleanEmail = (userEmail || "guest").toLowerCase().replace(/[^a-z0-9]/g, "_");
   const key = `user_milestone_selected_option_${cleanEmail}`;
@@ -1978,13 +2156,16 @@ export function getMilestoneSelectedOption(year: number, userEmail?: string | nu
 export function setMilestoneSelectedOption(
   year: number,
   optionId: "A" | "B" | "C",
-  userEmail?: string | null
+  userEmail?: string | null,
+  trigger: "user_manual_selection" | "recommendation_adopted" | "reassessment_retained" = "user_manual_selection",
+  reason?: string
 ): void {
   const cleanEmail = (userEmail || "guest").toLowerCase().replace(/[^a-z0-9]/g, "_");
   const key = `user_milestone_selected_option_${cleanEmail}`;
   const record = safeStorage.getJSON<Record<number, "A" | "B" | "C">>(key, {});
   record[year] = optionId;
   safeStorage.setJSON(key, record);
+  recordMilestoneDecisionHistory(year, optionId, trigger, reason, userEmail);
 }
 
 export function getAllMilestoneSelectedOptions(userEmail?: string | null): Record<number, "A" | "B" | "C"> {

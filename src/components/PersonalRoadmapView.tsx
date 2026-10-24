@@ -883,18 +883,26 @@ export const PersonalRoadmapView: React.FC<PersonalRoadmapViewProps> = ({
                             {isTr ? `O Yılda ${userAgeAtYear} Yaşındasın` : `Age ${userAgeAtYear} that year`}
                           </span>
                         )}
-                        {actionPlan.selectedOptionId && (
+                        {actionPlan.userDecision ? (
                           <span
                             className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${
-                              actionPlan.selectedOptionId === "C"
+                              actionPlan.userDecision === "C"
                                 ? "bg-purple-950/90 text-purple-200 border-purple-400"
-                                : actionPlan.selectedOptionId === "A"
+                                : actionPlan.userDecision === "A"
                                 ? "bg-emerald-950/90 text-emerald-300 border-emerald-400"
                                 : "bg-cyan-950/90 text-cyan-200 border-cyan-400"
                             }`}
                           >
-                            {actionPlan.isExplicitUserChoice ? "✓ " : ""}
-                            YOL {actionPlan.selectedOptionId}
+                            {isTr ? "KULLANICI: YOL " : "CHOICE: PATH "} {actionPlan.userDecision}
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border bg-slate-900 text-cyan-300 border-cyan-500/40">
+                            {isTr ? "ÖNERİ: YOL " : "REC: PATH "} {actionPlan.modelRecommendation || actionPlan.recommendedOption || "A"}
+                          </span>
+                        )}
+                        {actionPlan.userDecision && actionPlan.modelRecommendation && actionPlan.userDecision !== actionPlan.modelRecommendation && (
+                          <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40" title="Kullanıcı kararı model önerisine karşı korunuyor">
+                            🛡️ {isTr ? "KORUNUYOR" : "RETAINED"}
                           </span>
                         )}
                         {actionStatuses[m.year] && actionStatuses[m.year] !== "seen" && (
@@ -990,18 +998,23 @@ export const PersonalRoadmapView: React.FC<PersonalRoadmapViewProps> = ({
                             </>
                           )}
                         </span>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border flex items-center gap-1 ${
                           (actionPlan.dynamicHorizonShiftYears && actionPlan.dynamicHorizonShiftYears > 0) || (actionPlan.acceleratedHorizonShiftYears && actionPlan.acceleratedHorizonShiftYears > 0)
                             ? "bg-rose-500/20 text-rose-300 border-rose-500/40"
                             : (actionPlan.dynamicHorizonShiftYears && actionPlan.dynamicHorizonShiftYears < 0) || (actionPlan.acceleratedHorizonShiftYears && actionPlan.acceleratedHorizonShiftYears < 0)
                             ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
                             : "bg-cyan-500/20 text-cyan-300 border-cyan-500/40"
                         }`}>
-                          {(actionPlan.dynamicHorizonShiftYears && actionPlan.dynamicHorizonShiftYears > 0) || (actionPlan.acceleratedHorizonShiftYears && actionPlan.acceleratedHorizonShiftYears > 0)
-                            ? `${isTr ? "Zaman Ufku: +" : "Timeline: +"}${actionPlan.dynamicHorizonShiftYears || actionPlan.acceleratedHorizonShiftYears} ${isTr ? "Yıl (Gecikme)" : "Years (Delayed)"}`
-                            : (actionPlan.dynamicHorizonShiftYears && actionPlan.dynamicHorizonShiftYears < 0) || (actionPlan.acceleratedHorizonShiftYears && actionPlan.acceleratedHorizonShiftYears < 0)
-                            ? `${isTr ? "Zaman Ufku: " : "Timeline: "}${actionPlan.dynamicHorizonShiftYears || actionPlan.acceleratedHorizonShiftYears} ${isTr ? "Yıl (Hızlanma)" : "Years (Accelerated)"}`
-                            : `${isTr ? "Zaman Ufku: Stabil" : "Timeline: Stable"}`}
+                          <span>
+                            {(actionPlan.dynamicHorizonShiftYears && actionPlan.dynamicHorizonShiftYears > 0) || (actionPlan.acceleratedHorizonShiftYears && actionPlan.acceleratedHorizonShiftYears > 0)
+                              ? `${isTr ? "Zaman Ufku: +" : "Timeline: +"}${actionPlan.dynamicHorizonShiftYears || actionPlan.acceleratedHorizonShiftYears} ${isTr ? "Yıl (Gecikme)" : "Years (Delayed)"}`
+                              : (actionPlan.dynamicHorizonShiftYears && actionPlan.dynamicHorizonShiftYears < 0) || (actionPlan.acceleratedHorizonShiftYears && actionPlan.acceleratedHorizonShiftYears < 0)
+                              ? `${isTr ? "Zaman Ufku: " : "Timeline: "}${actionPlan.dynamicHorizonShiftYears || actionPlan.acceleratedHorizonShiftYears} ${isTr ? "Yıl (Hızlanma)" : "Years (Accelerated)"}`
+                              : `${isTr ? "Zaman Ufku: Stabil" : "Timeline: Stable"}`}
+                          </span>
+                          <span className="text-[8px] opacity-75 font-mono">
+                            [PROJECTION]
+                          </span>
                         </span>
                       </div>
                       <p className="text-[11px] font-sans leading-relaxed opacity-95">

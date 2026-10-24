@@ -1,9 +1,9 @@
 {
   "version": "2.0.0-authentic",
-  "savedAt": "2026-10-20T11:09:32.103Z",
-  "totalCyclesCompleted": 34,
-  "lastRunTimestamp": "2026-10-20T11:09:19.900Z",
-  "lastSuccessTimestamp": "2026-10-20T11:09:32.103Z",
+  "savedAt": "2026-10-24T17:43:36.422Z",
+  "totalCyclesCompleted": 37,
+  "lastRunTimestamp": "2026-10-24T17:43:33.821Z",
+  "lastSuccessTimestamp": "2026-10-24T17:43:36.422Z",
   "knowledgeNodes": [
     {
       "id": "node-2026-yapay-zeka---bili-im",
@@ -199,45 +199,45 @@
       "title": "Biyolojik Yaşlanmanın Yavaşlatılması & Hücre Gençleştirme",
       "category": "Biyoteknoloji & Sağlık",
       "trlLevel": "TRL 4 - Laboratuvar Doğrulaması",
-      "scientificFeasibilityScore": 82,
-      "groundingProofSummary": "AlphaGenome Atlas ile 9 milyar mutasyonun önceden hesaplanması, yaşlanma ile ilişkili genetik varyantların hedeflenmesini deterministik bir sürece dönüştürmüştür. Yamanaka faktörleri ve epigenetik saatlerin (Horvath Clock) manipülasyonu, termodinamik entropi artışına rağmen hücresel bilgi kaybının biyokimyasal olarak geri döndürülebileceğini kanıtlamaktadır.",
+      "scientificFeasibilityScore": 64,
+      "groundingProofSummary": "Hücre gençleştirme, Yamanaka faktörleri ve epigenetik yeniden programlama ile in-vitro düzeyde kanıtlanmıştır ancak sistemik (in-vivo) güvenli tümör baskılama ve doku spesifikliği henüz klinik aşamadadır. Enerji yoğunluğu artan batarya teknolojileri, taşınabilir biyosensörler ve hassas ilaç dağıtım sistemleri için gerekli olan donanım altyapısını destekleyerek biyoteknolojik müdahalelerin gerçek zamanlı izlenebilirliğini artırmaktadır.",
       "causalDependencies": [
-        "AlphaGenome Atlas verilerinin in-vivo genetik düzenleme (CRISPR/Prime Editing) protokollerine tam entegrasyonu",
-        "Otonom robotik üretim hatlarının (XPeng IRON örneği) kişiselleştirilmiş biyosensör ve ilaç dağıtım sistemlerini kitlesel ölçekte üretme kapasitesi"
+        "Hücre içi yaşlanma belirteçlerinin (senesans) tek hücre düzeyinde gerçek zamanlı izlenmesini sağlayan yüksek çözünürlüklü biyosensörler.",
+        "Yüksek enerji yoğunluklu (800 Wh/kg) batarya teknolojilerinin, vücut içi sürekli izleme ve mikro-dozajlama yapan otonom nanorobotik sistemlere güç sağlaması."
       ],
       "bottlenecksAndLimits": [
-        "Sistemik Dağıtım Limiti: Gençleştirme vektörlerinin kan-beyin bariyerini aşması ve tüm somatik hücrelere immün yanıt tetiklemeden ulaşması",
-        "Landauer Limiti ve Biyo-Bilişim: Hücresel onarım süreçlerinin gerektirdiği devasa veri işleme kapasitesinin biyolojik sistemlerdeki ısı yönetimi kısıtları"
+        "Epigenetik yeniden programlama sırasında oluşan kontrolsüz hücre proliferasyonu (teratom riski) ve onkojenik mutasyonlar.",
+        "Biyolojik sistemlerin termodinamik entropi artışına karşı hücresel onarım mekanizmalarının enerji verimliliği ve Landauer limiti kaynaklı hesaplama kısıtları."
       ],
       "crossDomainImpacts": [
         {
-          "targetDomain": "Sosyoloji ve Ekonomi",
-          "impactDescription": "Biyolojik yaşın kronolojik yaştan ayrışmasıyla emeklilik sistemlerinin çöküşü ve 'yaşam boyu öğrenme' modelinin zorunlu hale gelmesi."
+          "targetDomain": "Enerji",
+          "impactDescription": "Yüksek enerji yoğunluklu bataryalar, vücut içi sürekli veri işleyen ve biyolojik geri bildirim döngülerini yöneten implante edilebilir yapay zeka sistemlerinin enerji ihtiyacını karşılayarak biyolojik müdahalelerin hassasiyetini artırır."
         },
         {
-          "targetDomain": "Biyogüvenlik",
-          "impactDescription": "Anthropic raporunda belirtilen kötüye kullanım risklerinin, genetik gençleştirme araçlarının biyolojik silah geliştirme süreçlerine sızma potansiyeli."
+          "targetDomain": "Biyo",
+          "impactDescription": "Hücre gençleştirme teknolojileri, yaşa bağlı kronik hastalıkların maliyetini düşürerek sağlık sistemlerinde radikal bir paradigma değişimine ve demografik yapıların yeniden tanımlanmasına yol açar."
         }
       ],
       "telegramSignalsIncluded": [
         {
-          "newsTitle": "🤖 Robots Are Now Building Robots",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "EARLY_RESEARCH"
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
+          "impactVerdict": "MODERATE_SIGNAL"
         },
         {
-          "newsTitle": "🧬 Google DeepMind Just Precomputed 9 Billion Possible Human DNA Mutations",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "HIGH_BREAKTHROUGH"
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
+          "impactVerdict": "MODERATE_SIGNAL"
         },
         {
-          "newsTitle": "OpenAI launched ChatGPT for Financial Services, a finance-focused version of ChatGPT Wo...",
-          "channelTitle": "Gelecek takvimi",
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
           "impactVerdict": "MODERATE_SIGNAL"
         }
       ],
-      "lastEvaluatedAt": "2026-10-05T09:55:07.357Z",
-      "evaluatedByModel": "gemini-3-flash-preview",
+      "lastEvaluatedAt": "2026-10-23T09:12:38.761Z",
+      "evaluatedByModel": "gemini-3.1-flash-lite",
       "isAuthentic": true
     },
     {
@@ -246,28 +246,28 @@
       "title": "İnvaziv Olmayan Yüksek Bant Genişlikli Nöral Arayüzler",
       "category": "Nöroteknoloji & Sibernetik",
       "trlLevel": "TRL 4 - Laboratuvar Doğrulaması",
-      "scientificFeasibilityScore": 72,
-      "groundingProofSummary": "İnvaziv olmayan yüksek bant genişliği, optogenetik sinyal işleme ve gelişmiş fNIRS/EEG hibrit sensör dizileri ile nöral aktivitenin yüksek çözünürlüklü çözümlenmesine dayanmaktadır. Mevcut çalışmalar, sinyal-gürültü oranını artırmak için kuantum sensörlerin (OPM-MEG) ve makine öğrenimi tabanlı sinyal ayrıştırma algoritmalarının laboratuvar ortamında başarılı olduğunu göstermektedir.",
+      "scientificFeasibilityScore": 62,
+      "groundingProofSummary": "İnvaziv olmayan nöral arayüzler, kafatası kemiğinin düşük iletkenliği ve sinyal saçılımı (scattering) nedeniyle düşük sinyal-gürültü oranına (SNR) mahkumdur. Mevcut optik (fNIRS) ve elektromanyetik (EEG/MEG) yöntemler, Landauer limiti ve termal gürültü kısıtları altında yüksek bant genişliği için gereken uzamsal çözünürlüğü henüz sağlayamamaktadır.",
       "causalDependencies": [
-        "Nöral sinyallerin kafatası üzerinden yüksek sadakatle çözümlenmesini sağlayan 'Graphene-based' veya 'Metamaterial' sensör dizilerinin ticarileşmesi.",
-        "Biyolojik doku ile arayüz oluşturacak ultra düşük güç tüketimli, nöromorfik işlemci mimarilerinin geliştirilmesi."
+        "Nöronal ateşlemeleri mikrometre ölçeğinde çözebilen yüksek hassasiyetli kuantum sensör dizileri (OPM-MEG gelişimi).",
+        "Biyolojik doku içindeki sinyal saçılımını tersine çevirebilen hesaplamalı nörogörüntüleme algoritmaları ve nöromorfik işlemciler."
       ],
       "bottlenecksAndLimits": [
-        "Kafatası kemiğinin düşük geçirgenliği ve doku saçılımı nedeniyle sinyal kaybı (Signal Scattering).",
-        "Landauer limiti ve termodinamik kısıtlar çerçevesinde, yüksek bant genişliğinde veri işleyen cihazların biyolojik dokuda yaratacağı termal ısınma (Thermal Dissipation)."
+        "Kafatası ve beyin zarları arasındaki hacimsel iletkenlik (volume conduction) nedeniyle oluşan sinyal bulanıklaşması.",
+        "Termodinamik kısıtlar gereği, yüksek bant genişliği için gereken veri işleme hızının beyin dokusunda yaratacağı aşırı ısınma (SAR limitleri)."
       ],
       "crossDomainImpacts": [
         {
-          "targetDomain": "Biyo",
-          "impactDescription": "Nöroplastisiteyi gerçek zamanlı modüle ederek nörodejeneratif hastalıkların tedavisinde devrimsel bir geri besleme döngüsü oluşturulması."
+          "targetDomain": "Biyo-Enformatik",
+          "impactDescription": "Nöral verilerin gerçek zamanlı deşifresi, insan-yapay zeka simbiyozunu hızlandırarak bilişsel kapasiteyi dışsal işlemcilerle genişletecektir."
         },
         {
           "targetDomain": "Sosyoloji",
-          "impactDescription": "Bilişsel yeteneklerin artırılması ve doğrudan beyin-beyin iletişimi ile dil bariyerlerinin ortadan kalkması sonucu toplumsal etkileşim paradigmalarının değişimi."
+          "impactDescription": "Zihinsel mahremiyetin teknik olarak imkansız hale gelmesi, veri güvenliği ve nöro-etik yasalarının yeniden tanımlanmasını zorunlu kılacaktır."
         }
       ],
       "telegramSignalsIncluded": [],
-      "lastEvaluatedAt": "2026-10-05T10:03:01.004Z",
+      "lastEvaluatedAt": "2026-10-24T17:38:53.257Z",
       "evaluatedByModel": "gemini-3.1-flash-lite",
       "isAuthentic": true
     },
@@ -278,43 +278,43 @@
       "category": "Temiz Enerji & Fizik",
       "trlLevel": "TRL 6 - Saha Prototipi",
       "scientificFeasibilityScore": 74,
-      "groundingProofSummary": "Manyetik hapsedilmiş plazma kararsızlıklarının milisaniyelik ölçekte AI tabanlı kontrolü, füzyon reaktörlerinin operasyonel sürekliliğini teorik sınırların ötesine taşımıştır. ITER ve özel sektör tokamak projeleri, plazma fiziği modellemesinde yüksek doğruluklu dijital ikizlerin ve gerçek zamanlı geri besleme döngülerinin başarıyla entegre edildiğini kanıtlamaktadır.",
+      "groundingProofSummary": "ITER ve SPARC projelerinden elde edilen yüksek sıcaklık süperiletken (HTS) verileri, manyetik hapsetme kararlılığının ticari ölçekte mümkün olduğunu doğrulamaktadır. Plazma fiziğindeki türbülans kontrolü ve nötron radyasyonuna dayanıklı malzeme bilimi, füzyonun ekonomik bir enerji kaynağına dönüşmesi için kritik fiziksel temeli oluşturmaktadır.",
       "causalDependencies": [
-        "Yüksek sıcaklıklı süperiletken (HTS) mıknatısların endüstriyel ölçekte seri üretimi ve maliyet optimizasyonu.",
-        "Plazma türbülansını tahmin eden ve milisaniyeler içinde manyetik alan konfigürasyonunu değiştiren nöral kontrol mimarilerinin donanım seviyesinde (FPGA/ASIC) entegrasyonu."
+        "REBCO (Rare-Earth Barium Copper Oxide) tabanlı yüksek alanlı süperiletken mıknatısların endüstriyel ölçekte seri üretimi",
+        "Plazma kararsızlıklarını milisaniye altı sürede düzeltebilen yapay zeka tabanlı gerçek zamanlı kontrol sistemleri"
       ],
       "bottlenecksAndLimits": [
-        "Nötron bombardımanına dayanıklı, düşük aktivasyonlu yapısal malzemelerin (örneğin gelişmiş ferritik/martensitik çelikler) uzun süreli radyasyon toleransı.",
-        "Tritium üretim döngüsünün (breeding blanket) kendi kendine yeten bir verimlilik seviyesine ulaştırılamaması ve termodinamik ısı transferi kayıpları."
+        "Nötron bombardımanına dayanıklı, düşük aktivasyonlu yapısal malzemelerin (ferritik-martensitik çelikler) uzun süreli yapısal bütünlüğü",
+        "Tritium üretim döngüsünün (breeding ratio) kendi kendine yeten bir seviyeye getirilmesindeki termodinamik verimlilik kısıtı"
       ],
       "crossDomainImpacts": [
         {
           "targetDomain": "Enerji",
-          "impactDescription": "Baz yük enerji maliyetlerinin marjinal seviyelere düşmesiyle, karbon yakalama ve doğrudan hava yakalama (DAC) teknolojilerinin ekonomik olarak uygulanabilir hale gelmesi."
+          "impactDescription": "Sinyal #1-3'te belirtilen yüksek yoğunluklu katı hal bataryaları, füzyon reaktörlerinin kesintili yük dengeleme ihtiyaçlarını karşılayarak şebeke entegrasyonunu stabilize edecektir."
         },
         {
-          "targetDomain": "Kuantum",
-          "impactDescription": "Füzyon reaktörlerinin sağladığı stabil ve yüksek yoğunluklu enerji, kuantum bilgisayarların soğutma ve operasyonel enerji gereksinimlerini merkeziyetsiz bir şekilde karşılayarak ölçeklenmeyi hızlandıracaktır."
+          "targetDomain": "Malzeme Bilimi",
+          "impactDescription": "Füzyon reaktörleri için geliştirilen radyasyona dayanıklı alaşımlar, uzay keşiflerinde derin uzay radyasyon kalkanı teknolojilerini devrimsel olarak ileri taşıyacaktır."
         }
       ],
       "telegramSignalsIncluded": [
         {
-          "newsTitle": "☀️ AI Just Learned to Control Fusion Plasma Faster Than Humans Can React",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "HIGH_BREAKTHROUGH"
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
+          "impactVerdict": "MODERATE_SIGNAL"
         },
         {
-          "newsTitle": "📢 Latest AI News:",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "HIGH_BREAKTHROUGH"
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
+          "impactVerdict": "MODERATE_SIGNAL"
         },
         {
-          "newsTitle": "☀️ AI Just Learned to Control Fusion Plasma Faster Than Humans Can React",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "HIGH_BREAKTHROUGH"
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
+          "impactVerdict": "MODERATE_SIGNAL"
         }
       ],
-      "lastEvaluatedAt": "2026-10-05T10:11:01.125Z",
+      "lastEvaluatedAt": "2026-10-24T17:43:36.422Z",
       "evaluatedByModel": "gemini-3.1-flash-lite",
       "isAuthentic": true
     },
@@ -460,6 +460,33 @@
     }
   ],
   "recentLogs": [
+    {
+      "cycleId": 37,
+      "timestamp": "2026-10-24T17:43:36.422Z",
+      "status": "SUCCESS",
+      "modelUsed": "gemini-3.1-flash-lite",
+      "nodeProcessed": "2042 - Ticari Tokamak & Manyetik Sıkıştırmalı Nükleer Füzyon",
+      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %74",
+      "durationMs": 2601
+    },
+    {
+      "cycleId": 36,
+      "timestamp": "2026-10-24T17:38:53.257Z",
+      "status": "SUCCESS",
+      "modelUsed": "gemini-3.1-flash-lite",
+      "nodeProcessed": "2038 - İnvaziv Olmayan Yüksek Bant Genişlikli Nöral Arayüzler",
+      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 4 - Laboratuvar Doğrulaması, Skor: %62",
+      "durationMs": 4441
+    },
+    {
+      "cycleId": 35,
+      "timestamp": "2026-10-23T09:12:38.761Z",
+      "status": "SUCCESS",
+      "modelUsed": "gemini-3.1-flash-lite",
+      "nodeProcessed": "2035 - Biyolojik Yaşlanmanın Yavaşlatılması & Hücre Gençleştirme",
+      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 4 - Laboratuvar Doğrulaması, Skor: %64",
+      "durationMs": 19555
+    },
     {
       "cycleId": 34,
       "timestamp": "2026-10-20T11:09:32.103Z",
@@ -702,33 +729,6 @@
       "nodeProcessed": "2045 - Tekillik (Singularity) & Yapay Süper Zeka (ASI)",
       "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 4 - Laboratuvar Doğrulaması, Skor: %72",
       "durationMs": 3648
-    },
-    {
-      "cycleId": 7,
-      "timestamp": "2026-09-22T09:33:31.207Z",
-      "status": "SUCCESS",
-      "modelUsed": "gemini-3.1-flash-lite",
-      "nodeProcessed": "2042 - Ticari Tokamak & Manyetik Sıkıştırmalı Nükleer Füzyon",
-      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %82",
-      "durationMs": 5961
-    },
-    {
-      "cycleId": 6,
-      "timestamp": "2026-09-22T09:25:42.944Z",
-      "status": "SUCCESS",
-      "modelUsed": "gemini-3.1-flash-lite",
-      "nodeProcessed": "2038 - İnvaziv Olmayan Yüksek Bant Genişlikli Nöral Arayüzler",
-      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 4 - Laboratuvar Doğrulaması, Skor: %72",
-      "durationMs": 2696
-    },
-    {
-      "cycleId": 5,
-      "timestamp": "2026-09-07T21:32:43.160Z",
-      "status": "SUCCESS",
-      "modelUsed": "gemini-3.1-flash-lite",
-      "nodeProcessed": "2035 - Biyolojik Yaşlanmanın Yavaşlatılması & Hücre Gençleştirme",
-      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 4 - Laboratuvar Doğrulaması, Skor: %62",
-      "durationMs": 3598
     }
   ]
 }

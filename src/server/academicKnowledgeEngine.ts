@@ -707,7 +707,7 @@ export async function bulkIngestAllMilestonesOpenAlex(customKey?: string): Promi
   durationMs: number;
 }> {
   const startTime = Date.now();
-  const apiKey = customKey || process.env.OPENALEX_API_KEY || "CdtW8d9jRO3uBYsoucRZWs";
+  const apiKey = customKey || process.env.OPENALEX_API_KEY || "";
   const mailto = process.env.OPENALEX_MAILTO || "warfacelove46@gmail.com";
 
   console.log(`[Academic Knowledge Engine] Starting autonomous bulk ingestion for ${MILESTONE_ACADEMIC_SPECS.length} milestones with OpenAlex key...`);

@@ -443,5 +443,25 @@
     "date": "2026-10-21",
     "count": 1,
     "lastClaimTimestamp": 1792582676799
+  },
+  "ad_test_1792746776913@example.com": {
+    "date": "2026-10-23",
+    "count": 1,
+    "lastClaimTimestamp": 1792746776913
+  },
+  "ad_test_1792748136240@example.com": {
+    "date": "2026-10-23",
+    "count": 1,
+    "lastClaimTimestamp": 1792748136240
+  },
+  "ad_test_1792863626855@example.com": {
+    "date": "2026-10-24",
+    "count": 1,
+    "lastClaimTimestamp": 1792863626855
+  },
+  "ad_test_1792863816508@example.com": {
+    "date": "2026-10-24",
+    "count": 1,
+    "lastClaimTimestamp": 1792863816508
   }
 }

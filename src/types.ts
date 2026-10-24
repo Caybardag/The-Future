@@ -177,12 +177,62 @@ export interface Milestone {
   prerequisiteMilestoneYears?: number[];
   dependentDownstreamYears?: number[];
 
+  // Epistemic Integrity: Canonical Baseline vs Live Model Projection
+  canonicalDescription?: string;
+  liveSignalAnnotation?: string;
+
   // Recursive Sub-Trees & Breakthrough Branches
   subBranches?: SubMilestoneBranch[];
 
   isCommunitySubmission?: boolean;
   isDynamicBreakthrough?: boolean;
 }
+
+export interface MilestoneDecisionHistoryEntry {
+  year: number;
+  selectedOptionId: "A" | "B" | "C";
+  previousOptionId?: "A" | "B" | "C" | null;
+  selectedAt: string;
+  reason?: string;
+  trigger?: "user_manual_selection" | "recommendation_adopted" | "reassessment_retained";
+}
+
+export interface DynamicImpactAssessment {
+  epistemicStatus: "MODEL_PROJECTION_NOT_FACT";
+  projectionMethodology: "multi_dimensional_heuristic";
+  primaryShiftEstimateYears: number;
+  trlLevel?: number;
+  dimensions: {
+    adoptionReadiness: "EARLY_LAB" | "PILOT_VALIDATED" | "COMMERCIAL_SCALE";
+    regulatoryFriction: "LOW" | "MODERATE" | "HIGH_RESTRICTIVE";
+    infrastructureDependency: "EXISTING_INFRA" | "NEW_CAPEX_NEEDED" | "ECOSYSTEM_BLOCKER";
+    commercialReadiness: "PRE_REVENUE" | "NICHE_DEPLOYED" | "MASS_MARKET";
+    manufacturingReadiness: "LAB_PROTOTYPE" | "PILOT_FOUNDRY" | "HIGH_YIELD_FOUNDRY";
+    deploymentFriction: "FRICTIONLESS_SOFTWARE" | "HARDWARE_DEPLOYMENT" | "HEAVY_CAPEX_GRID";
+    signalStrength: "WEAK_EARLY" | "MODERATE_PILOT" | "STRONG_BREAKTHROUGH";
+    evidenceQuality: "HIGH_PEER_REVIEWED" | "MODERATE_INDUSTRY" | "UNVERIFIED_CLAIM";
+    confidenceScore: number;
+    contradictionLevel: "NONE" | "LOW_DIVERGENT" | "HIGH_CONTRADICTORY";
+  };
+  readinessDimensions?: {
+    adoptionReadiness: number;
+    infrastructureReadiness: number;
+    regulatoryReadiness: number;
+    commercialReadiness: number;
+    overallReadinessScore: number;
+  };
+  disclaimer: string;
+}
+
+export type OutcomeSemanticsType =
+  | "INITIAL_ASSESSMENT_PENDING"
+  | "PREPARATION_PLANNED"
+  | "EXECUTION_IN_PROGRESS"
+  | "ACTION_COMPLETED_PENDING_REVIEW"
+  | "USER_REPORTED_POSITIVE_RESULT"
+  | "USER_REPORTED_FRICTION"
+  | "PIVOT_NEEDED"
+  | "OBJECTIVE_VERIFIED_OUTCOME_UNAVAILABLE";
 
 export interface ResearchCitation {
   source: string; // e.g. "Gartner Hype Cycle 2026", "MIT Tech Review", "McKinsey AI Report", "Nature Biotechnology"

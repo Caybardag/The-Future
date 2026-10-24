@@ -1027,6 +1027,46 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
                     "{actionPlan.concreteAction}"
                   </p>
 
+                  {/* Epistemic & Decision Invariant Status Banner */}
+                  <div className="flex flex-wrap items-center gap-2 pt-1 pb-1">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono border bg-slate-900/90 border-purple-500/40">
+                      <span className="text-slate-400">{isTr ? "Kullanıcı Kararı:" : "User Decision:"}</span>
+                      <span className="font-bold text-purple-300">
+                        {actionPlan.userDecision ? `Yol ${actionPlan.userDecision}` : (isTr ? "Seçilmedi (Öneri Takip Ediliyor)" : "Not Set (Following Model)")}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-mono border bg-slate-900/90 border-cyan-500/40">
+                      <span className="text-slate-400">{isTr ? "Model Tavsiyesi:" : "Model Recommendation:"}</span>
+                      <span className="font-bold text-cyan-300">
+                        Yol {actionPlan.modelRecommendation || actionPlan.recommendedOption || "A"}
+                      </span>
+                    </div>
+                    {actionPlan.userDecision && actionPlan.modelRecommendation && actionPlan.userDecision !== actionPlan.modelRecommendation && (
+                      <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                        {isTr ? "🛡️ Kararınız Korunuyor (Model Önerisinden Bağımsız)" : "🛡️ Choice Retained (Independent of Model)"}
+                      </span>
+                    )}
+                  </div>
+
+                  {actionPlan.dynamicImpactAssessment && (
+                    <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/60 text-[11px] font-mono space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-400 font-bold uppercase flex items-center gap-1">
+                          <span>{isTr ? "Çok Boyutlu Hazırlık Analizi" : "Multi-Dimensional Readiness"}</span>
+                        </span>
+                        <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold">
+                          MODEL PROJECTION ≠ FACT
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[10px] text-slate-300 pt-1">
+                        <div>TRL: <span className="text-cyan-300 font-bold">{actionPlan.dynamicImpactAssessment.trlLevel}/9</span></div>
+                        <div>Altyapı: <span className="text-cyan-300 font-bold">%{actionPlan.dynamicImpactAssessment.readinessDimensions.infrastructureReadiness}</span></div>
+                        <div>Regülasyon: <span className="text-cyan-300 font-bold">%{actionPlan.dynamicImpactAssessment.readinessDimensions.regulatoryReadiness}</span></div>
+                        <div>Ticarileşme: <span className="text-cyan-300 font-bold">%{actionPlan.dynamicImpactAssessment.readinessDimensions.commercialReadiness}</span></div>
+                      </div>
+                    </div>
+                  )}
+
                   {actionPlan.outcomeFollowUpAdvice && (
                     <div className="p-2.5 rounded-xl bg-emerald-950/50 border border-emerald-500/40 text-xs font-mono text-emerald-300 flex items-center gap-2">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -1237,6 +1277,25 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
                       );
                     })}
                   </div>
+
+                  {actionStatus === "completed" && (
+                    <div className="p-3 rounded-xl bg-slate-900/90 border border-emerald-500/40 text-xs font-mono space-y-1 animate-fadeIn">
+                      <div className="flex items-center justify-between">
+                        <span className="text-emerald-300 font-bold flex items-center gap-1.5">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <span>{isTr ? "Eylem Kaydı: Tamamlandı Olarak İşaretlendi" : "Action Marked as Completed"}</span>
+                        </span>
+                        <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-white/10 font-bold">
+                          {actionPlan.outcomeSemantics || "ACTION_COMPLETED_PENDING_REVIEW"}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-300 font-sans leading-relaxed">
+                        {isTr
+                          ? "* Bu işaretleme sizin kişisel beyanınızdır. Gerçek dünya mesleki yetkinliği veya dış dünya somut çıktısı otomatik olarak hesaplanmamıştır. Deneyim ve sonuç notlarınızı aşağıya ekleyerek gözden geçirebilirsiniz."
+                          : "* This is a user-reported status. Objective real-world outcome has not been automatically verified. Add your reflection notes below."}
+                      </p>
+                    </div>
+                  )}
 
                   {/* Kişisel Eylem Notu & Takip Refleksiyonu */}
                   <div className="pt-2 border-t border-white/5 space-y-2">

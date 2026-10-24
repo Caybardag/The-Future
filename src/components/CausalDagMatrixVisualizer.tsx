@@ -111,15 +111,18 @@ export const CausalDagMatrixVisualizer: React.FC<CausalDagMatrixVisualizerProps>
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-500/30">
-                  MATEMATİKSEL NEDENSELLİK & ETKİ GRAFİĞİ (DAG ENGINE)
+                  MODEL BAĞIMLILIK & ETKİLEŞİM GRAFİĞİ (PROJECTED MODEL DAG)
                 </span>
-                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30">
-                  Bayesian Olasılık İletimi
+                <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30">
+                  Model Varsayımı (Heuristic Dependency)
                 </span>
               </div>
               <h2 className="text-xl lg:text-2xl font-bold text-white mt-1">
-                Kırılma Zincirleri ve Dalgalanma Simülatörü
+                Teknolojik Önkoşul ve Dalgalanma Simülatörü
               </h2>
+              <p className="text-[10px] text-slate-400 font-sans mt-0.5">
+                * Bu görselleştirme fiziksel kesin nedensellik değil, dönüm noktaları arasındaki önkoşul ve sektörler arası yayılma varsayımlarını gösterir.
+              </p>
             </div>
           </div>
 

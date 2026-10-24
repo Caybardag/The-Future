@@ -134,7 +134,7 @@ function MainAppContent() {
   // - Authenticated members go straight to their active workspace cockpit ("timeline").
   const [currentView, setCurrentView] = useState<ViewMode>(() => {
     try {
-      const stored = localStorage.getItem("auth_current_user");
+      const stored = localStorage.getItem("future_timeline_user") || localStorage.getItem("auth_current_user");
       if (stored && JSON.parse(stored)) return "timeline";
     } catch {}
     return "portal";
@@ -393,14 +393,18 @@ function MainAppContent() {
   const rawLocalizedTimeline = getLocalizedTimelineData(TIMELINE_DATA, language);
 
   const baseLocalizedTimeline = rawLocalizedTimeline.map((m) => {
-    // If scientifically corrected description exists for this milestone year, apply it
+    // Epistemic Grounding: Preserve canonical factual baseline description separately from model annotations
+    const canonicalDescription = m.canonicalDescription || m.description;
     const customDesc = customDescriptions[m.year];
-    const baseMilestone = customDesc ? { ...m, description: customDesc } : m;
 
     // Attach any live Telegram intelligence items matching this target year
     const matchingTelegramSignals = liveTelegramFeeds.filter(
       (feed) => (feed.matchedMilestoneYear || feed.extractedYear) === m.year
     );
+    const liveAnnotation = matchingTelegramSignals.length > 0 ? matchingTelegramSignals[0].summary : undefined;
+    const baseMilestone = customDesc
+      ? { ...m, canonicalDescription, description: customDesc, liveSignalAnnotation: liveAnnotation }
+      : { ...m, canonicalDescription, liveSignalAnnotation: liveAnnotation };
 
     // Calculate mathematical time-decay probability for the milestone's target year
     const { adjustedProbability } = calculateDynamicProbability(baseMilestone.probability, baseMilestone.year, scenarioMode);
@@ -408,6 +412,8 @@ function MainAppContent() {
     // Base item with dynamic probability and live signals attached
     const item: Milestone = {
       ...baseMilestone,
+      canonicalDescription,
+      liveSignalAnnotation: liveAnnotation,
       probability: adjustedProbability,
       signals: [
         ...(baseMilestone.signals || []),
