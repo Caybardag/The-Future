@@ -61,6 +61,7 @@ export const ContextAwareOrchestrator: React.FC<ContextAwareOrchestratorProps> =
   const activeDomain: DomainContext = (() => {
     if (["job_risk", "personal_roadmap"].includes(currentView)) return "career_armor";
     if (["persona_chat", "futurist_advisor", "butterfly", "prediction_history", "counterfactual"].includes(currentView)) return "oracle_ai";
+    // Legacy compatibility only: allows historical persisted "telegram_hub" state to resolve safely to telemetry_radar
     if (["telegram_feed", "telegram_hub", "verification", "agent_scan", "data_integrity"].includes(currentView)) return "telemetry_radar";
     return "chronos";
   })();
@@ -128,8 +129,8 @@ export const ContextAwareOrchestrator: React.FC<ContextAwareOrchestratorProps> =
     },
     {
       id: "telemetry_radar" as DomainContext,
-      title: language === "tr" ? "CANLI RADAR & AKADEMİK KANIT" : "TELEMETRY & EMPIRICAL EVIDENCE",
-      tagline: language === "tr" ? "Laboratuvarlardan Anlık Sinyaller ve Akademik Hakem Doğrulaması" : "Real-time Lab Telemetry & Peer-reviewed Proof",
+      title: language === "tr" ? "CANLI RADAR & AKADEMİK LİTERATÜR" : "LIVE RADAR & ACADEMIC LITERATURE",
+      tagline: language === "tr" ? "Laboratuvarlardan Anlık Sinyaller ve Hakemli Literatür İndeksi" : "Real-time Lab Telemetry & Peer-reviewed Literature Index",
       icon: Radio,
       primaryView: "telegram_feed" as ViewMode,
       themeGradient: "from-emerald-500/20 via-blue-950/30 to-slate-950",

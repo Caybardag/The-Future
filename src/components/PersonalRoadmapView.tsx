@@ -38,6 +38,7 @@ import {
   setMilestoneSelectedOption,
   setMilestoneReassessmentAcknowledged,
   getAllMilestoneReassessmentAcknowledged,
+  deriveRoadmapMetrics,
 } from "../utils/personalTimelineEngine";
 import { aiService } from "../services/AIService";
 import { autoHealingCredit } from "../utils/autoHealingCredit";
@@ -306,37 +307,12 @@ export const PersonalRoadmapView: React.FC<PersonalRoadmapViewProps> = ({
         triggerActivity("roadmap_created");
 
         // Dynamically derive roadmap feasibility, impact, risk, and sentiment from currentActiveMilestones & profile
-        const selectedCount = Math.max(1, currentActiveMilestones.length);
-        const rawAvgProb = currentActiveMilestones.reduce((acc, m) => acc + (m.probability || 70), 0) / selectedCount;
-        const rawAvgImpact = currentActiveMilestones.reduce((acc, m) => acc + (m.impactLevel || 75), 0) / selectedCount;
-
-        // Calculate personalized relevance weights from user profile
-        const relevanceWeights = currentActiveMilestones.map((m) => {
-          const pImpact = calculateMilestonePersonalImpact(m, auth.currentUser);
-          return pImpact.relevanceScore || 50;
-        });
-        const avgRelevance = relevanceWeights.reduce((a, b) => a + b, 0) / selectedCount;
-
-        // Feasibility is derived from milestone probabilities weighted by user relevance and age adaptation bandwidth
-        const ageFactor = userAge ? (userAge < 30 ? 5 : userAge > 55 ? -5 : 0) : 0;
-        const derivedFeasibility = Math.min(99, Math.max(20, Math.round(rawAvgProb * 0.7 + avgRelevance * 0.3 + ageFactor)));
-        const derivedImpact = Math.min(99, Math.max(25, Math.round(rawAvgImpact * 0.75 + avgRelevance * 0.25)));
-
-        let derivedRisk: "Düşük" | "Orta" | "Yüksek" | "Kritik" = "Orta";
-        if (derivedFeasibility >= 75 && derivedImpact <= 80) {
-          derivedRisk = "Düşük";
-        } else if (derivedFeasibility < 50 || derivedImpact >= 90) {
-          derivedRisk = "Yüksek";
-        }
-
-        let derivedSentiment: import("../utils/predictionHistory").PredictionSentiment = "neutral";
-        if (derivedFeasibility >= 70 && derivedRisk === "Düşük") {
-          derivedSentiment = "optimistic";
-        } else if (derivedFeasibility < 50 || derivedRisk === "Yüksek") {
-          derivedSentiment = "dystopian";
-        } else if (derivedImpact >= 85) {
-          derivedSentiment = "transformative";
-        }
+        const {
+          feasibilityScore: derivedFeasibility,
+          impactLevel: derivedImpact,
+          riskLevel: derivedRisk,
+          sentiment: derivedSentiment,
+        } = deriveRoadmapMetrics(currentActiveMilestones, auth.currentUser, userAge);
 
         // Record to Prediction History Dossier with mathematically derived metrics
         recordPredictionHistoryEntry({

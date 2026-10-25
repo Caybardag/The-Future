@@ -915,6 +915,9 @@ export interface MilestoneActionPlan {
   dynamicImpactAssessment?: DynamicImpactAssessment;
   isExplicitUserChoice?: boolean;
   actionStatus?: ActionProgressStatus;
+  // outcomeStage represents workflow progress.
+  // Note: "completed_mastery" is kept strictly for backward compatibility when reading historical persisted plans;
+  // all newly generated plans use "completed_unreviewed".
   outcomeStage?: "initial_assessment" | "preparation" | "active_execution" | "completed_mastery" | "completed_pivot_needed" | "completed_unreviewed" | "friction_pivot_needed";
   outcomeFollowUpAdvice?: string;
   userReflectionNote?: string;
@@ -2209,5 +2212,61 @@ export function getAllMilestoneReassessmentAcknowledged(userEmail?: string | nul
   const key = `user_reassessment_ack_${cleanEmail}`;
   return safeStorage.getJSON<Record<number, boolean>>(key, {});
 }
+
+/**
+ * Derives roadmap feasibility, impact, risk, and sentiment dynamically from selected milestones and user profile.
+ * ZERO hardcoded demo constants, mathematically grounded in milestone probabilities and user relevance.
+ */
+export function deriveRoadmapMetrics(
+  milestones: Milestone[],
+  profile?: UserProfile | null,
+  userAge?: number
+): {
+  feasibilityScore: number;
+  impactLevel: number;
+  riskLevel: "Düşük" | "Orta" | "Yüksek" | "Kritik";
+  sentiment: "optimistic" | "neutral" | "dystopian" | "transformative";
+} {
+  const selectedCount = Math.max(1, milestones.length);
+  const rawAvgProb = milestones.reduce((acc, m) => acc + (m.probability || 70), 0) / selectedCount;
+  const rawAvgImpact = milestones.reduce((acc, m) => acc + (m.impactLevel || 75), 0) / selectedCount;
+
+  // Calculate personalized relevance weights from user profile
+  const relevanceWeights = milestones.map((m) => {
+    const pImpact = calculateMilestonePersonalImpact(m, profile);
+    return pImpact.relevanceScore || 50;
+  });
+  const avgRelevance = relevanceWeights.reduce((a, b) => a + b, 0) / selectedCount;
+
+  // Feasibility is derived from milestone probabilities weighted by user relevance and age adaptation bandwidth
+  const effectiveAge = userAge || profile?.age;
+  const ageFactor = effectiveAge ? (effectiveAge < 30 ? 5 : effectiveAge > 55 ? -5 : 0) : 0;
+  const derivedFeasibility = Math.min(99, Math.max(20, Math.round(rawAvgProb * 0.7 + avgRelevance * 0.3 + ageFactor)));
+  const derivedImpact = Math.min(99, Math.max(25, Math.round(rawAvgImpact * 0.75 + avgRelevance * 0.25)));
+
+  let derivedRisk: "Düşük" | "Orta" | "Yüksek" | "Kritik" = "Orta";
+  if (derivedFeasibility >= 75 && derivedImpact <= 80) {
+    derivedRisk = "Düşük";
+  } else if (derivedFeasibility < 50 || derivedImpact >= 90) {
+    derivedRisk = "Yüksek";
+  }
+
+  let derivedSentiment: "optimistic" | "neutral" | "dystopian" | "transformative" = "neutral";
+  if (derivedFeasibility >= 70 && derivedRisk === "Düşük") {
+    derivedSentiment = "optimistic";
+  } else if (derivedFeasibility < 50 || derivedRisk === "Yüksek") {
+    derivedSentiment = "dystopian";
+  } else if (derivedImpact >= 85) {
+    derivedSentiment = "transformative";
+  }
+
+  return {
+    feasibilityScore: derivedFeasibility,
+    impactLevel: derivedImpact,
+    riskLevel: derivedRisk,
+    sentiment: derivedSentiment,
+  };
+}
+
 
 

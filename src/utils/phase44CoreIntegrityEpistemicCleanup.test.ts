@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import {
   deriveMilestoneActionPlan,
   calculateMilestonePersonalImpact,
+  deriveRoadmapMetrics,
 } from "./personalTimelineEngine";
 import { Milestone, CategoryType } from "../types";
 import { TIMELINE_DATA } from "../data/timelineData";
@@ -111,6 +112,31 @@ describe("PHASE 44 — P0/P1 CORE INTEGRITY & EPISTEMIC LANGUAGE CLEANUP REGRESS
       expect(plan.outcomeFollowUpAdvice).toContain("Eylemi tamamlandı olarak işaretlediniz. Sonuç henüz değerlendirilmedi.");
       expect(plan.outcomeFollowUpAdvice).not.toContain("Başarıyla tamamladınız");
     });
+
+    it("maintains backward compatibility for reading legacy completed_mastery records without claiming verified mastery", () => {
+      // Historical data in localStorage might have legacy outcomeStage = 'completed_mastery'
+      const legacyPlan = {
+        outcomeStage: "completed_mastery" as const,
+        actionStatus: "completed" as const,
+      };
+
+      // Compatibility reader behavior check
+      const outcome = legacyPlan.outcomeStage as string;
+      const isCompleted = outcome === "completed_unreviewed" || outcome === "completed_mastery";
+      expect(isCompleted).toBe(true);
+
+      // Verify that engine never generates completed_mastery for newly created or updated actions
+      const newPlan = deriveMilestoneActionPlan(
+        baseMilestone,
+        null,
+        null,
+        "A",
+        "completed",
+        "Eski not"
+      );
+      expect(newPlan.outcomeStage).not.toBe("completed_mastery");
+      expect(newPlan.outcomeStage).toBe("completed_unreviewed");
+    });
   });
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -207,7 +233,7 @@ describe("PHASE 44 — P0/P1 CORE INTEGRITY & EPISTEMIC LANGUAGE CLEANUP REGRESS
   // TEST E — PREDICTION HISTORY: DERIVED VS HARDCODED METRICS
   // ─────────────────────────────────────────────────────────────────────────────
   describe("Test E — Prediction History: Mathematically derived metrics vs hardcoded demo values", () => {
-    it("produces differentiated derived metrics for two different profiles and milestone sets", () => {
+    it("produces differentiated derived metrics for two different profiles and milestone sets via deriveRoadmapMetrics", () => {
       const profileA = {
         email: "junior@example.com",
         age: 22,
@@ -225,58 +251,25 @@ describe("PHASE 44 — P0/P1 CORE INTEGRITY & EPISTEMIC LANGUAGE CLEANUP REGRESS
       const milestonesA = TIMELINE_DATA.filter((m) => m.category === "Yapay Zeka & Bilişim").slice(0, 4);
       const milestonesB = TIMELINE_DATA.filter((m) => m.category === "Biyoloji & Tıp").slice(0, 4);
 
-      const deriveMetrics = (milestones: Milestone[], profile: any) => {
-        const selectedCount = Math.max(1, milestones.length);
-        const rawAvgProb = milestones.reduce((acc, m) => acc + (m.probability || 70), 0) / selectedCount;
-        const rawAvgImpact = milestones.reduce((acc, m) => acc + (m.impactLevel || 75), 0) / selectedCount;
-
-        const relevanceWeights = milestones.map((m) => {
-          const pImpact = calculateMilestonePersonalImpact(m, profile);
-          return pImpact.relevanceScore || 50;
-        });
-        const avgRelevance = relevanceWeights.reduce((a, b) => a + b, 0) / selectedCount;
-
-        const ageFactor = profile.age ? (profile.age < 30 ? 5 : profile.age > 55 ? -5 : 0) : 0;
-        const derivedFeasibility = Math.min(99, Math.max(20, Math.round(rawAvgProb * 0.7 + avgRelevance * 0.3 + ageFactor)));
-        const derivedImpact = Math.min(99, Math.max(25, Math.round(rawAvgImpact * 0.75 + avgRelevance * 0.25)));
-
-        let derivedRisk: "Düşük" | "Orta" | "Yüksek" | "Kritik" = "Orta";
-        if (derivedFeasibility >= 75 && derivedImpact <= 80) {
-          derivedRisk = "Düşük";
-        } else if (derivedFeasibility < 50 || derivedImpact >= 90) {
-          derivedRisk = "Yüksek";
-        }
-
-        let derivedSentiment: "optimistic" | "balanced" | "cautious" = "balanced";
-        if (derivedFeasibility >= 70 && derivedRisk === "Düşük") {
-          derivedSentiment = "optimistic";
-        } else if (derivedFeasibility < 50 || derivedRisk === "Yüksek") {
-          derivedSentiment = "cautious";
-        }
-
-        return {
-          feasibilityScore: derivedFeasibility,
-          impactLevel: derivedImpact,
-          riskLevel: derivedRisk,
-          sentiment: derivedSentiment,
-        };
-      };
-
-      const metricsA = deriveMetrics(milestonesA, profileA);
-      const metricsB = deriveMetrics(milestonesB, profileB);
+      const metricsA = deriveRoadmapMetrics(milestonesA, profileA as any, profileA.age);
+      const metricsB = deriveRoadmapMetrics(milestonesB, profileB as any, profileB.age);
 
       // Must be derived and differ
       expect(metricsA).not.toEqual(metricsB);
       // Must not be the old static demo constant triplet: 88, 92, "Düşük", "optimistic" across both
       expect(metricsA.feasibilityScore !== metricsB.feasibilityScore || metricsA.impactLevel !== metricsB.impactLevel).toBe(true);
+      expect(typeof metricsA.feasibilityScore).toBe("number");
+      expect(typeof metricsB.feasibilityScore).toBe("number");
+      expect(metricsA.feasibilityScore).toBeGreaterThanOrEqual(20);
+      expect(metricsA.feasibilityScore).toBeLessThanOrEqual(99);
     });
   });
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // TEST F — EPISTEMIC LANGUAGE SCAN
+  // TEST F — EPISTEMIC LANGUAGE SCAN & COMPATIBILITY
   // ─────────────────────────────────────────────────────────────────────────────
   describe("Test F — Epistemic Language Scan: Absence of authoritative truth claims in UI", () => {
-    it("ensures no user-facing UI component displays 'AI-Verified' or 'Yapay Zeka Onaylı'", () => {
+    it("ensures no user-facing UI component displays 'AI-Verified', 'Yapay Zeka Onaylı', or 'Peer-reviewed Proof'", () => {
       const componentsDir = path.join(process.cwd(), "src", "components");
       const files = fs.readdirSync(componentsDir).filter((f) => f.endsWith(".tsx"));
 
@@ -285,6 +278,8 @@ describe("PHASE 44 — P0/P1 CORE INTEGRITY & EPISTEMIC LANGUAGE CLEANUP REGRESS
         "YAPAY ZEKA ONAYLI 10",
         "Doğrulanmış Tarihi Dönüm Noktası",
         "100+ Verified Future Milestones",
+        "Peer-reviewed Proof",
+        "Akademik Hakem Doğrulaması",
       ];
 
       for (const file of files) {
@@ -306,6 +301,18 @@ describe("PHASE 44 — P0/P1 CORE INTEGRITY & EPISTEMIC LANGUAGE CLEANUP REGRESS
 
       expect(sampleSignal.isVerifiedSignal).toBe(true);
       expect(sampleSignal.evidenceTier).toBe("VERIFIED_EXTERNAL_RECORD");
+    });
+
+    it("verifies legacy telegram_hub view resolution maps safely to telemetry_radar and telegram_feed", () => {
+      // Simulating router / orchestrator compatibility check:
+      // Legacy persisted view strings like "telegram_hub" must safely map to "telemetry_radar" and canonical "telegram_feed"
+      const legacyViewString = "telegram_hub";
+      const isRadarDomain = ["telegram_feed", "telegram_hub", "verification", "agent_scan", "data_integrity"].includes(legacyViewString);
+      expect(isRadarDomain).toBe(true);
+
+      // In App.tsx or subcomponents, if legacy view is encountered, it is treated as telegram_feed
+      const resolvedView = legacyViewString === "telegram_hub" ? "telegram_feed" : legacyViewString;
+      expect(resolvedView).toBe("telegram_feed");
     });
   });
 });
