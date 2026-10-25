@@ -73,8 +73,8 @@ export const SmartDiscoveryTicker: React.FC<SmartDiscoveryTickerProps> = ({
       actionLabel: language === "tr" ? "Simüle Et" : "Simulate",
     },
     {
-      id: "telegram_hub",
-      view: "telegram_hub" as ViewMode,
+      id: "telegram_feed",
+      view: "telegram_feed" as ViewMode,
       icon: Radio,
       color: "text-cyan-400",
       border: "border-cyan-500/30",
@@ -82,7 +82,7 @@ export const SmartDiscoveryTicker: React.FC<SmartDiscoveryTickerProps> = ({
       badge: language === "tr" ? "Güncel Haberler" : "Live Signals",
       text:
         language === "tr"
-          ? "Doğrulanmış açık haber kanallarından taranan anlık bilimsel kırılma sinyallerini inceleyin."
+          ? "Açık haber ve araştırma kanallarından taranan anlık teknoloji ve bilim sinyallerini inceleyin."
           : "Explore real-time scientific breakthrough signals aggregated from open channels.",
       actionLabel: language === "tr" ? "Radarı İncele" : "Open Radar",
     },

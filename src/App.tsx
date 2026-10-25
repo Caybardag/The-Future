@@ -500,15 +500,44 @@ function MainAppContent() {
     return [...baseLocalizedTimeline, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
   }, [baseLocalizedTimeline, dynamicMilestoneItems]);
 
-  // Active milestone lookup from localized and scenario-aware timeline
+  // Active milestone lookup preserving dynamic annotations, breakthroughs, and live signals
   const activeMilestone = useMemo(() => {
-    return localizedTimeline.find((m) => m.year === activeMilestoneState.year) || localizedTimeline[0];
-  }, [localizedTimeline, activeMilestoneState.year]);
+    if (!activeMilestoneState) return localizedTimeline[0];
+    
+    // Check if the timeline has a localized counterpart for this year
+    const localizedMatch = localizedTimeline.find((m) => m.year === activeMilestoneState.year);
+    if (!localizedMatch) {
+      return activeMilestoneState;
+    }
 
-  // Currently open detail modal milestone resolved dynamically from active scenario timeline
-  const currentDetailMilestone = detailModalMilestone
-    ? (localizedTimeline.find((m) => m.year === detailModalMilestone.year) || detailModalMilestone)
-    : null;
+    // Invariant: Preserve dynamic/runtime annotations (liveSignalAnnotation, isDynamicBreakthrough, dynamic signals)
+    // while keeping localized baseline labels when appropriate.
+    return {
+      ...localizedMatch,
+      ...activeMilestoneState,
+      title: activeMilestoneState.isDynamicBreakthrough ? activeMilestoneState.title : (localizedMatch.title || activeMilestoneState.title),
+      description: activeMilestoneState.isDynamicBreakthrough ? activeMilestoneState.description : (localizedMatch.description || activeMilestoneState.description),
+      liveSignalAnnotation: activeMilestoneState.liveSignalAnnotation !== undefined ? activeMilestoneState.liveSignalAnnotation : localizedMatch.liveSignalAnnotation,
+      isDynamicBreakthrough: activeMilestoneState.isDynamicBreakthrough ?? localizedMatch.isDynamicBreakthrough,
+      signals: (activeMilestoneState.signals && activeMilestoneState.signals.length > 0) ? activeMilestoneState.signals : localizedMatch.signals,
+    };
+  }, [localizedTimeline, activeMilestoneState]);
+
+  // Currently open detail modal milestone resolved dynamically preserving runtime annotations
+  const currentDetailMilestone = useMemo(() => {
+    if (!detailModalMilestone) return null;
+    const localizedMatch = localizedTimeline.find((m) => m.year === detailModalMilestone.year);
+    if (!localizedMatch) return detailModalMilestone;
+    return {
+      ...localizedMatch,
+      ...detailModalMilestone,
+      title: detailModalMilestone.isDynamicBreakthrough ? detailModalMilestone.title : (localizedMatch.title || detailModalMilestone.title),
+      description: detailModalMilestone.isDynamicBreakthrough ? detailModalMilestone.description : (localizedMatch.description || detailModalMilestone.description),
+      liveSignalAnnotation: detailModalMilestone.liveSignalAnnotation !== undefined ? detailModalMilestone.liveSignalAnnotation : localizedMatch.liveSignalAnnotation,
+      isDynamicBreakthrough: detailModalMilestone.isDynamicBreakthrough ?? localizedMatch.isDynamicBreakthrough,
+      signals: (detailModalMilestone.signals && detailModalMilestone.signals.length > 0) ? detailModalMilestone.signals : localizedMatch.signals,
+    };
+  }, [detailModalMilestone, localizedTimeline]);
 
   // Get list of unique categories
   const categories = Array.from(new Set(TIMELINE_DATA.map((m) => m.category))) as CategoryType[];
@@ -529,8 +558,8 @@ function MainAppContent() {
   });
 
   const setActiveMilestone = (m: Milestone) => {
-    const orig = TIMELINE_DATA.find((item) => item.year === m.year) || m;
-    setActiveMilestoneState(orig);
+    // Preserve the full milestone object and all dynamic/runtime annotations (live signals, breakthrough status, etc.)
+    setActiveMilestoneState(m);
   };
 
   const activeMilestoneYear = activeMilestone?.year;
@@ -591,11 +620,16 @@ function MainAppContent() {
   };
 
   const handleNavigateToView = (view: ViewMode, targetYear?: number) => {
-    setCurrentView(view);
+    const canonicalView = (view as string) === "telegram_hub" ? "telegram_feed" : view;
+    setCurrentView(canonicalView);
     if (targetYear) {
-      const match = localizedTimeline.find((m) => m.year === targetYear);
-      if (match) {
-        setActiveMilestone(match);
+      if (activeMilestoneState && activeMilestoneState.year === targetYear) {
+        // Keep active milestone's dynamic context
+      } else {
+        const match = localizedTimeline.find((m) => m.year === targetYear);
+        if (match) {
+          setActiveMilestone(match);
+        }
       }
     }
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });

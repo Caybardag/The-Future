@@ -80,19 +80,19 @@ describe("AŞAMA 39.1: OUTCOME LEARNING, REVIEW REASSESSMENT VE KARAR FAYDASI DE
   // 1. ACTION → OUTCOME (TRACKING WITH LEARNING VERIFICATION)
   // ─────────────────────────────────────────────────────────────────────────────
   describe("1. Action → Outcome: Durum Değişiminin Yeni Öneriye Dönüşümü", () => {
-    it("Eylem tamamlandığında (completed) sistem başlangıç eğitim tavsiyesini yinelenmez; 'completed_mastery' aşamasına geçer", () => {
+    it("Eylem tamamlandığında (completed) sistem başlangıç eğitim tavsiyesini yinelemez; 'completed_unreviewed' aşamasına geçer", () => {
       // Eylem henüz yapılmamış (seen)
       const initialPlan = deriveMilestoneActionPlan(milestone2028, null, baseSoftwareProfile, "B", "seen");
       expect(initialPlan.outcomeStage).toBe("initial_assessment");
-      expect(initialPlan.concreteAction).not.toContain("Kazanılan Yetkinlik Doğrulaması");
+      expect(initialPlan.concreteAction).not.toContain("Sonuç Değerlendirmesi Bekleniyor");
 
       // Kullanıcı eylemi tamamladığında (completed)
       const completedPlan = deriveMilestoneActionPlan(milestone2028, null, baseSoftwareProfile, "B", "completed");
-      expect(completedPlan.outcomeStage).toBe("completed_mastery");
-      expect(completedPlan.actionTypeLabel).toContain("Tamamlandı ✓");
-      expect(completedPlan.concreteAction).toContain("Kazanılan Yetkinlik Doğrulaması");
-      expect(completedPlan.expectedValue).toContain("Temel entegrasyon tamamlandı");
-      expect(completedPlan.outcomeFollowUpAdvice).toContain("eylemi başarıyla tamamladınız");
+      expect(completedPlan.outcomeStage).toBe("completed_unreviewed");
+      expect(completedPlan.actionTypeLabel).toContain("Tamamlandı");
+      expect(completedPlan.concreteAction).toContain("Sonuç Değerlendirmesi Bekleniyor");
+      expect(completedPlan.expectedValue).toContain("Eylem tamamlandı olarak işaretlendi");
+      expect(completedPlan.outcomeFollowUpAdvice).toContain("Eylemi tamamlandı olarak işaretlediniz. Sonuç henüz değerlendirilmedi.");
     });
 
     it("Eylem eylemde (in_progress) olduğunda haftalık odaklanma ve 30 günlük pilot denetimi devreye girer", () => {
@@ -123,7 +123,7 @@ describe("AŞAMA 39.1: OUTCOME LEARNING, REVIEW REASSESSMENT VE KARAR FAYDASI DE
       // Başlangıç ufkuna göre 6 ay iken, aktif eylemde 30 güne iner; tamamlandığında 12 aylık stabilizasyona evrilir
       expect(planSeen.reviewCheckpoint).toContain("6 Ay Sonra");
       expect(planActive.reviewCheckpoint).toContain("30 Gün Sonra");
-      expect(planCompleted.reviewCheckpoint).toContain("12 Ay Sonra");
+      expect(planCompleted.reviewCheckpoint).toContain("Sonuç Gözden Geçirmesi");
 
       expect(planSeen.reviewCheckpoint).not.toBe(planActive.reviewCheckpoint);
       expect(planActive.reviewCheckpoint).not.toBe(planCompleted.reviewCheckpoint);
@@ -204,22 +204,22 @@ describe("AŞAMA 39.1: OUTCOME LEARNING, REVIEW REASSESSMENT VE KARAR FAYDASI DE
       const caseC_seen = deriveMilestoneActionPlan(milestone2028, null, baseSoftwareProfile, "C", "seen");
 
       // 1. Outcome stage ayrışımı
-      expect(caseA_completed.outcomeStage).toBe("completed_mastery");
+      expect(caseA_completed.outcomeStage).toBe("completed_unreviewed");
       expect(caseB_inProgress.outcomeStage).toBe("active_execution");
       expect(caseC_seen.outcomeStage).toBe("initial_assessment");
 
       // 2. Concrete action ayrışımı
-      expect(caseA_completed.concreteAction).toContain("Kazanılan Yetkinlik Doğrulaması");
-      expect(caseB_inProgress.concreteAction).not.toContain("Kazanılan Yetkinlik Doğrulaması");
-      expect(caseC_seen.concreteAction).not.toContain("Kazanılan Yetkinlik Doğrulaması");
+      expect(caseA_completed.concreteAction).toContain("Sonuç Değerlendirmesi Bekleniyor");
+      expect(caseB_inProgress.concreteAction).not.toContain("Sonuç Değerlendirmesi Bekleniyor");
+      expect(caseC_seen.concreteAction).not.toContain("Sonuç Değerlendirmesi Bekleniyor");
 
       // 3. Review checkpoint ayrışımı
-      expect(caseA_completed.reviewCheckpoint).toContain("12 Ay Sonra");
+      expect(caseA_completed.reviewCheckpoint).toContain("İlk Sonuç Gözden Geçirmesi");
       expect(caseB_inProgress.reviewCheckpoint).toContain("30 Gün Sonra");
       expect(caseC_seen.reviewCheckpoint).toContain("30–60 Gün Sonra");
 
-      // 4. Time cost ayrışımı (tamamlanan eylem sadece stabilizasyon gerektirir)
-      expect(caseA_completed.timeCost).toContain("30 dk stabilizasyon");
+      // 4. Time cost ayrışımı (tamamlanan eylem sadece deneyim gözlemi gerektirir)
+      expect(caseA_completed.timeCost).toContain("15 dk gözlem");
       expect(caseC_seen.timeCost).toContain("8–10 saat");
 
       // NEGATİF KANIT: Case A, Case B ve Case C kesinlikle aynı çıktıyı üretmez!
@@ -244,10 +244,10 @@ describe("AŞAMA 39.1: OUTCOME LEARNING, REVIEW REASSESSMENT VE KARAR FAYDASI DE
 
       expect(activePlan.selectedOptionId).toBe("C");
       expect(activePlan.actionStatus).toBe("completed");
-      expect(activePlan.outcomeStage).toBe("completed_mastery");
+      expect(activePlan.outcomeStage).toBe("completed_unreviewed");
       expect(activePlan.isExplicitUserChoice).toBe(true);
-      expect(activePlan.concreteAction).toContain("Kazanılan Yetkinlik Doğrulaması");
-      expect(activePlan.reviewCheckpoint).toContain("Tamamlandı ✓");
+      expect(activePlan.concreteAction).toContain("Sonuç Değerlendirmesi Bekleniyor");
+      expect(activePlan.reviewCheckpoint).toContain("Tamamlandı");
     });
   });
 });

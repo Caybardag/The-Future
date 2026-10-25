@@ -408,7 +408,7 @@ export const GoogleAIStylePlansShowcase: React.FC<GoogleAIStylePlansShowcaseProp
               <ul className="space-y-2.5 text-xs text-slate-300 pt-3 border-t border-white/5">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
-                  <span>{isTr ? "100+ Doğrulanmış Tarihi Dönüm Noktası" : "100+ Verified Future Milestones"}</span>
+                  <span>{isTr ? "100+ Gelecek Dönüm Noktası & Trend Analizi" : "100+ Future Milestones & Trend Projections"}</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />

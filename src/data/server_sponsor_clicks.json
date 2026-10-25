@@ -2496,5 +2496,117 @@
       "limit_claim_1792869926371_4",
       "limit_claim_1792869926395_5"
     ]
+  },
+  "sponsor_user_1792928100977@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928101416,
+    "usedClaimIds": [
+      "claim_1792928101415_1"
+    ]
+  },
+  "replay_user_1792928101458@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928101458,
+    "usedClaimIds": [
+      "replay_claim_1792928101458"
+    ]
+  },
+  "limit_user_1792928101497@example.com": {
+    "count": 5,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928101679,
+    "usedClaimIds": [
+      "limit_claim_1792928101497_1",
+      "limit_claim_1792928101557_2",
+      "limit_claim_1792928101593_3",
+      "limit_claim_1792928101633_4",
+      "limit_claim_1792928101679_5"
+    ]
+  },
+  "sponsor_user_1792928259178@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928259635,
+    "usedClaimIds": [
+      "claim_1792928259635_1"
+    ]
+  },
+  "replay_user_1792928259679@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928259679,
+    "usedClaimIds": [
+      "replay_claim_1792928259679"
+    ]
+  },
+  "limit_user_1792928259698@example.com": {
+    "count": 5,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928259850,
+    "usedClaimIds": [
+      "limit_claim_1792928259698_1",
+      "limit_claim_1792928259751_2",
+      "limit_claim_1792928259770_3",
+      "limit_claim_1792928259806_4",
+      "limit_claim_1792928259850_5"
+    ]
+  },
+  "sponsor_user_1792928372809@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928373243,
+    "usedClaimIds": [
+      "claim_1792928373243_1"
+    ]
+  },
+  "replay_user_1792928373281@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928373281,
+    "usedClaimIds": [
+      "replay_claim_1792928373281"
+    ]
+  },
+  "limit_user_1792928373323@example.com": {
+    "count": 5,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928373449,
+    "usedClaimIds": [
+      "limit_claim_1792928373323_1",
+      "limit_claim_1792928373355_2",
+      "limit_claim_1792928373374_3",
+      "limit_claim_1792928373411_4",
+      "limit_claim_1792928373449_5"
+    ]
+  },
+  "sponsor_user_1792928629507@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928629933,
+    "usedClaimIds": [
+      "claim_1792928629933_1"
+    ]
+  },
+  "replay_user_1792928629972@example.com": {
+    "count": 1,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928629972,
+    "usedClaimIds": [
+      "replay_claim_1792928629972"
+    ]
+  },
+  "limit_user_1792928629993@example.com": {
+    "count": 5,
+    "date": "2026-10-25",
+    "lastClaimTimestamp": 1792928630115,
+    "usedClaimIds": [
+      "limit_claim_1792928629993_1",
+      "limit_claim_1792928630018_2",
+      "limit_claim_1792928630052_3",
+      "limit_claim_1792928630078_4",
+      "limit_claim_1792928630115_5"
+    ]
   }
 }

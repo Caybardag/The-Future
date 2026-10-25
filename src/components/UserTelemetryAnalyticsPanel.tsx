@@ -815,7 +815,7 @@ export const UserTelemetryAnalyticsPanel: React.FC<UserTelemetryAnalyticsPanelPr
                       ? "bg-emerald-950 text-emerald-300 border-emerald-800 font-bold"
                       : "bg-slate-900 text-slate-500 border-slate-800"
                   }`}>
-                    {activeSelectedUser.hasVerifiedLocation ? "CANLI DOĞRULANDI" : "KAYIT BULUNMUYOR"}
+                    {activeSelectedUser.hasVerifiedLocation ? "CANLI SİNYAL MEVCUT" : "KAYIT BULUNMUYOR"}
                   </span>
                 </div>
 

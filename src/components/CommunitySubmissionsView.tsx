@@ -739,7 +739,7 @@ export const CommunitySubmissionsView: React.FC = () => {
                       <div className="flex items-center gap-2 font-mono">
                         <span className="text-2xl font-black text-emerald-400">{post.year}</span>
                         <span className="text-[10px] bg-emerald-950 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/40 font-bold">
-                          ✓ {isTr ? "Hakem Onaylı" : "Peer Verified"}
+                          ✓ {isTr ? "Topluluk Değerlendirmeli" : "Community Reviewed"}
                         </span>
                       </div>
 

@@ -148,7 +148,7 @@ export const BackendSyncStatus: React.FC<BackendSyncStatusProps> = ({ compact = 
 
             <div className="space-y-1 text-[11px] text-slate-300">
               <div className="flex justify-between">
-                <span className="text-slate-400">Son Doğrulanmış Kontrol:</span>
+                <span className="text-slate-400">Son Senkronizasyon Kontrolü:</span>
                 <span className="text-emerald-400 font-bold">{lastSyncFormatted}</span>
               </div>
               <div className="flex justify-between">

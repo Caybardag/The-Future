@@ -61,7 +61,7 @@ export const ContextAwareOrchestrator: React.FC<ContextAwareOrchestratorProps> =
   const activeDomain: DomainContext = (() => {
     if (["job_risk", "personal_roadmap"].includes(currentView)) return "career_armor";
     if (["persona_chat", "futurist_advisor", "butterfly", "prediction_history", "counterfactual"].includes(currentView)) return "oracle_ai";
-    if (["telegram_hub", "verification", "agent_scan", "data_integrity"].includes(currentView)) return "telemetry_radar";
+    if (["telegram_feed", "telegram_hub", "verification", "agent_scan", "data_integrity"].includes(currentView)) return "telemetry_radar";
     return "chronos";
   })();
 
@@ -131,14 +131,14 @@ export const ContextAwareOrchestrator: React.FC<ContextAwareOrchestratorProps> =
       title: language === "tr" ? "CANLI RADAR & AKADEMİK KANIT" : "TELEMETRY & EMPIRICAL EVIDENCE",
       tagline: language === "tr" ? "Laboratuvarlardan Anlık Sinyaller ve Akademik Hakem Doğrulaması" : "Real-time Lab Telemetry & Peer-reviewed Proof",
       icon: Radio,
-      primaryView: "telegram_hub" as ViewMode,
+      primaryView: "telegram_feed" as ViewMode,
       themeGradient: "from-emerald-500/20 via-blue-950/30 to-slate-950",
       accentBorder: "border-emerald-500/40",
       accentColor: "text-emerald-400",
       accentGlow: "rgba(16, 185, 129, 0.4)",
       badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
       tools: [
-        { id: "telegram_hub" as ViewMode, label: language === "tr" ? "Güncel Haberler" : "Latest News", icon: Radio, count: liveSignalCount, desc: "Doğrulanmış Canlı Akış" },
+        { id: "telegram_feed" as ViewMode, label: language === "tr" ? "Güncel Haberler" : "Latest News", icon: Radio, count: liveSignalCount, desc: language === "tr" ? "Canlı Sinyal Akışı" : "Live Signal Stream" },
         { id: "verification" as ViewMode, label: language === "tr" ? "Kanıt Doğrulama" : "Verification", icon: ShieldCheck, desc: "arXiv, Patent & Bilimsel Kanıt" },
         { id: "agent_scan" as ViewMode, label: language === "tr" ? "Otonom Ajan" : "Autonomous Agent", icon: Zap, desc: "Canlı Tarama & Sayaç Ayarı" },
         { id: "data_integrity" as ViewMode, label: language === "tr" ? "Veri Bütünlüğü" : "Data Integrity", icon: Database, desc: "Metodoloji & Saydamlık" },

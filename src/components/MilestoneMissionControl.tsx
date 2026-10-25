@@ -264,7 +264,7 @@ export const MilestoneMissionControl: React.FC<MilestoneMissionControlProps> = (
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
                 <div>
-                  <span className="font-bold text-emerald-300 block">Doğrulanmış Literatür Kanıtı</span>
+                  <span className="font-bold text-emerald-300 block">Akademik Literatür Kaynağı</span>
                   <p className="text-[11px] text-slate-300 font-sans mt-0.5">
                     "{verifiedMap[activeMilestone.year].userSummary}"
                   </p>
@@ -354,7 +354,7 @@ export const MilestoneMissionControl: React.FC<MilestoneMissionControlProps> = (
           {/* Güncel Haber Sinyalleri */}
           {activeMilestone.signals && activeMilestone.signals.length > 0 && (
             <div className="space-y-2 pt-2 border-t border-white/5">
-              <span className="font-bold text-slate-300">Doğrulanmış Güncel Haber Sinyalleri:</span>
+              <span className="font-bold text-slate-300">Harici Kaynaklı Canlı Haber Sinyalleri:</span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {activeMilestone.signals.map((sig, sIdx) => (
                   <div key={`tab-signal-${sIdx}`} className="bg-slate-900/90 p-3 rounded-xl border border-white/10 space-y-1">

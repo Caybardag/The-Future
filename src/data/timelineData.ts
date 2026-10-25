@@ -913,7 +913,7 @@ export const TIMELINE_DATA: Milestone[] = [
     aiAutonomyIndex: 100,
     bioDigitalIntegrationRate: 96,
     keyDrivers: ["Gezegensel Kuantum İkizler", "Ekolojik AI Algoritmaları"],
-    dailyLifeImpact: "Doğal afetler aylar öncesinden kesin olarak bilinir ve ekosistem dengesi otomatik korunur.",
+    dailyLifeImpact: "Doğal afetler aylar öncesinden yüksek doğrulukla öngörülür ve ekosistem dengesi modelleme ile desteklenir.",
     ethicalRisks: ["Doğanın tam yapay denetim altına girmesi"],
     societalOpportunities: ["Nesli tükenen türlerin ihyası ve ekolojik cennet"],
     relatedYears: [2034, 2041],

@@ -908,7 +908,7 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
                           </span>
                           {sig.isVerifiedSignal ? (
                             <span className="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">
-                              ✓ {isTr ? "Doğrulanmış Kayıt" : "Verified Record"}
+                              ✓ {isTr ? "Harici Kaynak Kaydı" : "Source-Backed Record"}
                             </span>
                           ) : (
                             <span className="px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-white/5 font-normal">

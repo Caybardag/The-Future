@@ -202,7 +202,7 @@ describe("AŞAMA 41: Gelecek Takvimi Ürün Zekâsı ve Kapalı Döngü Canlı E
       expect(plan.outcomeFollowUpAdvice).toContain("Stratejinizi yeniden kalibre etmeniz tavsiye edilir");
     });
 
-    it("Kullanıcı eylemi başarıyla tamamladığında ve pozitif bildirim verdiğinde outcomeStage 'completed_mastery' olmalıdır", () => {
+    it("Kullanıcı eylemi tamamladığında ve pozitif bildirim verdiğinde outcomeStage 'completed_unreviewed' olmalıdır", () => {
       const successNote = "Pilot entegrasyonu başarılı oldu, haftalık raporlama süresi %40 kısaldı.";
       const plan = deriveMilestoneActionPlan(
         milestone2028,
@@ -214,8 +214,8 @@ describe("AŞAMA 41: Gelecek Takvimi Ürün Zekâsı ve Kapalı Döngü Canlı E
         [sampleLiveBreakthroughSignal]
       );
 
-      expect(plan.outcomeStage).toBe("completed_mastery");
-      expect(plan.actionTypeLabel).toContain("Tamamlandı ✓");
+      expect(plan.outcomeStage).toBe("completed_unreviewed");
+      expect(plan.actionTypeLabel).toContain("Tamamlandı");
       expect(plan.reviewCheckpoint).toContain("Canlı İstihbarat İvmesi ⚡");
     });
   });

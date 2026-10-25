@@ -382,5 +382,21 @@
   "spin_test_1792869927956@example.com": {
     "lastSpinDate": "2026-10-24",
     "totalSpins": 1
+  },
+  "spin_test_1792928112966@example.com": {
+    "lastSpinDate": "2026-10-25",
+    "totalSpins": 1
+  },
+  "spin_test_1792928263072@example.com": {
+    "lastSpinDate": "2026-10-25",
+    "totalSpins": 1
+  },
+  "spin_test_1792928376458@example.com": {
+    "lastSpinDate": "2026-10-25",
+    "totalSpins": 1
+  },
+  "spin_test_1792928634424@example.com": {
+    "lastSpinDate": "2026-10-25",
+    "totalSpins": 1
   }
 }

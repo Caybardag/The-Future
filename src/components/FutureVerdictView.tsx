@@ -372,12 +372,29 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
 
       const mapped = roleToProfileMap[roleId];
       if (mapped) {
+        // Core Integrity Rule: "lifeRole" and "lifeRoleLabel" are distinct from "profession".
+        // Existing user profession must NEVER be overwritten by life role selection.
+        const existingProfession = currentUser?.profession?.trim();
+        const effectiveProfession = existingProfession && existingProfession.length > 0
+          ? currentUser.profession
+          : mapped.profession;
+
+        // Preserve user's existing seniority if set; do not let role selection wipe it
+        const effectiveSeniority = currentUser?.seniority?.trim()
+          ? currentUser.seniority
+          : mapped.seniority;
+
+        // Preserve employment status if user already has one, unless role requires a fallback and user had none
+        const effectiveEmployment = currentUser?.employmentStatus?.trim()
+          ? currentUser.employmentStatus
+          : mapped.employmentStatus;
+
         updateUserProfile({
           lifeRole: mapped.lifeRole,
           lifeRoleLabel: mapped.lifeRoleLabel,
-          profession: mapped.profession,
-          employmentStatus: mapped.employmentStatus,
-          seniority: mapped.seniority,
+          profession: effectiveProfession,
+          employmentStatus: effectiveEmployment,
+          seniority: effectiveSeniority,
           isOnboardingCompleted: true
         });
         setSaveSuccessMsg(`✓ Rol profiline bağlandı (${mapped.lifeRoleLabel})`);

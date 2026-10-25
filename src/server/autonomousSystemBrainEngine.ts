@@ -305,11 +305,11 @@ YALNIZCA aşağıdaki JSON formatında çıktı ver:
     
     let friendlyDetails = "";
     if (isQuotaExceeded) {
-      friendlyDetails = `Gemini API günlük istek sınırı (429 Rate Limit) aşıldı. Mevcut doğrulanmış bilgi kasası aktif hizmet vermeye devam ediyor.`;
+      friendlyDetails = `Gemini API günlük istek sınırı (429 Rate Limit) aşıldı. Mevcut veri ve hafıza kasası aktif hizmet vermeye devam ediyor.`;
     } else if (isHighDemand) {
-      friendlyDetails = `Gemini modelleri geçici yoğunluk (503) yanıtı verdi. Doğrulanmış hafıza kasası güvenle korunuyor.`;
+      friendlyDetails = `Gemini modelleri geçici yoğunluk (503) yanıtı verdi. Mevcut sistem hafıza kasası güvenle korunuyor.`;
     } else {
-      friendlyDetails = `Gemini API çağrısı geçici olarak tamamlanamadı. Doğrulanmış hafıza kasası korunuyor.`;
+      friendlyDetails = `Gemini API çağrısı geçici olarak tamamlanamadı. Mevcut sistem hafıza kasası korunuyor.`;
     }
 
     const log: BrainCycleLog = {

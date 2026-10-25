@@ -1328,7 +1328,7 @@ export function deriveMilestoneActionPlan(
   let outcomeFollowUpAdvice = "";
 
   if (actionStatus === "completed") {
-    outcomeStage = "completed_mastery";
+    outcomeStage = "completed_unreviewed";
   } else if (actionStatus === "in_progress") {
     outcomeStage = "active_execution";
   } else if (actionStatus === "planned") {
@@ -1682,11 +1682,18 @@ export function deriveMilestoneActionPlan(
       realWorldOutcomeStatus = "low_yield_friction";
       outcomeVerificationEvidence = "USER_REPORTED_SIGNAL";
       outcomeSemantics = "USER_REPORTED_FRICTION";
+    } else if (hasPositiveOutcomeFeedback) {
+      // User explicitly reported positive outcome note (USER REPORTED, NOT objectively verified)
+      outcomeStage = "completed_unreviewed";
+      realWorldOutcomeStatus = "user_reported_positive";
+      outcomeVerificationEvidence = "USER_REPORTED_SIGNAL";
+      outcomeSemantics = "USER_REPORTED_POSITIVE_RESULT";
     } else {
-      outcomeStage = "completed_mastery";
-      realWorldOutcomeStatus = hasPositiveOutcomeFeedback ? "user_reported_positive" : "not_reported";
-      outcomeVerificationEvidence = hasPositiveOutcomeFeedback ? "USER_REPORTED_SIGNAL" : "NOT_COMPUTED";
-      outcomeSemantics = hasPositiveOutcomeFeedback ? "USER_REPORTED_POSITIVE_RESULT" : "ACTION_COMPLETED_PENDING_REVIEW";
+      // No reflection / outcome feedback yet
+      outcomeStage = "completed_unreviewed";
+      realWorldOutcomeStatus = "not_reported";
+      outcomeVerificationEvidence = "NOT_COMPUTED";
+      outcomeSemantics = "ACTION_COMPLETED_PENDING_REVIEW";
     }
   } else if (actionStatus === "in_progress") {
     outcomeStage = hasFrictionOrLowYield ? "friction_pivot_needed" : "active_execution";
@@ -1715,22 +1722,22 @@ export function deriveMilestoneActionPlan(
       risk = "Yüksek Atalet Riski (Düşük verim bildirilmesine rağmen aynı patikada ısrar etmek zaman ve motivasyon kaybı yaratır). Risk Düzeyi: Yüksek";
       reviewCheckpoint = "Acil Yeniden Değerlendirme & Yöntem Revizyonu: 14–30 Gün Sonra (Kullanıcı Geri Bildirimi Kaynaklı Erken Gözden Geçirme).";
       outcomeFollowUpAdvice = "Eylemi tamamladınız ancak bildirilen deneyim beklenen çıktıyı sağlamadı. Stratejinizi yeniden kalibre etmeniz tavsiye edilir.";
-    } else if (outcomeStage === "completed_mastery") {
-      actionTypeLabel = `${actionTypeLabel} (Tamamlandı ✓)`;
+    } else if (outcomeStage === "completed_unreviewed" || (outcomeStage as string) === "completed_mastery") {
+      actionTypeLabel = `${actionTypeLabel} (Tamamlandı — Değerlendirme Bekliyor)`;
       if (hasPositiveOutcomeFeedback) {
-        concreteAction = `Kazanılan Yetkinlik Doğrulaması & Pekiştirmesi (Kullanıcı Bildirimli Olumlu Sonuç): ${keyCapability} odağındaki eyleminizle ilgili olumlu deneyim ve fayda bildirdiniz ("${userReflectionNote?.slice(0, 50)}..."). Sonraki adım: Bu yetkinliğin günlük iş akışınızdaki verimlilik metriklerini izleyin, süreç optimizasyonunu sabitleyin ve ekibinize/portfolyonuza yaygınlaştırın.`;
-        expectedValue = `Temel entegrasyon tamamlandı ve kullanıcı bildirimli yetkinlik pekiştirmesi (Model Projeksiyonu: Olumlu kullanıcı deneyimi bildirildi; objektif harici denetim bağımsız bir süreçtir).`;
-        timeCost = "Haftalık ~30 dk stabilizasyon & metrik takibi (Model Heuristic - Tamamlandı Sonrası)";
-        risk = "Düşük Risk (Yetkinlik kazanıldı; temel risk kazanılan pratiğin güncel model sürümleriyle güncellenmemesi ve atıl kalmasıdır). Risk Düzeyi: Düşük";
-        reviewCheckpoint = "Tamamlandı ✓ — Sonraki Yıllık Stabilizasyon ve Derinleşme Denetimi: 12 Ay Sonra.";
-        outcomeFollowUpAdvice = "Bu dönüm noktası için eylemi başarıyla tamamladınız ve olumlu deneyim bildirdiniz. Objektif harici sonuç ve yetkinlik çıktısı bağımsız bir süreçtir (NOT_COMPUTED).";
+        concreteAction = `Kullanıcı Bildirimli Sonuç İncelemesi: ${keyCapability} odağındaki eyleminizle ilgili olumlu deneyim bildirdiniz ("${userReflectionNote?.slice(0, 50)}..."). Sonraki adım: Günlük iş akışınızdaki pratik çıktıları gözlemleyin (Kullanıcı beyanıdır; harici objektif doğrulama bağımsız bir süreçtir).`;
+        expectedValue = `Eylem tamamlandı ve kullanıcı bildirimli olumlu deneyim kaydedildi (Model Projeksiyonu: Kullanıcı deneyim beyanı; objektif harici etki bağımsız bir süreçtir).`;
+        timeCost = "Haftalık ~30 dk stabilizasyon ve deneyim gözlemi (Model Heuristic)";
+        risk = "Düşük Risk (Eylem tamamlandı olarak işaretlendi; temel risk edinilen deneyimin güncel model sürümleriyle güncellenmemesidir).";
+        reviewCheckpoint = "Tamamlandı (Kullanıcı Bildirimi) — Periyodik Gözden Geçirme: 6–12 Ay Sonra.";
+        outcomeFollowUpAdvice = "Eylemi tamamlandı olarak işaretlediniz ve olumlu deneyim bildirdiniz. Objektif harici sonuç ve yetkinlik çıktısı bağımsız bir süreçtir (NOT_COMPUTED).";
       } else {
-        concreteAction = `Kazanılan Yetkinlik Doğrulaması & Pekiştirmesi: ${keyCapability} odağındaki eylemi tamamlandı olarak işaretlediniz. Sonraki adım: Günlük iş akışınızdaki verim çıktılarını gözlemleyerek iş akışınıza sabitleyin.`;
-        expectedValue = `Temel entegrasyon tamamlandı ve kazanılan yetkinliğin iş akışına entegrasyonu (Model Projeksiyonu: Eylem tamamlandı; objektif harici etki değerlendirmesi bağımsız bir süreçtir).`;
-        timeCost = "Haftalık ~30 dk stabilizasyon & metrik takibi (Model Heuristic - Tamamlandı Sonrası)";
-        risk = "Düşük Risk (Eylem tamamlandı; temel risk kazanılan pratiğin güncel model sürümleriyle güncellenmemesidir). Risk Düzeyi: Düşük";
-        reviewCheckpoint = "Tamamlandı ✓ — Sonraki Yıllık Stabilizasyon ve Derinleşme Denetimi: 12 Ay Sonra.";
-        outcomeFollowUpAdvice = "Bu dönüm noktası için belirlediğiniz eylemi başarıyla tamamladınız ancak objektif harici sonuç ve yetkinlik çıktısı bağımsız bir süreçtir (NOT_COMPUTED).";
+        concreteAction = `Sonuç Değerlendirmesi Bekleniyor: ${keyCapability} odağındaki eylemi tamamlandı olarak işaretlediniz. Sonuç henüz değerlendirilmedi. Sonraki adım: Günlük iş akışınızdaki verim ve adaptasyon çıktılarını gözlemleyerek deneyim notunuzu ekleyin.`;
+        expectedValue = `Eylem tamamlandı olarak işaretlendi (Model Projeksiyonu: Eylem tamamlandı; gerçek dünya etkisi ve objektif sonuç henüz değerlendirilmedi).`;
+        timeCost = "Haftalık ~15 dk gözlem ve not alma (Model Heuristic)";
+        risk = "Sonuç Belirsizliği (Eylem tamamlandı olarak işaretlendi ancak somut çıktılar henüz değerlendirilmedi).";
+        reviewCheckpoint = "Tamamlandı (Değerlendirme Bekliyor) — İlk Sonuç Gözden Geçirmesi: 30–60 Gün Sonra.";
+        outcomeFollowUpAdvice = "Eylemi tamamlandı olarak işaretlediniz. Sonuç henüz değerlendirilmedi.";
       }
     } else if (outcomeStage === "friction_pivot_needed") {
       reviewCheckpoint = "Uygulama Darboğazı ⚠️ — Yöntem & Karar Revizyonu: 14 Gün Sonra.";

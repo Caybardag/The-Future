@@ -142,11 +142,10 @@ describe("AŞAMA 43 — Core Product Integrity, Epistemics & Decision Invariants
         []
       );
 
-      expect(actionPlan.outcomeStage).toBe("completed_mastery");
+      expect(actionPlan.outcomeStage).toBe("completed_unreviewed");
       expect(actionPlan.outcomeSemantics).toBe("ACTION_COMPLETED_PENDING_REVIEW");
       // Must not falsely assert objective verified outcome
-      expect(actionPlan.outcomeFollowUpAdvice).toContain("eylemi başarıyla tamamladınız");
-      expect(actionPlan.outcomeFollowUpAdvice).toContain("NOT_COMPUTED");
+      expect(actionPlan.outcomeFollowUpAdvice).toContain("Eylemi tamamlandı olarak işaretlediniz. Sonuç henüz değerlendirilmedi.");
     });
 
     it("detects friction and pivots when user reports blockers in note", () => {
@@ -178,7 +177,7 @@ describe("AŞAMA 43 — Core Product Integrity, Epistemics & Decision Invariants
         []
       );
 
-      expect(actionPlan.outcomeStage).toBe("completed_mastery");
+      expect(actionPlan.outcomeStage).toBe("completed_unreviewed");
       expect(actionPlan.outcomeSemantics).toBe("USER_REPORTED_POSITIVE_RESULT");
     });
   });

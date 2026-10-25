@@ -125,9 +125,8 @@ describe("AŞAMA 39.2: EPISTEMIC REGRESSION, GERÇEK REASSESSMENT VE OUTCOME/STA
       // Fakat harici ölçüm veya kullanıcı notu olmadığından gerçek dünya sonucu raporlanmamış ve NOT_COMPUTED olmalıdır
       expect(completedPlanWithoutNote.realWorldOutcomeStatus).toBe("not_reported");
       expect(completedPlanWithoutNote.outcomeVerificationEvidence).toBe("NOT_COMPUTED");
-      // Tavsiye metni kullanıcının adımları tamamladığını belirtirken objektif çıktının harici doğrulanmadığını açıkça vurgular
-      expect(completedPlanWithoutNote.outcomeFollowUpAdvice).toContain("eylemi başarıyla tamamladınız");
-      expect(completedPlanWithoutNote.outcomeFollowUpAdvice).toContain("NOT_COMPUTED");
+      // Tavsiye metni kullanıcının adımları tamamladığını belirtirken sonucun henüz değerlendirilmediğini açıkça vurgular
+      expect(completedPlanWithoutNote.outcomeFollowUpAdvice).toContain("Eylemi tamamlandı olarak işaretlediniz. Sonuç henüz değerlendirilmedi.");
     });
 
     it("Sistem kullanıcı eylemi tamamladığında sahte ROI yüzdesi veya uydurma verimlilik rakamı üretmez", () => {
@@ -185,19 +184,19 @@ describe("AŞAMA 39.2: EPISTEMIC REGRESSION, GERÇEK REASSESSMENT VE OUTCOME/STA
 
       // 1. Review Checkpoints Farkı
       expect(case1_planned.reviewCheckpoint).toContain("Planlandı 📅 — Başlangıç Hazırlık Kontrolü: 60 Gün Sonra");
-      expect(case2_completed.reviewCheckpoint).toContain("Tamamlandı ✓ — Sonraki Yıllık Stabilizasyon ve Derinleşme Denetimi: 12 Ay Sonra");
+      expect(case2_completed.reviewCheckpoint).toContain("Tamamlandı (Değerlendirme Bekliyor) — İlk Sonuç Gözden Geçirmesi: 30–60 Gün Sonra");
       expect(case3_pivot.reviewCheckpoint).toContain("Acil Yeniden Değerlendirme & Yöntem Revizyonu: 14–30 Gün Sonra");
       expect(case4_liveBreakthrough.reviewCheckpoint).toContain("Canlı İstihbarat İvmesi ⚡ — Hızlandırılmış Gözden Geçirme: 3 Ay Sonra");
 
       // 2. Concrete Action Farkı
-      expect(case1_planned.concreteAction).not.toContain("Kazanılan Yetkinlik Doğrulaması");
-      expect(case2_completed.concreteAction).toContain("Kazanılan Yetkinlik Doğrulaması");
+      expect(case1_planned.concreteAction).not.toContain("Sonuç Değerlendirmesi Bekleniyor");
+      expect(case2_completed.concreteAction).toContain("Sonuç Değerlendirmesi Bekleniyor");
       expect(case3_pivot.concreteAction).toContain("Yöntem Revizyonu & Stratejik Yeniden Değerlendirme");
       expect(case3_pivot.concreteAction).toContain("Yol A veya Yol C"); // Alternatif yol önerisi
 
       // 3. Outcome Stage Farkı
       expect(case1_planned.outcomeStage).toBe("preparation");
-      expect(case2_completed.outcomeStage).toBe("completed_mastery");
+      expect(case2_completed.outcomeStage).toBe("completed_unreviewed");
       expect(case3_pivot.outcomeStage).toBe("completed_pivot_needed");
 
       // 4. Real World Outcome Status Farkı
@@ -227,7 +226,7 @@ describe("AŞAMA 39.2: EPISTEMIC REGRESSION, GERÇEK REASSESSMENT VE OUTCOME/STA
         "Ajan orkestrasyonunu başarıyla üretim ortamına entegre ettik, verimli oldu."
       );
 
-      expect(positivePlan.outcomeStage).toBe("completed_mastery");
+      expect(positivePlan.outcomeStage).toBe("completed_unreviewed");
       expect(positivePlan.realWorldOutcomeStatus).toBe("user_reported_positive");
       expect(positivePlan.outcomeVerificationEvidence).toBe("USER_REPORTED_SIGNAL");
       expect(positivePlan.userReflectionNote).toBe("Ajan orkestrasyonunu başarıyla üretim ortamına entegre ettik, verimli oldu.");
@@ -276,7 +275,7 @@ describe("AŞAMA 39.2: EPISTEMIC REGRESSION, GERÇEK REASSESSMENT VE OUTCOME/STA
 
       expect(planWithUnrelated.hasLiveBreakthroughAcceleration).toBeFalsy();
       expect(planWithUnrelated.liveSignalNotice).toBeUndefined();
-      expect(planWithUnrelated.reviewCheckpoint).toContain("12 Ay Sonra");
+      expect(planWithUnrelated.reviewCheckpoint).toContain("30–60 Gün Sonra");
     });
   });
 

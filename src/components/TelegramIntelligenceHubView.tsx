@@ -677,7 +677,7 @@ export const TelegramIntelligenceHubView: React.FC<TelegramIntelligenceHubViewPr
               <Clock className="w-4 h-4 text-cyan-400 shrink-0" />
               <div className="min-w-0">
                 <div className="text-[10px] text-cyan-400/90 uppercase font-bold tracking-wider">
-                  {isTr ? "Doğrulanmış Son Kontrol" : "Verified Last Check"}
+                  {isTr ? "Son Sistem Kontrolü" : "Last System Check"}
                 </div>
                 <div className="text-cyan-200 font-bold truncate flex items-center gap-1.5">
                   <span>
@@ -687,7 +687,7 @@ export const TelegramIntelligenceHubView: React.FC<TelegramIntelligenceHubViewPr
                           minute: "2-digit",
                           second: "2-digit",
                         })
-                      : (isTr ? "Şimdi Doğrulandı" : "Verified Just Now")}
+                      : (isTr ? "Şimdi Güncellendi" : "Updated Just Now")}
                   </span>
                   <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
                     autonomousStatus?.syncStatus === "ERROR"

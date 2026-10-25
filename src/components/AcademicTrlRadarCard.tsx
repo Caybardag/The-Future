@@ -310,7 +310,7 @@ export const AcademicTrlRadarCard: React.FC<AcademicTrlRadarCardProps> = ({ mile
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-cyan-400" />
             <h4 className="text-xs font-bold text-cyan-300 uppercase tracking-wider">
-              Doğrulanmış Hakemli Bilimsel Literatür (OpenAlex 250M Kataloğu)
+              Hakemli Bilimsel Literatür İndeksi (OpenAlex 250M Kataloğu)
             </h4>
           </div>
           <span className="text-[10px] text-slate-400 font-mono">

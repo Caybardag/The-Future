@@ -206,12 +206,12 @@ const TAB_TOUR_REGISTRY: Partial<Record<ViewMode, TabTourConfig>> = {
     steps: [
       {
         stepNumber: 1,
-        titleTr: "Doğrulanmış Sinyal İstihbaratı",
-        titleEn: "Verified Signal Intelligence",
+        titleTr: "Açık Kaynak Sinyal İstihbaratı",
+        titleEn: "Open Source Signal Intelligence",
         descTr:
-          "Dünya genelindeki laboratuvarlardan, patent bültenlerinden ve saygın teknoloji basınından toplanan teyitli sinyal akışını canlı izleyin.",
+          "Dünya genelindeki laboratuvarlardan, patent bültenlerinden ve saygın teknoloji basınından toplanan açık sinyal akışını canlı izleyin.",
         descEn:
-          "Monitor verified live intelligence streams gathered from global labs, patent gazettes, and reputable tech journals.",
+          "Monitor open source live intelligence streams gathered from global labs, patent gazettes, and reputable tech journals.",
         tipTr: "İpucu: Sağ üstteki 'Canlı Senkronize Et' ile en taze bilimsel verileri çekebilirsiniz.",
         tipEn: "Tip: Click 'Live Sync' at the top right to pull the freshest scientific breakthroughs.",
         icon: <Radio className="w-5 h-5 text-sky-400" />
