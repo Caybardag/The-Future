@@ -94,6 +94,14 @@ export const NexusHolodeckDrawer: React.FC<NexusHolodeckDrawerProps> = ({
             color: "text-blue-400 bg-blue-950/60 border-blue-500/30",
           },
           {
+            id: "verdict" as ViewMode,
+            label: language === "tr" ? "Gelecek Pusulası (Hızlı Sentez)" : "Future Verdict (Rapid Summary)",
+            desc: language === "tr" ? "3 soruda hızlı rol seçimi, kaçınılmaz eşikler ve eylem reçetesi" : "3-question rapid career & action verdict",
+            icon: Sliders,
+            badge: "HIZLI SENTEZ",
+            color: "text-amber-400 bg-amber-950/60 border-amber-500/30",
+          },
+          {
             id: "roadmap" as ViewMode,
             label: language === "tr" ? "Kişisel Gelecek Planı" : "Personal Future Plan",
             desc: language === "tr" ? "Yaş ve hedeflerinize özel 10 dönüm noktası ve biyo-yaş" : "10 matched milestones and longevity analysis",

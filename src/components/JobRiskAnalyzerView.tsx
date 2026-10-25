@@ -1520,7 +1520,7 @@ Tavsiye: ${currentYearData.actionHint}
                 }`}
               >
                 <Search className="w-3.5 h-3.5 text-purple-300" />
-                <span>{isTr ? "🔍 Akıllı Hedef & Meslek Analizi" : "🔍 Smart Career & Goal Analysis"}</span>
+                <span>{isTr ? "🔍 Kendi Mesleğimi Analiz Et (Önerilen)" : "🔍 Analyze My Profession (Recommended)"}</span>
               </button>
 
               <button
@@ -1532,7 +1532,7 @@ Tavsiye: ${currentYearData.actionHint}
                 }`}
               >
                 <Sliders className="w-3.5 h-3.5 text-cyan-300" />
-                <span>{isTr ? "🕹️ Zaman Tüneli Kokpiti" : "🕹️ Simulator Cockpit"}</span>
+                <span>{isTr ? "🕹️ Örnek Meslek Kokpiti (Referans)" : "🕹️ Sample Role Cockpit (Reference)"}</span>
               </button>
             </div>
 
@@ -1621,6 +1621,29 @@ Tavsiye: ${currentYearData.actionHint}
                     {isTr ? "Serbestçe yazın, yapay zeka risk & fırsatları analiz etsin" : "Type freely, AI calculates risks & roadmaps"}
                   </span>
                 </label>
+
+                {(currentUser?.profession || currentUser?.lifeRoleLabel) && (
+                  <div className="flex items-center justify-between gap-2 p-2.5 rounded-xl bg-purple-950/40 border border-purple-500/30 text-xs">
+                    <div className="flex items-center gap-2">
+                      <User className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                      <span className="text-slate-300">
+                        {isTr ? "Kayıtlı Profil Mesleğiniz:" : "Profile Profession:"}{" "}
+                        <strong className="text-white">{currentUser?.profession || currentUser?.lifeRoleLabel}</strong>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const prof = currentUser?.profession || currentUser?.lifeRoleLabel || "";
+                        setCustomGoal(prof);
+                        setCustomProfession(prof);
+                      }}
+                      className="px-2.5 py-1 rounded-lg bg-purple-600/70 hover:bg-purple-600 text-white font-mono text-[11px] font-bold transition cursor-pointer shrink-0"
+                    >
+                      {isTr ? "Bu Mesleği Seç" : "Use This Role"}
+                    </button>
+                  </div>
+                )}
 
                 <div className="relative">
                   <input
@@ -2096,6 +2119,26 @@ Tavsiye: ${currentYearData.actionHint}
       {/* ========================================================================= */}
       {activeTab === "cockpit" && (
         <div className="space-y-6">
+          {/* Reference Notice & Quick Switch to Custom AI */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-slate-950/90 via-slate-900/90 to-purple-950/60 border border-cyan-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+            <div className="flex items-center gap-2.5">
+              <Sliders className="w-4 h-4 text-cyan-400 shrink-0" />
+              <p className="text-xs text-slate-300">
+                {isTr
+                  ? "Aşağıdaki 8 meslek, otomasyonun sektörlere etkisini test etmeniz için hazırlanmış hazır referans senaryolardır."
+                  : "The 8 roles below are reference scenarios to explore automation impacts across key industries."}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleSwitchTab("custom_ai")}
+              className="px-3.5 py-1.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 text-purple-200 hover:text-white font-mono text-xs font-bold transition shrink-0 cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
+            >
+              <Search className="w-3.5 h-3.5 text-purple-300" />
+              <span>{isTr ? "Kendi Mesleğinizi Analiz Edin →" : "Analyze Your Own Role →"}</span>
+            </button>
+          </div>
+
           {/* 1-Click Fast Profession Selector */}
           <div className="p-5 sm:p-6 rounded-3xl bg-slate-900/90 border border-white/10 shadow-xl space-y-3">
             <label className="text-xs font-bold text-slate-300 font-mono flex items-center gap-1.5 uppercase">

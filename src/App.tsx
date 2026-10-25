@@ -4,7 +4,6 @@ import { ViewMode, PhaseId, CategoryType, Milestone, TelegramFeedItem } from "./
 import { safeStorage } from "./utils/safeStorage";
 import { TIMELINE_DATA, PHASES } from "./data/timelineData";
 import { Navbar } from "./components/Navbar";
-import { GoogleStyleLandingPortal } from "./components/GoogleStyleLandingPortal";
 import { EpicIntelligenceHubPortal } from "./components/EpicIntelligenceHubPortal";
 import { TimelineView } from "./components/TimelineView";
 import { AnalyticsView } from "./components/AnalyticsView";

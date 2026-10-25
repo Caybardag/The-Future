@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Milestone, ViewMode } from "../types";
 import {
   Compass,
@@ -284,9 +284,10 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
   onOpenAuthModal,
   onOpenGuideModal
 }) => {
-  const { currentUser } = useAuth();
+  const { currentUser, updateUserProfile } = useAuth();
   const { language } = useLanguage();
   const isTr = language === "tr";
+  const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
 
   // Derive initial role from user's onboarding selection or default to "employee"
   const defaultRoleId = useMemo(() => {
@@ -303,7 +304,87 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
   }, [currentUser]);
 
   const [selectedRoleId, setSelectedRoleId] = useState<string>(defaultRoleId);
+
+  // Sync if profile changes from outside
+  useEffect(() => {
+    if (currentUser?.lifeRole && ROLE_VERDICTS[currentUser.lifeRole]) {
+      setSelectedRoleId(currentUser.lifeRole);
+    }
+  }, [currentUser?.lifeRole]);
+
   const currentVerdict = ROLE_VERDICTS[selectedRoleId] || ROLE_VERDICTS.employee;
+
+  const handleSelectRole = (roleId: string) => {
+    setSelectedRoleId(roleId);
+    const targetVerdict = ROLE_VERDICTS[roleId];
+    if (targetVerdict && updateUserProfile) {
+      const roleToProfileMap: Record<string, { profession: string; lifeRole: string; lifeRoleLabel: string; employmentStatus?: string; seniority?: string }> = {
+        employee: {
+          profession: "Hizmet, Lojistik & İmalat Çalışanı",
+          lifeRole: "employee",
+          lifeRoleLabel: "Mavi Yaka / Hizmet Çalışanı",
+          employmentStatus: "employed",
+          seniority: "mid"
+        },
+        student: {
+          profession: "Öğrenci / Genç Araştırmacı",
+          lifeRole: "student",
+          lifeRoleLabel: "Öğrenci",
+          employmentStatus: "student",
+          seniority: "junior"
+        },
+        retiree: {
+          profession: "Emekli / Kıdemli Birey",
+          lifeRole: "retiree",
+          lifeRoleLabel: "Emekli",
+          employmentStatus: "retired",
+          seniority: "senior"
+        },
+        white_collar: {
+          profession: "Özel Sektör Uzmanı & Yönetici",
+          lifeRole: "white_collar",
+          lifeRoleLabel: "Beyaz Yaka / Yönetici",
+          employmentStatus: "employed",
+          seniority: "senior"
+        },
+        business_owner: {
+          profession: "KOBİ & Esnaf / İşletme Sahibi",
+          lifeRole: "business_owner",
+          lifeRoleLabel: "İşletme Sahibi",
+          employmentStatus: "self_employed",
+          seniority: "senior"
+        },
+        parent: {
+          profession: "Ebeveyn / Aile Temsilcisi",
+          lifeRole: "parent",
+          lifeRoleLabel: "Ebeveyn",
+          employmentStatus: currentUser?.employmentStatus || "employed",
+          seniority: currentUser?.seniority || "mid"
+        },
+        academic: {
+          profession: "Akademisyen & Bilimsel Araştırmacı",
+          lifeRole: "academic",
+          lifeRoleLabel: "Akademisyen / Araştırmacı",
+          employmentStatus: "employed",
+          seniority: "senior"
+        }
+      };
+
+      const mapped = roleToProfileMap[roleId];
+      if (mapped) {
+        updateUserProfile({
+          lifeRole: mapped.lifeRole,
+          lifeRoleLabel: mapped.lifeRoleLabel,
+          profession: mapped.profession,
+          employmentStatus: mapped.employmentStatus,
+          seniority: mapped.seniority,
+          isOnboardingCompleted: true
+        });
+        setSaveSuccessMsg(`✓ Rol profiline bağlandı (${mapped.lifeRoleLabel})`);
+        setTimeout(() => setSaveSuccessMsg(null), 3000);
+      }
+    }
+  };
 
   const handleJumpToMilestone = (year: number) => {
     const target = milestones.find((m) => m.year === year);
@@ -341,11 +422,19 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
+            <button
+              type="button"
+              onClick={() => onNavigateView("roadmap")}
+              className="px-4 py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-mono font-bold text-xs uppercase tracking-wider shadow-lg shadow-purple-600/30 flex items-center gap-2 cursor-pointer transition-all transform hover:scale-[1.02]"
+            >
+              <Compass className="w-4 h-4 text-purple-200" />
+              <span>Kişisel Yol Haritama Uygula</span>
+            </button>
             <button
               type="button"
               onClick={() => onNavigateView("timeline")}
-              className="px-5 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20 flex items-center gap-2 cursor-pointer transition-all transform hover:scale-[1.02]"
+              className="px-4 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/20 flex items-center gap-2 cursor-pointer transition-all transform hover:scale-[1.02]"
             >
               <Calendar className="w-4 h-4 text-slate-950" />
               <span>Canlı Takvime Git</span>
@@ -355,16 +444,23 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
 
         {/* 2. RAPİD ROLE SWITCHER (50-60 YAŞ DEDE DE, LİSELİ DE 1 TIKLA GEÇEBİLİR) */}
         <div className="pt-3 border-t border-white/10 space-y-2">
-          <div className="flex items-center justify-between text-xs font-mono text-slate-400">
+          <div className="flex items-center justify-between text-xs font-mono text-slate-400 flex-wrap gap-2">
             <span className="flex items-center gap-1.5 font-bold text-slate-300">
               <Sliders className="w-3.5 h-3.5 text-purple-400" />
               Hangi Rolün Gelecek Raporunu İncelemek İstiyorsunuz?
             </span>
-            {currentUser?.username && (
-              <span className="text-[11px] text-cyan-300">
-                Giriş Yapan Profil: <strong>{currentUser.username}</strong> ({currentUser.lifeRoleLabel || "Standart"})
-              </span>
-            )}
+            <div className="flex items-center gap-2">
+              {saveSuccessMsg && (
+                <span className="text-[11px] text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-full animate-fadeIn">
+                  {saveSuccessMsg}
+                </span>
+              )}
+              {currentUser?.username && (
+                <span className="text-[11px] text-cyan-300">
+                  Profil: <strong>{currentUser.username}</strong> ({currentUser.lifeRoleLabel || "Standart"})
+                </span>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-purple-900">
@@ -375,7 +471,7 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
                 <button
                   key={`role-verdict-${role.id || 'role'}-${rIdx}`}
                   type="button"
-                  onClick={() => setSelectedRoleId(role.id)}
+                  onClick={() => handleSelectRole(role.id)}
                   className={`px-3.5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 shrink-0 transition-all cursor-pointer ${
                     isSelected
                       ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 border border-purple-400 scale-[1.02]"
@@ -615,16 +711,27 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
             </div>
           </div>
 
-          {onOpenGuideModal && (
+          <div className="space-y-2 mt-3">
             <button
               type="button"
-              onClick={onOpenGuideModal}
-              className="w-full mt-3 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 hover:text-white font-mono text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              onClick={() => onNavigateView("roadmap")}
+              className="w-full py-2.5 rounded-xl bg-purple-600/30 hover:bg-purple-600/40 border border-purple-500/40 text-purple-200 hover:text-white font-mono text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
-              <Bot className="w-3.5 h-3.5" />
-              <span>Yapay Zeka Danışmanına Özel Soru Sor</span>
+              <ArrowRight className="w-3.5 h-3.5 text-purple-300" />
+              <span>Bu Reçeteyi Kişisel Yol Haritasında Takip Et</span>
             </button>
-          )}
+
+            {onOpenGuideModal && (
+              <button
+                type="button"
+                onClick={onOpenGuideModal}
+                className="w-full py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 hover:text-white font-mono text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <Bot className="w-3.5 h-3.5" />
+                <span>Yapay Zeka Danışmanına Özel Soru Sor</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

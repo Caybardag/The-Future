@@ -7,7 +7,7 @@
     "role": "superadmin",
     "isSuperAdmin": true,
     "totalSpent": 0,
-    "updatedAt": "2026-10-24T17:43:36.238Z"
+    "updatedAt": "2026-10-24T19:25:27.660Z"
   },
   "victim@test.com": {
     "email": "victim@test.com",
@@ -35,7 +35,7 @@
     "role": "user",
     "isSuperAdmin": false,
     "totalSpent": 0,
-    "updatedAt": "2026-10-24T17:43:15.909Z"
+    "updatedAt": "2026-10-24T19:25:06.268Z"
   },
   "attacker_security_test@example.com": {
     "email": "attacker_security_test@example.com",
@@ -45,7 +45,7 @@
     "role": "user",
     "isSuperAdmin": false,
     "totalSpent": 0,
-    "updatedAt": "2026-10-24T17:43:16.037Z"
+    "updatedAt": "2026-10-24T19:25:06.437Z"
   },
   "usera_security_test@example.com": {
     "email": "usera_security_test@example.com",
@@ -54,8 +54,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 3180,
-    "updatedAt": "2026-10-24T17:43:16.205Z"
+    "totalSpent": 3240,
+    "updatedAt": "2026-10-24T19:25:06.541Z"
   },
   "concurrency_race_test@example.com": {
     "email": "concurrency_race_test@example.com",
@@ -64,8 +64,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 1020,
-    "updatedAt": "2026-10-24T17:43:09.694Z"
+    "totalSpent": 1040,
+    "updatedAt": "2026-10-24T19:25:01.103Z"
   },
   "multi_concurrency_test@example.com": {
     "email": "multi_concurrency_test@example.com",
@@ -74,8 +74,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 1020,
-    "updatedAt": "2026-10-24T17:43:10.305Z"
+    "totalSpent": 1040,
+    "updatedAt": "2026-10-24T19:25:01.609Z"
   },
   "commit_test@example.com": {
     "email": "commit_test@example.com",
@@ -84,8 +84,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 1130,
-    "updatedAt": "2026-10-24T17:43:10.971Z"
+    "totalSpent": 1150,
+    "updatedAt": "2026-10-24T19:25:01.963Z"
   },
   "refund_test@example.com": {
     "email": "refund_test@example.com",
@@ -94,8 +94,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 1020,
-    "updatedAt": "2026-10-24T17:43:11.662Z"
+    "totalSpent": 1040,
+    "updatedAt": "2026-10-24T19:25:02.656Z"
   },
   "idempotency_test@example.com": {
     "email": "idempotency_test@example.com",
@@ -104,8 +104,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 1020,
-    "updatedAt": "2026-10-24T17:43:12.765Z"
+    "totalSpent": 1040,
+    "updatedAt": "2026-10-24T19:25:03.474Z"
   },
   "test_isolated@example.com": {
     "email": "test_isolated@example.com",
@@ -125,8 +125,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 1658,
-    "updatedAt": "2026-10-24T17:43:15.675Z"
+    "totalSpent": 1688,
+    "updatedAt": "2026-10-24T19:25:06.136Z"
   },
   "firestore_add_test@example.com": {
     "email": "firestore_add_test@example.com",
@@ -136,7 +136,7 @@
     "role": "user",
     "isSuperAdmin": false,
     "totalSpent": 0,
-    "updatedAt": "2026-10-24T17:43:16.354Z"
+    "updatedAt": "2026-10-24T19:25:06.787Z"
   },
   "normal_user_phase6h@example.com": {
     "email": "normal_user_phase6h@example.com",
@@ -145,8 +145,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 430,
-    "updatedAt": "2026-10-24T17:43:30.814Z"
+    "totalSpent": 440,
+    "updatedAt": "2026-10-24T19:25:22.262Z"
   },
   "attacker_phase6h@example.com": {
     "email": "attacker_phase6h@example.com",
@@ -156,7 +156,7 @@
     "role": "user",
     "isSuperAdmin": false,
     "totalSpent": 0,
-    "updatedAt": "2026-10-24T17:43:30.975Z"
+    "updatedAt": "2026-10-24T19:25:22.401Z"
   },
   "pro_user_test_15c@example.com": {
     "email": "pro_user_test_15c@example.com",
@@ -165,8 +165,8 @@
     "plan": "pro",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 410,
-    "updatedAt": "2026-10-24T17:43:36.436Z"
+    "totalSpent": 420,
+    "updatedAt": "2026-10-24T19:25:27.845Z"
   },
   "vip_user_test_15c@example.com": {
     "email": "vip_user_test_15c@example.com",
@@ -175,8 +175,8 @@
     "plan": "quantum_vip",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 250,
-    "updatedAt": "2026-10-24T17:43:36.480Z"
+    "totalSpent": 256,
+    "updatedAt": "2026-10-24T19:25:27.903Z"
   },
   "ad_test_1790413720383@example.com": {
     "email": "ad_test_1790413720383@example.com",
@@ -5255,8 +5255,8 @@
     "plan": "free",
     "role": "user",
     "isSuperAdmin": false,
-    "totalSpent": 96,
-    "updatedAt": "2026-10-24T17:43:03.727Z"
+    "totalSpent": 102,
+    "updatedAt": "2026-10-24T19:24:56.110Z"
   },
   "test_citizen_15d_1791671148267@example.com": {
     "email": "test_citizen_15d_1791671148267@example.com",
@@ -7207,5 +7207,165 @@
     "isSuperAdmin": false,
     "totalSpent": 0,
     "updatedAt": "2026-10-24T17:43:36.545Z"
+  },
+  "test_delete_1792869828997@example.com": {
+    "email": "test_delete_1792869828997@example.com",
+    "userId": "usr_1792869829007_3vqo",
+    "credits": 35,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:23:49.040Z"
+  },
+  "retry_delete_1792869829223@example.com": {
+    "email": "retry_delete_1792869829223@example.com",
+    "userId": "usr_1792869829230_f8ov",
+    "credits": 35,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:23:49.231Z"
+  },
+  "test_citizen_15d_1792869831227@example.com": {
+    "email": "test_citizen_15d_1792869831227@example.com",
+    "userId": "usr_7bdd3f58d04a",
+    "credits": 15,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 5,
+    "updatedAt": "2026-10-24T19:23:51.588Z"
+  },
+  "sponsor_user_1792869831228@example.com": {
+    "email": "sponsor_user_1792869831228@example.com",
+    "userId": "usr_07d6076f91c9",
+    "credits": 3,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:23:51.713Z"
+  },
+  "replay_user_1792869831716@example.com": {
+    "email": "replay_user_1792869831716@example.com",
+    "userId": "usr_5b71d412660b",
+    "credits": 3,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:23:51.735Z"
+  },
+  "limit_user_1792869831738@example.com": {
+    "email": "limit_user_1792869831738@example.com",
+    "userId": "usr_9386b951d428",
+    "credits": 15,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:23:51.873Z"
+  },
+  "ad_test_1792869835632@example.com": {
+    "email": "ad_test_1792869835632@example.com",
+    "userId": "usr_653a897f2a19",
+    "credits": 5,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:23:55.667Z"
+  },
+  "spin_test_1792869835670@example.com": {
+    "email": "spin_test_1792869835670@example.com",
+    "userId": "usr_2aeef21118aa",
+    "credits": 1,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:23:55.702Z"
+  },
+  "test_delete_1792869924048@example.com": {
+    "email": "test_delete_1792869924048@example.com",
+    "userId": "usr_1792869924056_m5hx",
+    "credits": 35,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:25:24.079Z"
+  },
+  "retry_delete_1792869924191@example.com": {
+    "email": "retry_delete_1792869924191@example.com",
+    "userId": "usr_1792869924199_5jrn",
+    "credits": 35,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:25:24.199Z"
+  },
+  "test_citizen_15d_1792869925870@example.com": {
+    "email": "test_citizen_15d_1792869925870@example.com",
+    "userId": "usr_8610e20ddad5",
+    "credits": 15,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 5,
+    "updatedAt": "2026-10-24T19:25:26.181Z"
+  },
+  "sponsor_user_1792869925872@example.com": {
+    "email": "sponsor_user_1792869925872@example.com",
+    "userId": "usr_80646e0ec517",
+    "credits": 3,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:25:26.272Z"
+  },
+  "replay_user_1792869926275@example.com": {
+    "email": "replay_user_1792869926275@example.com",
+    "userId": "usr_ec43966baead",
+    "credits": 3,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:25:26.293Z"
+  },
+  "limit_user_1792869926296@example.com": {
+    "email": "limit_user_1792869926296@example.com",
+    "userId": "usr_c35b44c43a10",
+    "credits": 15,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:25:26.418Z"
+  },
+  "ad_test_1792869927926@example.com": {
+    "email": "ad_test_1792869927926@example.com",
+    "userId": "usr_2c9f8f6013cd",
+    "credits": 5,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:25:27.953Z"
+  },
+  "spin_test_1792869927956@example.com": {
+    "email": "spin_test_1792869927956@example.com",
+    "userId": "usr_08480dc0b8fc",
+    "credits": 1,
+    "plan": "free",
+    "role": "user",
+    "isSuperAdmin": false,
+    "totalSpent": 0,
+    "updatedAt": "2026-10-24T19:25:27.977Z"
   }
 }
