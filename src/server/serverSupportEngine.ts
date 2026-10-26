@@ -35,7 +35,10 @@ export interface ServerCommunitySubmission {
   reviewedBy?: string;
 }
 
-const TICKETS_DB_PATH = path.join(process.cwd(), "src", "data", "server_support_tickets_db.json");
+const isTestEnv = Boolean(process.env.VITEST || process.env.NODE_ENV === "test");
+const TICKETS_DB_PATH = isTestEnv
+  ? path.join(process.cwd(), "src", "data", "test_support_tickets_db.json")
+  : path.join(process.cwd(), "src", "data", "server_support_tickets_db.json");
 const SUBMISSIONS_DB_PATH = path.join(process.cwd(), "src", "data", "server_community_submissions_db.json");
 
 let ticketsCache: ServerSupportTicket[] = [];

@@ -51,6 +51,7 @@ export interface AgentUpdateLog {
   message: string;
   impactOn2060CountdownYears: number;
   evolutionProgressDelta: number;
+  provenance?: "REAL_LIVE_DATA" | "SOURCE_DERIVED" | "MODEL_DERIVED" | "SYNTHETIC_DEMO_DATA";
 }
 
 interface AutonomousAgentSystemProps {

@@ -131,6 +131,11 @@ export const ButterflyEffectView: React.FC<ButterflyEffectViewProps> = ({
       }
     } catch (e: any) {
       console.error("Butterfly effect AI error:", e);
+      if (e?.code === "UNAUTHORIZED" || e?.status === 401) {
+        setCreditError(language === "tr" ? "🔒 Oturum Gerekli: Kelebek Etkisi simülasyonunu çalıştırmak için lütfen giriş yapın veya ücretsiz kayıt olun." : "🔒 Authentication Required: Please sign in to run the Butterfly Effect simulation.");
+        auth.openAuthModal?.();
+        return;
+      }
       const isTimeout = e?.name === "AbortError" || (e?.message || "").toLowerCase().includes("timeout");
       if (auth.currentUser?.email && (cost > 0 || !hasFreeQuota)) {
         autoHealingCredit({

@@ -1,3 +1,5 @@
+import { auth } from "../lib/firebase";
+
 interface ParsedUserSession {
   plan: "free" | "pro" | "quantum_vip";
   userId: string | null;
@@ -118,7 +120,20 @@ export async function safeFetchJson<T = any>(
   retries: number = 1
 ): Promise<{ success: boolean; data?: T; error?: string; code?: string; [key: string]: any }> {
   try {
-    const defaultHeaders = getApiHeaders();
+    let defaultHeaders = getApiHeaders();
+    if (typeof window !== "undefined" && auth?.currentUser) {
+      try {
+        const token = await auth.currentUser.getIdToken();
+        if (token) {
+          localStorage.setItem("future_user_session_token", token);
+          defaultHeaders = {
+            ...defaultHeaders,
+            Authorization: `Bearer ${token}`,
+          };
+        }
+      } catch (_tokenErr) {}
+    }
+
     const mergedHeaders = {
       ...defaultHeaders,
       ...((options.headers as Record<string, string>) || {}),
@@ -142,6 +157,41 @@ export async function safeFetchJson<T = any>(
       const data = await res.json();
       if (data && typeof data.remainingCredits === "number") {
         notifyClientCreditsUpdated(data.remainingCredits);
+      }
+      if (status === 401) {
+        if (retries > 0 && typeof window !== "undefined" && auth?.currentUser) {
+          try {
+            const refreshed = await auth.currentUser.getIdToken(true);
+            if (refreshed) {
+              localStorage.setItem("future_user_session_token", refreshed);
+              const retryHeaders = {
+                ...((options.headers as Record<string, string>) || {}),
+                Authorization: `Bearer ${refreshed}`,
+              };
+              return safeFetchJson<T>(url, { ...options, headers: retryHeaders }, retries - 1);
+            }
+          } catch (_e) {}
+        }
+
+        if (typeof window !== "undefined") {
+          try {
+            window.dispatchEvent(
+              new CustomEvent("future-open-auth-modal", {
+                detail: {
+                  reason: "unauthorized",
+                  message: data?.message || "Bu özelliği kullanabilmek için lütfen giriş yapın veya kayıt olun.",
+                },
+              })
+            );
+          } catch (_) {}
+        }
+        return {
+          status: 401,
+          success: false,
+          error: data?.message || "Oturum Gerekli: Bu yapay zeka analizini çalıştırmak için lütfen giriş yapın veya ücretsiz kayıt olun.",
+          code: "UNAUTHORIZED",
+          ...data,
+        };
       }
       if (status === 402) {
         try {
@@ -168,6 +218,11 @@ export async function safeFetchJson<T = any>(
     } catch (_jsonErr) {
       const text = await res.text().catch(() => "");
       console.warn(`[safeFetchJson] Received non-JSON response from ${url} (${res.status}):`, text.slice(0, 150));
+      if (res.status === 401 && typeof window !== "undefined") {
+        try {
+          window.dispatchEvent(new CustomEvent("future-open-auth-modal", { detail: { reason: "unauthorized" } }));
+        } catch (_) {}
+      }
       return {
         success: false,
         status: res.status,
@@ -179,7 +234,7 @@ export async function safeFetchJson<T = any>(
             : res.status === 401
             ? "Bu özelliği kullanmak için lütfen giriş yapın veya hesap oluşturun."
             : `Sunucu yanıtı geçersiz (HTTP ${res.status}). Lütfen tekrar deneyin.`,
-        code: res.status === 429 ? "TOO_MANY_REQUESTS" : `HTTP_${res.status}`,
+        code: res.status === 401 ? "UNAUTHORIZED" : res.status === 429 ? "TOO_MANY_REQUESTS" : `HTTP_${res.status}`,
       };
     }
   } catch (err: any) {

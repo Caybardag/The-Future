@@ -202,7 +202,8 @@ function MainAppContent() {
     setScenarioMode(newMode);
   };
 
-  // Homo Sapiens 2.0 Transhumanism & Autonomous Agent State
+  // Homo Sapiens 2.0 Transhumanism & Autonomous Agent State (Provenance: MODEL_DERIVED / SYNTHETIC_DEMO_DATA)
+  // Invariant: SYNTHETIC_DEMO_DATA ≠ LIVE_TELEMETRY. Benchmark simulation seeds prior to live agent telemetry.
   const [targetYearShift, setTargetYearShift] = useState<number>(-1.4);
   const [evolutionProgress, setEvolutionProgress] = useState<number>(84.8);
   const [agentLogs, setAgentLogs] = useState<AgentUpdateLog[]>([
@@ -211,18 +212,20 @@ function MainAppContent() {
       agentName: "Otonom Analiz Motoru",
       agentType: "sentinel",
       timestamp: new Date().toLocaleTimeString(),
-      message: "Gelecek trendi ve otomasyon etki modelleri güncellendi.",
+      message: "Gelecek trendi ve otomasyon etki modelleri güncellendi (Simülasyon Modeli).",
       impactOn2060CountdownYears: -1.4,
       evolutionProgressDelta: +2.8,
+      provenance: "SYNTHETIC_DEMO_DATA",
     },
     {
       id: "init_2",
       agentName: "Veri Doğrulama Servisi",
       agentType: "ethics",
       timestamp: new Date().toLocaleTimeString(),
-      message: "Teknolojik tahmin matrisi ve pazar dinamikleri stabil.",
+      message: "Teknolojik tahmin matrisi ve pazar dinamikleri stabil (Simülasyon Modeli).",
       impactOn2060CountdownYears: +0.2,
       evolutionProgressDelta: +0.6,
+      provenance: "SYNTHETIC_DEMO_DATA",
     },
   ]);
 
@@ -573,12 +576,14 @@ function MainAppContent() {
       !filteredMilestones.some((m) => m.year === activeMilestoneYear) &&
       firstFilteredMilestoneYear !== undefined
     ) {
-      const orig = TIMELINE_DATA.find((item) => item.year === firstFilteredMilestoneYear);
-      if (orig) {
-        setActiveMilestoneState(orig);
+      // Invariant: Do not revert to raw static TIMELINE_DATA. Use the localized and runtime-aware
+      // filteredMilestones element which retains liveSignalAnnotation, isDynamicBreakthrough, and dynamic signals.
+      const nextActive = filteredMilestones.find((m) => m.year === firstFilteredMilestoneYear) || filteredMilestones[0];
+      if (nextActive) {
+        setActiveMilestoneState(nextActive);
       }
     }
-  }, [selectedPhase, selectedCategory, searchQuery, activeMilestoneYear, firstFilteredMilestoneYear]);
+  }, [selectedPhase, selectedCategory, searchQuery, activeMilestoneYear, firstFilteredMilestoneYear, filteredMilestones]);
 
   // Simulation playback timer
   useEffect(() => {

@@ -36,6 +36,12 @@ export const SessionLockedModal: React.FC = () => {
       const result = await signInWithPopup(auth, googleProvider);
       if (result && result.user) {
         const fbUser = result.user;
+        try {
+          const freshToken = await fbUser.getIdToken();
+          if (freshToken) {
+            localStorage.setItem("future_user_session_token", freshToken);
+          }
+        } catch {}
         const googleEmail = (fbUser.email || "").trim().toLowerCase();
         const isSuper = googleEmail === "warfacelove46@gmail.com";
         const googleName = fbUser.displayName || currentUser.fullName || "Google User";

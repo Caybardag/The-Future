@@ -20,6 +20,7 @@ import { Milestone, ScientificSourceItem, SubMilestoneBranch } from "../types";
 
 export type AIServiceErrorCode =
   | "INSUFFICIENT_CREDITS"
+  | "UNAUTHORIZED"
   | "RATE_LIMIT_EXCEEDED"
   | "SERVICE_UNAVAILABLE"
   | "CONTENT_FILTERED"
@@ -663,6 +664,31 @@ export class AIService {
               continue;
             }
 
+            const isUnauthorized =
+              response.status === 401 ||
+              response.code === "UNAUTHORIZED" ||
+              response.error === "UNAUTHORIZED";
+
+            if (isUnauthorized) {
+              try {
+                window.dispatchEvent(
+                  new CustomEvent("future-open-auth-modal", {
+                    detail: {
+                      reason: "unauthorized",
+                      message: response.message || "Bu yapay zeka analizini çalıştırmak için lütfen giriş yapın veya ücretsiz kayıt olun.",
+                    },
+                  })
+                );
+              } catch (_) {}
+              throw new AIServiceError(
+                response.message || "Oturum Gerekli: Bu yapay zeka analizini çalıştırmak için lütfen giriş yapın veya ücretsiz kayıt olun.",
+                "UNAUTHORIZED",
+                401,
+                false,
+                response
+              );
+            }
+
             const isInsufficientCredits =
               response.status === 402 ||
               response.code === "INSUFFICIENT_CREDITS" ||
@@ -748,9 +774,11 @@ export class AIService {
 
     if (!options?.skipDeduplication) {
       this.inFlightRequests.set(cacheKey, requestPromise);
-      requestPromise.finally(() => {
-        this.inFlightRequests.delete(cacheKey);
-      });
+      requestPromise
+        .catch(() => {})
+        .finally(() => {
+          this.inFlightRequests.delete(cacheKey);
+        });
     }
 
     return requestPromise;

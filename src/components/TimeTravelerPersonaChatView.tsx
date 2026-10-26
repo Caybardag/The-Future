@@ -396,24 +396,35 @@ export const TimeTravelerPersonaChatView: React.FC<TimeTravelerPersonaChatViewPr
       }
     } catch (e: any) {
       console.error("Persona Chat error:", e);
-      const errorMsg: PersonaChatMessage = {
-        id: (Date.now() + 1).toString(),
-        sender: "persona",
-        text: `⚠️ Bağlantı hatası oluştu: ${e?.message || "Sunucuya ulaşılamadı"}\n\n🛡️ [OTOMATİK TELAFİ]: Harcanan ${deductedCost || 10} Krediniz hesabınıza anında geri yüklendi.`,
-        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      };
-      setMessages((prev) => [...prev, errorMsg]);
+      if (e?.code === "UNAUTHORIZED" || e?.status === 401) {
+        const authMsg: PersonaChatMessage = {
+          id: (Date.now() + 1).toString(),
+          sender: "persona",
+          text: `🔒 Oturum Gerekli: Zaman yolcusu ile sohbet edebilmek için lütfen giriş yapın veya ücretsiz kayıt olun.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        };
+        setMessages((prev) => [...prev, authMsg]);
+        onOpenAuthModal?.();
+      } else {
+        const errorMsg: PersonaChatMessage = {
+          id: (Date.now() + 1).toString(),
+          sender: "persona",
+          text: `⚠️ Bağlantı hatası oluştu: ${e?.message || "Sunucuya ulaşılamadı"}\n\n🛡️ [OTOMATİK TELAFİ]: Harcanan ${deductedCost || 10} Krediniz hesabınıza anında geri yüklendi.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        };
+        setMessages((prev) => [...prev, errorMsg]);
 
-      if (currentUser && (deductedCost > 0 || !hasFreeQuota)) {
-        handleAutoRefundAndLog({
-          userEmail: currentUser.email,
-          featureKey: "persona_chat",
-          featureName: "Zaman Yolcusu AI Sohbet",
-          deductedCredits: deductedCost || 10,
-          errorMessage: `İstemci/Bağlantı Hatası: ${e?.message || "Sunucuya ulaşılamadı"} (Persona: ${selectedPersona.name})`,
-          payload: { persona: selectedPersona.name, year: selectedPersona.year },
-          onRefundCredits: (amount) => auth.addCredits(amount),
-        });
+        if (currentUser && (deductedCost > 0 || !hasFreeQuota)) {
+          handleAutoRefundAndLog({
+            userEmail: currentUser.email,
+            featureKey: "persona_chat",
+            featureName: "Zaman Yolcusu AI Sohbet",
+            deductedCredits: deductedCost || 10,
+            errorMessage: `İstemci/Bağlantı Hatası: ${e?.message || "Sunucuya ulaşılamadı"} (Persona: ${selectedPersona.name})`,
+            payload: { persona: selectedPersona.name, year: selectedPersona.year },
+            onRefundCredits: (amount) => auth.addCredits(amount),
+          });
+        }
       }
     } finally {
       setLoading(false);

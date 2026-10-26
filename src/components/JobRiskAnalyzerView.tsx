@@ -1448,7 +1448,12 @@ export const JobRiskAnalyzerView: React.FC<JobRiskAnalyzerViewProps> = ({
         });
       }
     } catch (err: any) {
-      setCustomCreditError(err?.message || (isTr ? "Sunucu bağlantı hatası." : "Server error."));
+      if (err?.code === "UNAUTHORIZED" || err?.status === 401) {
+        setCustomCreditError(isTr ? "🔒 Oturum Gerekli: Meslek analizini çalıştırmak için lütfen giriş yapın veya ücretsiz kayıt olun." : "🔒 Authentication Required: Please sign in to run the job risk analysis.");
+        onOpenAuthModal?.();
+      } else {
+        setCustomCreditError(err?.message || (isTr ? "Sunucu bağlantı hatası." : "Server error."));
+      }
     } finally {
       setCustomLoading(false);
     }

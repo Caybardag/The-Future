@@ -142,7 +142,11 @@ export const MilestoneJobImpactModal: React.FC<MilestoneJobImpactModalProps> = (
       }
     } catch (err: any) {
       if (!isMountedRef.current) return;
-      setErrorMsg(err.message || (isTr ? "Bağlantı hatası oluştu." : "Network error."));
+      if (err?.code === "UNAUTHORIZED" || err?.status === 401) {
+        setErrorMsg(isTr ? "🔒 Oturum Gerekli: Dönüm noktası meslek analizini çalıştırmak için lütfen giriş yapın veya ücretsiz kayıt olun." : "🔒 Authentication Required: Please sign in to run the milestone impact analysis.");
+      } else {
+        setErrorMsg(err.message || (isTr ? "Bağlantı hatası oluştu." : "Network error."));
+      }
     } finally {
       clearTimeout(stepTimer1);
       clearTimeout(stepTimer2);

@@ -338,6 +338,14 @@ export const UserAuthModal: React.FC<UserAuthModalProps> = ({
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const fbUser = result.user;
+      try {
+        const freshToken = await fbUser.getIdToken();
+        if (freshToken) {
+          localStorage.setItem("future_user_session_token", freshToken);
+        }
+      } catch (tokenErr) {
+        console.warn("Could not retrieve Firebase ID token:", tokenErr);
+      }
       const googleEmail = (fbUser.email || "kullanici.google@gmail.com").trim().toLowerCase();
       const googleName = fbUser.displayName || fullName || "Google Doğrulanmış Kullanıcı";
       const isSuper = googleEmail === "warfacelove46@gmail.com";

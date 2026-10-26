@@ -69,10 +69,18 @@ const LEDGER_FILE_PATH = path.join(process.cwd(), "src", "data", "server_user_cr
 const TRANSACTIONS_FILE_PATH = path.join(process.cwd(), "src", "data", "server_credit_audit_transactions.json");
 const USERS_DB_PATH = path.join(process.cwd(), "src", "data", "server_users_db.json");
 
+const isTestEnv = Boolean(process.env.VITEST || process.env.NODE_ENV === "test");
+
 // Spin wheel, Rewarded Ads, Sponsor Clicks, and Daily Feature Quotas server persistence
-const SPIN_RECORDS_PATH = path.join(process.cwd(), "src", "data", "server_spin_records.json");
-const REWARDED_ADS_PATH = path.join(process.cwd(), "src", "data", "server_rewarded_ads.json");
-const SPONSOR_CLICKS_PATH = path.join(process.cwd(), "src", "data", "server_sponsor_clicks.json");
+const SPIN_RECORDS_PATH = isTestEnv
+  ? path.join(process.cwd(), "src", "data", "test_spin_records.json")
+  : path.join(process.cwd(), "src", "data", "server_spin_records.json");
+const REWARDED_ADS_PATH = isTestEnv
+  ? path.join(process.cwd(), "src", "data", "test_rewarded_ads.json")
+  : path.join(process.cwd(), "src", "data", "server_rewarded_ads.json");
+const SPONSOR_CLICKS_PATH = isTestEnv
+  ? path.join(process.cwd(), "src", "data", "test_sponsor_clicks.json")
+  : path.join(process.cwd(), "src", "data", "server_sponsor_clicks.json");
 const DAILY_USAGE_PATH = path.join(process.cwd(), "src", "data", "server_daily_usage.json");
 
 // In-memory caches for fast lookups
@@ -197,7 +205,14 @@ function persistBackupToDisk() {
   try {
     const dir = path.dirname(LEDGER_FILE_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(LEDGER_FILE_PATH, JSON.stringify(ledgerCache, null, 2), "utf-8");
+    // Invariant: Do not pollute permanent ledger with temporary test user timestamps
+    const cleanLedger: Record<string, ServerUserBalance> = {};
+    for (const [k, v] of Object.entries(ledgerCache)) {
+      if (!k.match(/^(sponsor_user_|replay_user_|limit_user_|test_delete_|rate_limit_user_)/i)) {
+        cleanLedger[k] = v;
+      }
+    }
+    fs.writeFileSync(LEDGER_FILE_PATH, JSON.stringify(cleanLedger, null, 2), "utf-8");
   } catch (_e) {}
 
   try {

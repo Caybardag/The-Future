@@ -37,8 +37,12 @@ export interface OtpRecord {
 }
 
 const SUPER_ADMIN_EMAIL = "warfacelove46@gmail.com";
+const isTestEnv = !!(process.env.VITEST || process.env.NODE_ENV === "test");
 const USERS_DB_PATH = path.join(process.cwd(), "src", "data", "server_users_db.json");
 const BANNED_LIST_PATH = path.join(process.cwd(), "src", "data", "server_banned_users.json");
+const SESSIONS_DB_PATH = isTestEnv
+  ? path.join(process.cwd(), "src", "data", "test_server_active_sessions.json")
+  : path.join(process.cwd(), "src", "data", "server_active_sessions.json");
 
 let usersCache: Record<string, ServerUserRecord> = {};
 let bannedCache: Record<string, { reason: string; bannedAt: string; bannedBy: string }> = {};
@@ -67,6 +71,22 @@ function ensureInitialized() {
   } catch (err) {
     console.warn("[ServerAuthEngine] Error reading banned DB:", err);
     bannedCache = {};
+  }
+
+  try {
+    if (fs.existsSync(SESSIONS_DB_PATH)) {
+      const raw = fs.readFileSync(SESSIONS_DB_PATH, "utf-8");
+      const loaded = JSON.parse(raw);
+      const now = Date.now();
+      for (const [token, sess] of Object.entries(loaded as Record<string, { email: string; expiresAt: number }>)) {
+        if (sess && sess.expiresAt > now) {
+          activeSessions[token] = sess;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("[ServerAuthEngine] Error reading sessions DB:", err);
+    activeSessions = {};
   }
 
   // Ensure Super Admin exists in server DB
@@ -109,6 +129,16 @@ function persistBannedToDisk() {
     fs.writeFileSync(BANNED_LIST_PATH, JSON.stringify(bannedCache, null, 2), "utf-8");
   } catch (err) {
     console.warn("[ServerAuthEngine] Warning saving banned DB:", err);
+  }
+}
+
+function persistSessionsToDisk() {
+  try {
+    const dir = path.dirname(SESSIONS_DB_PATH);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(SESSIONS_DB_PATH, JSON.stringify(activeSessions, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("[ServerAuthEngine] Warning saving sessions DB:", err);
   }
 }
 
@@ -245,6 +275,7 @@ export function loginServerUser(
     }
     const token = crypto.randomBytes(32).toString("hex");
     activeSessions[token] = { email: emailKey, expiresAt: Date.now() + 30 * 24 * 3600 * 1000 };
+    persistSessionsToDisk();
     return { success: true, user: sanitizeUser(user), token };
   }
 
@@ -267,6 +298,7 @@ export function loginServerUser(
 
   const token = crypto.randomBytes(32).toString("hex");
   activeSessions[token] = { email: emailKey, expiresAt: Date.now() + 7 * 24 * 3600 * 1000 };
+  persistSessionsToDisk();
 
   return { success: true, user: sanitizeUser(user), token };
 }
@@ -355,8 +387,10 @@ export function verifyOtp(
  */
 export function invalidateSession(sessionToken: string): boolean {
   if (!sessionToken) return false;
+  ensureInitialized();
   if (activeSessions[sessionToken]) {
     delete activeSessions[sessionToken];
+    persistSessionsToDisk();
     return true;
   }
   return false;
@@ -393,6 +427,7 @@ export function banUserOnServer(
       delete activeSessions[token];
     }
   }
+  persistSessionsToDisk();
 
   console.log(`[ServerAuthEngine] User ${key} banned by ${bannedBy}. Reason: ${reason}`);
   return { success: true };
@@ -422,10 +457,12 @@ export function getAllServerUsers(): Omit<ServerUserRecord, "passwordHash" | "sa
 
 export function getSessionUserEmail(sessionToken: string): string | null {
   if (!sessionToken) return null;
+  ensureInitialized();
   const session = activeSessions[sessionToken];
   if (!session) return null;
   if (Date.now() > session.expiresAt) {
     delete activeSessions[sessionToken];
+    persistSessionsToDisk();
     return null;
   }
   return session.email;
@@ -626,6 +663,7 @@ export function deleteServerUserAccount(emailOrUserId?: string): boolean {
 
   if (removed) {
     persistUsersToDisk();
+    persistSessionsToDisk();
   }
   return removed;
 }
@@ -638,6 +676,7 @@ export function createTestSession(email: string, role: "user" | "admin" | "super
   const emailKey = email.toLowerCase().trim();
   const token = `test_session_${crypto.randomBytes(16).toString("hex")}`;
   activeSessions[token] = { email: emailKey, expiresAt: Date.now() + 3600000 };
+  persistSessionsToDisk();
   if (!usersCache[emailKey]) {
     usersCache[emailKey] = {
       id: `usr_${crypto.randomBytes(6).toString("hex")}`,

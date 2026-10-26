@@ -37,7 +37,13 @@ interface FutureVerdictViewProps {
   onOpenGuideModal?: () => void;
 }
 
-interface RoleVerdictData {
+export type MetricProvenanceType =
+  | "STATIC_SCENARIO_DATA"
+  | "MODEL_DERIVED"
+  | "SOURCE_DERIVED"
+  | "USER_PERSONALIZED";
+
+export interface RoleVerdictData {
   id: string;
   label: string;
   icon: any;
@@ -45,11 +51,13 @@ interface RoleVerdictData {
   urgencyLevel: "Kritik" | "Yüksek" | "Orta";
   urgencyColor: string;
   summaryQuote: string;
+  provenance: MetricProvenanceType;
   // Soru 1: Makro Nabız (Bu role özel dünya yansıması)
   macroFocus: {
     statTitle: string;
     statValue: string;
     context: string;
+    provenance: MetricProvenanceType;
   };
   // Soru 2: Kritik Kırılma (En büyük kaçınılmaz eşik)
   criticalBreakthrough: {
@@ -58,11 +66,13 @@ interface RoleVerdictData {
     inevitabilityScore: number;
     whyItMatters: string;
     targetMilestoneYear: number;
+    provenance: MetricProvenanceType;
   };
   secondaryBreakthrough?: {
     year: number;
     title: string;
     whyItMatters: string;
+    provenance?: MetricProvenanceType;
   };
   // Soru 3: Eylem Reçetesi (Bugün ne yapmalı?)
   actionPrescription: {
@@ -72,7 +82,7 @@ interface RoleVerdictData {
   };
 }
 
-const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
+export const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
   employee: {
     id: "employee",
     label: "Çalışanım / Asgari Ücretliyim",
@@ -81,22 +91,26 @@ const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
     urgencyLevel: "Kritik",
     urgencyColor: "text-rose-400 bg-rose-500/10 border-rose-500/30",
     summaryQuote: "Fiziksel güç veya rutin kasa/depo işleri yerine 'robot operatörlüğü ve saha denetimi'ne geçmeyenler için 2028 büyük bir kırılma yaratacak.",
+    provenance: "STATIC_SCENARIO_DATA",
     macroFocus: {
       statTitle: "Rutin Fiziksel İşlerde Otomasyon Hızı",
       statValue: "%42 Riski",
-      context: "Türkiye'de özellikle montaj, ambalaj ve market/kasiyerlik alanlarında otonom robotik çözümler hızla ucuzluyor."
+      context: "Türkiye'de özellikle montaj, ambalaj ve market/kasiyerlik alanlarında otonom robotik çözümler hızla ucuzluyor.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     criticalBreakthrough: {
       year: 2028,
       title: "İnsansı Depo & Fabrika Robotlarının Kitlesel Yayılımı",
       inevitabilityScore: 94,
       whyItMatters: "Agility ve Tesla Optimus gibi robotların saatlik işletme maliyeti asgari ücretin altına inmeye başlıyor. Kol gücüyle yapılan işler robotlara kayıyor.",
-      targetMilestoneYear: 2028
+      targetMilestoneYear: 2028,
+      provenance: "STATIC_SCENARIO_DATA",
     },
     secondaryBreakthrough: {
       year: 2031,
       title: "Kasiyersiz & Otonom Lojistik Dağıtım Ağları",
-      whyItMatters: "Son kullanıcıya teslimat yapan kuryeler ve kasiyerlerin yerine dron ve otonom kapsüller geçiyor."
+      whyItMatters: "Son kullanıcıya teslimat yapan kuryeler ve kasiyerlerin yerine dron ve otonom kapsüller geçiyor.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     actionPrescription: {
       financialStep: "Gereksiz taksitli borçlanmadan kaçının; en az 6 aylık acil durum nakit tamponu oluşturun.",
@@ -112,22 +126,26 @@ const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
     urgencyLevel: "Kritik",
     urgencyColor: "text-amber-400 bg-amber-500/10 border-amber-500/30",
     summaryQuote: "Ezber bilgi ve tek başına kod yazma dönemi bitti. 2027 itibariyle sistem kuran ve yapay zeka ajanlarını yönetenler kazanacak.",
+    provenance: "STATIC_SCENARIO_DATA",
     macroFocus: {
       statTitle: "Yazılım ve Giriş Seviyesi Ofis İşi Talebi",
       statValue: "%65 Dönüşüm",
-      context: "Junior geliştiricilerin yazdığı standart kodları AI ajanları saniyeler içinde yazıp test ediyor; aranan şey disiplinlerarası problem çözme."
+      context: "Junior geliştiricilerin yazdığı standart kodları AI ajanları saniyeler içinde yazıp test ediyor; aranan şey disiplinlerarası problem çözme.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     criticalBreakthrough: {
       year: 2027,
       title: "Otonom Yazılımcı & Araştırmacı Ajanların Standartlaşması",
       inevitabilityScore: 96,
       whyItMatters: "Geleneksel sınav odaklı ezber bilgi piyasada sıfır değer taşıyacak. 'Soru sorma ve problem parçalama' tek geçer akçe oluyor.",
-      targetMilestoneYear: 2027
+      targetMilestoneYear: 2027,
+      provenance: "STATIC_SCENARIO_DATA",
     },
     secondaryBreakthrough: {
       year: 2030,
       title: "Hibrit Sentetik Biyoloji & Kuantum Bilişim Meslekleri",
-      whyItMatters: "Klasik bilgisayar mühendisliği yerine biyobilişim, prompt/mimari analistliği ve kuantum algoritma uzmanlığı prim yapacak."
+      whyItMatters: "Klasik bilgisayar mühendisliği yerine biyobilişim, prompt/mimari analistliği ve kuantum algoritma uzmanlığı prim yapacak.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     actionPrescription: {
       financialStep: "Öğrenciyken küçük sermayelerle AI destekli mikro-hizmetler (çeviri, veri görselleştirme, sunum hazırlama) üreterek döviz kazanmayı deneyin.",
@@ -143,22 +161,26 @@ const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
     urgencyLevel: "Yüksek",
     urgencyColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
     summaryQuote: "Geleceğin en büyük hediyesi tıp ve biyolojideki devrim olacak. Sağlığınızı koruyarak ömrünüzü uzatabilir, birikiminizi enflasyondan savunabilirsiniz.",
+    provenance: "STATIC_SCENARIO_DATA",
     macroFocus: {
       statTitle: "Biyolojik Yaşlanma ve Hücre Yenileme",
       statValue: "2030 Faz-3 Eşiği",
-      context: "Kanser ve damar sertliği gibi kronik hastalıklarda mRNA ve gen terapileri sayesinde erken teşhis maliyetleri düşecek."
+      context: "Kanser ve damar sertliği gibi kronik hastalıklarda mRNA ve gen terapileri sayesinde erken teşhis maliyetleri düşecek.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     criticalBreakthrough: {
       year: 2030,
       title: "Biyolojik Yaşlanmayı Yavaşlatan Telomer & Hücre Terapileri",
       inevitabilityScore: 89,
       whyItMatters: "60 yaşındaki bir insanın biyolojik organ yaşı 45'e çekilebilecek; sağlık harcamalarınızın yükü hafifleyecek.",
-      targetMilestoneYear: 2030
+      targetMilestoneYear: 2030,
+      provenance: "STATIC_SCENARIO_DATA",
     },
     secondaryBreakthrough: {
       year: 2033,
       title: "Evde Kişisel Sağlık & Refakatçi Robotları",
-      whyItMatters: "Yalnız yaşayan yaşlılar için tansiyon, şeker ve ilaç takibini yapan sempatik ev asistanları piyasaya çıkıyor."
+      whyItMatters: "Yalnız yaşayan yaşlılar için tansiyon, şeker ve ilaç takibini yapan sempatik ev asistanları piyasaya çıkıyor.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     actionPrescription: {
       financialStep: "Maaşınızı ve birikimlerinizi geleneksel tek kanalda tutmak yerine değer koruyan sert varlıklar ve enflasyona dayanıklı fonlarla dengeleyin.",
@@ -174,22 +196,26 @@ const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
     urgencyLevel: "Kritik",
     urgencyColor: "text-purple-400 bg-purple-500/10 border-purple-500/30",
     summaryQuote: "Ofis içi ara raporlar, Excel tabloları ve bürokrasi tamamen otonomlaşıyor. 'Yalnızca karar veren ve insani ilişkiyi yöneten' yönetici ayakta kalır.",
+    provenance: "STATIC_SCENARIO_DATA",
     macroFocus: {
       statTitle: "Beyaz Yaka Görevlerinde AI Yer Değiştirme Oranı",
       statValue: "%58",
-      context: "Rapor hazırlama, sözleşme inceleme ve müşteri yanıtları artık saniyeler içinde LLM ajanları tarafından tamamlanıyor."
+      context: "Rapor hazırlama, sözleşme inceleme ve müşteri yanıtları artık saniyeler içinde LLM ajanları tarafından tamamlanıyor.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     criticalBreakthrough: {
       year: 2027,
       title: "Kurumsal ERP & Hukuk Süreçlerinin Tam Otonomlaşması",
       inevitabilityScore: 95,
       whyItMatters: "10 kişinin yaptığı analiz ve sunum hazırlığını 1 kişi yapay zeka ajanıyla 20 dakikada yapabilecek. Kadrolar küçülecek.",
-      targetMilestoneYear: 2027
+      targetMilestoneYear: 2027,
+      provenance: "STATIC_SCENARIO_DATA",
     },
     secondaryBreakthrough: {
       year: 2032,
       title: "Yapay Zeka Destekli Otonom Yönetim Kurulları",
-      whyItMatters: "Şirket stratejileri insan sezgisi yerine küresel veri işleyen karar algoritmalarıyla belirlenecek."
+      whyItMatters: "Şirket stratejileri insan sezgisi yerine küresel veri işleyen karar algoritmalarıyla belirlenecek.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     actionPrescription: {
       financialStep: "Tek bir şirkete veya maaşa bağımlı kalmayın; online danışmanlık veya mikro-dijital ürünlerle ikinci bir gelir kanalı açın.",
@@ -205,17 +231,20 @@ const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
     urgencyLevel: "Yüksek",
     urgencyColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/30",
     summaryQuote: "Büyük zincirlerle rekabet etmenin tek yolu dükkanınıza yapay zeka müşteri asistanı ve akıllı stok yönetimi eklemektir.",
+    provenance: "STATIC_SCENARIO_DATA",
     macroFocus: {
       statTitle: "Hiper-Yerel Yapay Zeka ile Maliyet Düşüşü",
       statValue: "%35 Tasarruf",
-      context: "Doğru araçları kullanan küçük bir esnaf, reklam, muhasebe ve müşteri desteğini tek başına dev şirket kalitesinde yürütebiliyor."
+      context: "Doğru araçları kullanan küçük bir esnaf, reklam, muhasebe ve müşteri desteğini tek başına dev şirket kalitesinde yürütebiliyor.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     criticalBreakthrough: {
       year: 2028,
       title: "Kartsız/Kasiyersiz Mağaza & Otonom Tedarik Entegrasyonu",
       inevitabilityScore: 91,
       whyItMatters: "Tedarik zinciri doğrudan AI ile optimize edilecek; rafta bayatlayan veya elde kalan ürün maliyeti sıfırlanacak.",
-      targetMilestoneYear: 2028
+      targetMilestoneYear: 2028,
+      provenance: "STATIC_SCENARIO_DATA",
     },
     actionPrescription: {
       financialStep: "Geleneksel reklam ajanslarına para akıtmak yerine, yerel Google Haritalar ve yapay zeka video/görsel üretimiyle dükkanınızı öne çıkarın.",
@@ -231,17 +260,20 @@ const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
     urgencyLevel: "Yüksek",
     urgencyColor: "text-pink-400 bg-pink-500/10 border-pink-500/30",
     summaryQuote: "Çocuğunuzu bugünün sınavlarına değil, 2035'in dünyasına hazırlayın. En kritik beceri kod yazmak değil; empati, soru sorma ve psikolojik dayanıklılık.",
+    provenance: "STATIC_SCENARIO_DATA",
     macroFocus: {
       statTitle: "Yeni Kuşağın Karşılaşacağı Mesleklerin Belirsizliği",
       statValue: "%85 Yeni Alan",
-      context: "Bugün ilkokula başlayan çocukların %85'i henüz icat edilmemiş mesleklerde çalışacak."
+      context: "Bugün ilkokula başlayan çocukların %85'i henüz icat edilmemiş mesleklerde çalışacak.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     criticalBreakthrough: {
       year: 2032,
       title: "Bilişsel Eğitim Devrimi & Çocuklara Özel Birebir Yapay Zeka Mentorlar",
       inevitabilityScore: 93,
       whyItMatters: "Klasik sınıf ortamında 40 kişiye aynı dersi anlatma modeli çöküyor; her çocuğun öğrenme hızına göre uyarlanan AI öğretmenler geliyor.",
-      targetMilestoneYear: 2032
+      targetMilestoneYear: 2032,
+      provenance: "STATIC_SCENARIO_DATA",
     },
     actionPrescription: {
       financialStep: "Çocuğunuz adına uzun vadeli teknoloji ve yapay zeka endeks fonlarında birikim hesabı başlatın.",
@@ -257,17 +289,20 @@ const ROLE_VERDICTS: Record<string, RoleVerdictData> = {
     urgencyLevel: "Orta",
     urgencyColor: "text-blue-400 bg-blue-500/10 border-blue-500/30",
     summaryQuote: "Literatür taraması ve makale yazımını AI'a devretmeyen araştırmacılar hız yarışında geride kalacak; 2029'da AI bizzat bilimsel hipotez üretecek.",
+    provenance: "STATIC_SCENARIO_DATA",
     macroFocus: {
       statTitle: "Otonom Bilimsel Makale & Hipotez Üretimi",
       statValue: "100x Hızlanma",
-      context: "Protein katlanması ve malzeme biliminde yapay zeka laboratuvar deney sürelerini 5 yıldan 2 haftaya indirdi."
+      context: "Protein katlanması ve malzeme biliminde yapay zeka laboratuvar deney sürelerini 5 yıldan 2 haftaya indirdi.",
+      provenance: "STATIC_SCENARIO_DATA",
     },
     criticalBreakthrough: {
       year: 2029,
       title: "Otonom Bilimsel Keşif Ajanları (AI Bilim İnsanı)",
       inevitabilityScore: 92,
       whyItMatters: "Yapay zeka yalnızca veri analiz etmeyecek; deney kurgulayıp bilimsel teorileri bizzat test edecek.",
-      targetMilestoneYear: 2029
+      targetMilestoneYear: 2029,
+      provenance: "STATIC_SCENARIO_DATA",
     },
     actionPrescription: {
       financialStep: "Uluslararası Horizon Europe, TÜBİTAK ve özel sektör fonlarında yapay zeka entegrasyonu barındırmayan projelere kaynak ayrılmayacak; projelerinizi AI odaklı yeniden çerçeveleyin.",
@@ -614,13 +649,18 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
                 <AlertTriangle className="w-3 h-3 text-amber-400" />
                 2. Soru & Cevap
               </span>
-              <span className="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 font-mono text-[10px] font-bold">
-                %{currentVerdict.criticalBreakthrough.inevitabilityScore} Kaçınılmazlık
-              </span>
+              <div className="flex items-center gap-1.5">
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold border border-amber-500/40">
+                  %{currentVerdict.criticalBreakthrough.inevitabilityScore} Senaryo Ağırlığı
+                </span>
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono text-slate-400 bg-slate-900 border border-white/5" title="Statik senaryo projeksiyonudur, ampirik kesinlik değildir">
+                  SENARYO MODELİ
+                </span>
+              </div>
             </div>
 
             <h3 className="text-lg font-bold text-white font-sans">
-              En Büyük Kaçınılmaz Eşik Ne?
+              En Büyük Kritik Eşik Ne? (Senaryo Modeli)
             </h3>
 
             {/* Main Milestone Card */}

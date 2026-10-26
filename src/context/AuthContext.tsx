@@ -281,11 +281,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCreditStoreModalOpen(true);
     };
 
+    const handleOpenAuthModal = () => {
+      setUserAuthModalOpen(true);
+    };
+
     window.addEventListener("server-credits-updated", handleServerCreditUpdate);
     window.addEventListener("future-open-credit-store", handleOpenCreditStore);
+    window.addEventListener("future-open-auth-modal", handleOpenAuthModal);
     return () => {
       window.removeEventListener("server-credits-updated", handleServerCreditUpdate);
       window.removeEventListener("future-open-credit-store", handleOpenCreditStore);
+      window.removeEventListener("future-open-auth-modal", handleOpenAuthModal);
     };
   }, []);
 

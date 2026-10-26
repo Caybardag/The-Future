@@ -123,6 +123,12 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const fbUser = result.user;
+      try {
+        const freshToken = await fbUser.getIdToken();
+        if (freshToken) {
+          localStorage.setItem("future_user_session_token", freshToken);
+        }
+      } catch {}
       const gEmail = (fbUser.email || "").trim().toLowerCase();
       const gName = fbUser.displayName || gEmail.split("@")[0] || "Gelecek Yolcusu";
       const isSuper = gEmail === "warfacelove46@gmail.com";

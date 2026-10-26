@@ -201,7 +201,11 @@ export const AlgorithmicAuditWidget: React.FC<AlgorithmicAuditWidgetProps> = ({
         setAuditReport(generateAlgorithmicAudit(activeMilestone));
       }
     } catch (err: any) {
-      setLiveAiAnalysis("Canlı denetim gerçekleştirilirken hata oluştu: " + err.message);
+      if (err?.code === "UNAUTHORIZED" || err?.status === 401) {
+        setLiveAiAnalysis("🔒 Oturum Gerekli: Canlı yapay zeka denetimini çalıştırmak için lütfen giriş yapın veya ücretsiz kayıt olun.");
+      } else {
+        setLiveAiAnalysis("Canlı denetim gerçekleştirilirken hata oluştu: " + err.message);
+      }
     } finally {
       setLoadingAudit(false);
     }

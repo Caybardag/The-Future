@@ -376,6 +376,15 @@ export const PersonalRoadmapView: React.FC<PersonalRoadmapViewProps> = ({
         }
       }
     } catch (err: any) {
+      if (err?.code === "UNAUTHORIZED" || err?.status === 401) {
+        setAiReport(
+          isTr
+            ? "🔒 Oturum Gerekli: Kişisel Gelecek Yol Haritası oluşturabilmek için lütfen giriş yapın veya ücretsiz hesap oluşturun."
+            : "🔒 Authentication Required: Please sign in or create a free account to generate your personal roadmap."
+        );
+        auth.openAuthModal?.();
+        return;
+      }
       const isTimeout = err?.name === "AbortError" || (err?.message || "").toLowerCase().includes("timeout");
       if (auth.currentUser?.email && (cost > 0 || !hasFreeQuota)) {
         autoHealingCredit({

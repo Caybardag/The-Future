@@ -1,0 +1,86 @@
+{
+  "sponsor_user_1793006016144@example.com": {
+    "count": 1,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793006016664,
+    "usedClaimIds": [
+      "claim_1793006016663_1"
+    ]
+  },
+  "replay_user_1793006016687@example.com": {
+    "count": 1,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793006016687,
+    "usedClaimIds": [
+      "replay_claim_1793006016687"
+    ]
+  },
+  "limit_user_1793006016736@example.com": {
+    "count": 5,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793006016887,
+    "usedClaimIds": [
+      "limit_claim_1793006016736_1",
+      "limit_claim_1793006016772_2",
+      "limit_claim_1793006016812_3",
+      "limit_claim_1793006016844_4",
+      "limit_claim_1793006016886_5"
+    ]
+  },
+  "sponsor_user_1793006090826@example.com": {
+    "count": 1,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793006091192,
+    "usedClaimIds": [
+      "claim_1793006091191_1"
+    ]
+  },
+  "replay_user_1793006091213@example.com": {
+    "count": 1,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793006091213,
+    "usedClaimIds": [
+      "replay_claim_1793006091213"
+    ]
+  },
+  "limit_user_1793006091246@example.com": {
+    "count": 5,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793006091397,
+    "usedClaimIds": [
+      "limit_claim_1793006091246_1",
+      "limit_claim_1793006091269_2",
+      "limit_claim_1793006091303_3",
+      "limit_claim_1793006091329_4",
+      "limit_claim_1793006091397_5"
+    ]
+  },
+  "sponsor_user_1793008936026@example.com": {
+    "count": 1,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793008936486,
+    "usedClaimIds": [
+      "claim_1793008936486_1"
+    ]
+  },
+  "replay_user_1793008936526@example.com": {
+    "count": 1,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793008936526,
+    "usedClaimIds": [
+      "replay_claim_1793008936526"
+    ]
+  },
+  "limit_user_1793008936566@example.com": {
+    "count": 5,
+    "date": "2026-10-26",
+    "lastClaimTimestamp": 1793008936702,
+    "usedClaimIds": [
+      "limit_claim_1793008936566_1",
+      "limit_claim_1793008936600_2",
+      "limit_claim_1793008936619_3",
+      "limit_claim_1793008936665_4",
+      "limit_claim_1793008936702_5"
+    ]
+  }
+}
