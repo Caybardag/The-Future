@@ -129,15 +129,9 @@ function MainAppContent() {
   }, []);
 
   // ROUTING LOGIC:
-  // - Unauthenticated guests start at the welcoming artistic portal ("portal").
-  // - Authenticated members go straight to their active workspace cockpit ("timeline").
-  const [currentView, setCurrentView] = useState<ViewMode>(() => {
-    try {
-      const stored = localStorage.getItem("future_timeline_user") || localStorage.getItem("auth_current_user");
-      if (stored && JSON.parse(stored)) return "timeline";
-    } catch {}
-    return "portal";
-  });
+  // - Both Guests and Members start at the Gelecek Merkezi ("portal"), where content adapts dynamically.
+  // - Member sees personalized dashboard while Guest sees exploration and feature introduction.
+  const [currentView, setCurrentView] = useState<ViewMode>("portal");
 
   // CRITICAL MOBILE FIX: Whenever view changes, immediately reset scroll position to top
   useEffect(() => {
@@ -148,10 +142,10 @@ function MainAppContent() {
 
   useEffect(() => {
     if (currentUser && !prevUserRef.current) {
-      // Member just logged in -> direct them immediately to the active workspace cockpit
-      setCurrentView("timeline");
+      // Member just logged in -> do NOT forcibly push to timeline.
+      // If user is on portal, keep them on portal to see their personalized Member Home.
     } else if (!currentUser && prevUserRef.current) {
-      // Member logged out -> present the welcoming artistic portal
+      // Member logged out -> present the welcoming portal
       setCurrentView("portal");
       try {
         sessionStorage.removeItem("has_entered_console");
@@ -670,8 +664,8 @@ function MainAppContent() {
       {/* Dynamic Futuristic Ambient Background for All Tabs */}
       <FuturisticAmbientBackground scenarioMode={scenarioMode} />
 
-      {/* Gentle Non-Intrusive Onboarding Reminder Banner (Never blocks the screen) */}
-      {showSoftOnboardingBanner && (
+      {/* Gentle Non-Intrusive Onboarding Reminder Banner (Only outside portal; portal has dedicated member widget) */}
+      {showSoftOnboardingBanner && currentView !== "portal" && (
         <div className="relative z-30 bg-gradient-to-r from-purple-950/90 via-indigo-950/90 to-purple-950/90 border-b border-purple-500/40 px-4 py-2 text-xs flex items-center justify-between shadow-lg">
           <div className="flex items-center gap-2 text-purple-200">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shrink-0" />
@@ -719,34 +713,36 @@ function MainAppContent() {
         />
       )}
       
-      {/* Unified Top Futurist HUD & Navbar Header */}
-      <Navbar
-        currentView={currentView}
-        setCurrentView={setCurrentView}
-        selectedPhase={selectedPhase}
-        setSelectedPhase={setSelectedPhase}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        categories={categories}
-        onOpenEmbedModal={() => setEmbedModalMilestone(activeMilestone)}
-        scenarioMode={scenarioMode}
-        setScenarioMode={handleScenarioChange}
-        onOpenUserProfileModal={() => {
-          if (!currentUser) {
-            setUserAuthModalOpen(true);
-          } else {
-            setUserProfileModalDefaultTab("profile");
-            setUserProfileModalOpen(true);
-          }
-        }}
-        onOpenCreditStore={() => setCreditStoreModalOpen(true)}
-        onOpenGuideModal={() => setGuideModalOpen(true)}
-        onOpenDrawer={() => setIsNexusDrawerOpen(true)}
-        currentUser={currentUser}
-        targetYearShift={targetYearShift}
-      />
+      {/* Unified Top Futurist HUD & Navbar Header - Hidden on portal to avoid double header */}
+      {currentView !== "portal" && (
+        <Navbar
+          currentView={currentView}
+          setCurrentView={setCurrentView}
+          selectedPhase={selectedPhase}
+          setSelectedPhase={setSelectedPhase}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          categories={categories}
+          onOpenEmbedModal={() => setEmbedModalMilestone(activeMilestone)}
+          scenarioMode={scenarioMode}
+          setScenarioMode={handleScenarioChange}
+          onOpenUserProfileModal={() => {
+            if (!currentUser) {
+              setUserAuthModalOpen(true);
+            } else {
+              setUserProfileModalDefaultTab("profile");
+              setUserProfileModalOpen(true);
+            }
+          }}
+          onOpenCreditStore={() => setCreditStoreModalOpen(true)}
+          onOpenGuideModal={() => setGuideModalOpen(true)}
+          onOpenDrawer={() => setIsNexusDrawerOpen(true)}
+          currentUser={currentUser}
+          targetYearShift={targetYearShift}
+        />
+      )}
 
       {/* Main Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4 pb-28 md:pb-12 relative z-10">

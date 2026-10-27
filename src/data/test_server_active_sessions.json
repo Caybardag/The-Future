@@ -50,5 +50,57 @@
   "test_session_3434274583655198e732a00fb5cb6eae": {
     "email": "test_user_persistence@example.com",
     "expiresAt": 1793104907633
+  },
+  "test_session_76b8dbbe4f259c05b648a6defc84f623": {
+    "email": "usera_security_test@example.com",
+    "expiresAt": 1793107065794
+  },
+  "test_session_4d506542525f6413c2c36a2b7d966957": {
+    "email": "usera_security_test@example.com",
+    "expiresAt": 1793107066408
+  },
+  "test_session_cfd679f09a9f8eb2d7167ba5b692d419": {
+    "email": "usera_security_test@example.com",
+    "expiresAt": 1793107073212
+  },
+  "test_session_f534c4296d303da7a7db3ef0bcb38879": {
+    "email": "usera_security_test@example.com",
+    "expiresAt": 1793107073706
+  },
+  "test_session_ac946709b25acc1335684c39cae3bb8d": {
+    "email": "usera_security_test@example.com",
+    "expiresAt": 1793107074377
+  },
+  "test_session_aa50e9ad6c6c9c95bcf9c6a71e47ebc2": {
+    "email": "usera_security_test@example.com",
+    "expiresAt": 1793107075009
+  },
+  "test_session_9b1ed0d691d50765590db08b9c24cb40": {
+    "email": "user_a_sec6e@example.com",
+    "expiresAt": 1793107077179
+  },
+  "test_session_fc1e5a6af603ced48e6fd86e469959d3": {
+    "email": "user_a_sec6e@example.com",
+    "expiresAt": 1793107077180
+  },
+  "test_session_916a0faf11d669ccf965bb61956a2e0b": {
+    "email": "user_a_sec6e@example.com",
+    "expiresAt": 1793107077180
+  },
+  "test_session_73e8cab42256fc8e770f04f2424b19bf": {
+    "email": "user_a_sec6e@example.com",
+    "expiresAt": 1793107077181
+  },
+  "test_session_e82865026a422817b84fca1cda70883f": {
+    "email": "user_a_sec6e@example.com",
+    "expiresAt": 1793107077182
+  },
+  "test_session_b5d02652b1a71253ef5f6d4cc9dccd16": {
+    "email": "normal_user_phase6h@example.com",
+    "expiresAt": 1793107091647
+  },
+  "test_session_c2dd54675ef3a11d8fc3df9a7206dca1": {
+    "email": "test_user_persistence@example.com",
+    "expiresAt": 1793107102475
   }
 }

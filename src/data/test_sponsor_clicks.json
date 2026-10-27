@@ -110,5 +110,33 @@
       "limit_claim_1793101295162_4",
       "limit_claim_1793101295199_5"
     ]
+  },
+  "sponsor_user_1793103494032@example.com": {
+    "count": 1,
+    "date": "2026-10-27",
+    "lastClaimTimestamp": 1793103494491,
+    "usedClaimIds": [
+      "claim_1793103494491_1"
+    ]
+  },
+  "replay_user_1793103494535@example.com": {
+    "count": 1,
+    "date": "2026-10-27",
+    "lastClaimTimestamp": 1793103494535,
+    "usedClaimIds": [
+      "replay_claim_1793103494535"
+    ]
+  },
+  "limit_user_1793103494553@example.com": {
+    "count": 5,
+    "date": "2026-10-27",
+    "lastClaimTimestamp": 1793103494730,
+    "usedClaimIds": [
+      "limit_claim_1793103494553_1",
+      "limit_claim_1793103494586_2",
+      "limit_claim_1793103494652_3",
+      "limit_claim_1793103494674_4",
+      "limit_claim_1793103494729_5"
+    ]
   }
 }

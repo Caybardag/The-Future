@@ -1,9 +1,9 @@
 {
   "version": "2.0.0-authentic",
-  "savedAt": "2026-10-27T11:41:42.363Z",
-  "totalCyclesCompleted": 40,
-  "lastRunTimestamp": "2026-10-27T11:41:39.337Z",
-  "lastSuccessTimestamp": "2026-10-27T11:41:42.363Z",
+  "savedAt": "2026-10-27T12:18:08.891Z",
+  "totalCyclesCompleted": 43,
+  "lastRunTimestamp": "2026-10-27T12:18:03.731Z",
+  "lastSuccessTimestamp": "2026-10-27T12:18:08.891Z",
   "knowledgeNodes": [
     {
       "id": "node-2026-yapay-zeka---bili-im",
@@ -12,70 +12,23 @@
       "category": "Yapay Zeka & Bilişim",
       "trlLevel": "TRL 6 - Saha Prototipi",
       "scientificFeasibilityScore": 82,
-      "groundingProofSummary": "Otonom ajanların reaktif kontrol döngüleri, Princeton'ın füzyon plazma stabilizasyonunda kanıtladığı milisaniyelik karar mekanizmalarıyla TRL 6 seviyesine ulaşmıştır. Unitree'nin UnifoLM-X2-1.0 modeli, dünya modellerinin fiziksel etkileşimlerde önceden programlanmış komutlar olmaksızın gerçek zamanlı adaptasyon yeteneğini doğrulamaktadır.",
+      "groundingProofSummary": "800 Wh/kg enerji yoğunluğu, otonom ajanların enerji kısıtlarını aşarak yüksek işlem gücü gerektiren yerleşik çıkarım (on-device inference) kapasitesini mümkün kılmaktadır. İnsansı robotlardaki %99 navigasyon başarısı, çoklu ajan ağlarının (Multi-Agent Systems) fiziksel dünyada koordineli görev icra edebileceğinin deneysel kanıtıdır.",
       "causalDependencies": [
-        "Nöromorfik hesaplama mimarilerinin, yüksek enerji verimliliği ile uç birimlerde (edge) çıkarım yapabilmesi.",
-        "Düşük gecikmeli (sub-10ms) 6G/uydu ağları üzerinden dağıtık multi-agent senkronizasyonu."
+        "Nöromorfik donanım mimarilerinin Landauer limitine yaklaşan enerji verimliliği ile ölçeklenmesi",
+        "Dağıtık sistemlerde ajanlar arası düşük gecikmeli (low-latency) senkronizasyon protokollerinin standartlaşması"
       ],
       "bottlenecksAndLimits": [
-        "Landauer limiti: Hesaplama yoğunluğu arttıkça, işlem birimlerinin termal yönetimi ve entropi üretimi donanım ölçeklenmesini sınırlamaktadır.",
-        "Emergent davranış kontrolü: Otonom ajanların karmaşık ortamlarda beklenmedik (non-deterministic) hatalar yapması, güvenlik ve etik denetim mekanizmalarını darboğaza sokmaktadır."
+        "Termodinamik kısıt: Yüksek yoğunluklu hesaplama birimlerinde ısı dağılımı ve soğutma verimliliği (Carnot sınırı)",
+        "Algoritmik darboğaz: Çoklu ajan ağlarında ortaya çıkan 'emergent behavior' (beliren davranış) kontrolü ve güvenlik doğrulaması"
       ],
       "crossDomainImpacts": [
         {
           "targetDomain": "Enerji",
-          "impactDescription": "AI kontrollü plazma stabilizasyonu, füzyon reaktörlerinin ticari verimliliğini artırarak enerji maliyetlerinde radikal düşüşe yol açacaktır."
+          "impactDescription": "Yüksek enerji yoğunluklu bataryalar, otonom ağların şebekeden bağımsız çalışma süresini artırarak mikro-şebeke yönetiminde otonom optimizasyonu tetikler."
         },
         {
           "targetDomain": "Sosyoloji",
-          "impactDescription": "Otonom robotik sistemlerin fiziksel iş gücüne entegrasyonu, istihdam modellerinde yapısal bir dönüşümü ve 'insan-makine' iş birliği etiğinin yeniden tanımlanmasını zorunlu kılacaktır."
-        }
-      ],
-      "telegramSignalsIncluded": [
-        {
-          "newsTitle": "A humanoid robot powered by Qualcomm's Dragonwing IQ10 AI platform became the unexpecte...",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "HIGH_BREAKTHROUGH"
-        },
-        {
-          "newsTitle": "☀️ AI Just Learned to Control Fusion Plasma Faster Than Humans Can React",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "HIGH_BREAKTHROUGH"
-        },
-        {
-          "newsTitle": "🥊 This Is the Beginning of the End: Unitree Taught Robots to Fight Autonomously",
-          "channelTitle": "Gelecek takvimi",
-          "impactVerdict": "HIGH_BREAKTHROUGH"
-        }
-      ],
-      "lastEvaluatedAt": "2026-10-11T09:49:14.513Z",
-      "evaluatedByModel": "gemini-3.1-flash-lite",
-      "isAuthentic": true
-    },
-    {
-      "id": "node-2028-kuantum---hesaplama",
-      "year": 2028,
-      "title": "Kuantum Avantajı & Kırılmayan Şifreleme (QKD)",
-      "category": "Kuantum & Hesaplama",
-      "trlLevel": "TRL 6 - Saha Prototipi",
-      "scientificFeasibilityScore": 74,
-      "groundingProofSummary": "QKD (Kuantum Anahtar Dağıtımı), fotonların kuantum durumlarının gözlemlenmesiyle elde edilen 'no-cloning' teoremi ve Bell eşitsizliği ihlalleri ile fiziksel olarak kanıtlanmış bir güvenlik modelidir. Mevcut fiber optik ve uydu tabanlı QKD sistemleri, anahtar değişim hızlarını artırmak için fotonik entegre devreler (PIC) seviyesinde laboratuvar doğrulamalarını aşarak saha prototiplerine geçmiştir.",
-      "causalDependencies": [
-        "Kuantum tekrarlayıcıların (quantum repeaters) uzun mesafeli ağlarda sinyal kaybını önlemek için kuantum belleği ile entegrasyonu.",
-        "Yüksek enerji yoğunluklu (800 Wh/kg) katı hal bataryaların, taşınabilir kuantum şifreleme cihazlarının soğutma ve işlem gücü gereksinimlerini karşılaması."
-      ],
-      "bottlenecksAndLimits": [
-        "Fotonik kayıplar ve decoherence (eşevresizlik) süresi: Landauer limiti gereği, kuantum durumlarının korunması için gereken düşük entropili ortamın sürdürülebilirliği.",
-        "Kuantum anahtar dağıtım hızının (key rate) klasik şifreleme protokollerine kıyasla düşük kalması ve ölçeklenebilirlik sorunu."
-      ],
-      "crossDomainImpacts": [
-        {
-          "targetDomain": "Enerji",
-          "impactDescription": "Yüksek enerji yoğunluklu bataryalar, kuantum şifreleme modüllerinin saha operasyonlarında (mobil/askeri) kesintisiz çalışmasını sağlayarak kuantum ağlarının mobilizasyonunu hızlandıracaktır."
-        },
-        {
-          "targetDomain": "Kuantum",
-          "impactDescription": "Kuantum avantajının şifreleme alanında kanıtlanması, post-kuantum kriptografi (PQC) standartlarının zorunlu hale gelmesini ve küresel veri güvenliği mimarisinin yeniden inşasını tetikleyecektir."
+          "impactDescription": "Fabrika ve lojistik süreçlerinde %99 otomasyon, iş gücü piyasasında yapısal dönüşümü zorunlu kılarak evrensel temel gelir ve yeniden eğitim modellerini hızlandırır."
         }
       ],
       "telegramSignalsIncluded": [
@@ -95,7 +48,54 @@
           "impactVerdict": "MODERATE_SIGNAL"
         }
       ],
-      "lastEvaluatedAt": "2026-10-20T10:59:37.018Z",
+      "lastEvaluatedAt": "2026-10-27T12:08:23.476Z",
+      "evaluatedByModel": "gemini-3.1-flash-lite",
+      "isAuthentic": true
+    },
+    {
+      "id": "node-2028-kuantum---hesaplama",
+      "year": 2028,
+      "title": "Kuantum Avantajı & Kırılmayan Şifreleme (QKD)",
+      "category": "Kuantum & Hesaplama",
+      "trlLevel": "TRL 6 - Saha Prototipi",
+      "scientificFeasibilityScore": 82,
+      "groundingProofSummary": "QKD (Kuantum Anahtar Dağıtımı), fotonların kuantum durumlarının (polarizasyon/faz) gözlemlendiğinde çökmesi prensibine dayanan No-Cloning teoremi ile fiziksel olarak kanıtlanmıştır. Mevcut fiber optik ağlarda 100-200 km menzilli saha testleri başarıyla tamamlanmış olup, uydu tabanlı QKD ile küresel ölçekte doğrulama aşamasına geçilmiştir.",
+      "causalDependencies": [
+        "Kuantum tekrarlayıcıların (quantum repeaters) uzun mesafeli sinyal kaybını önlemek için geliştirilmesi",
+        "Yüksek enerji yoğunluklu solid-state bataryaların (800 Wh/kg) kuantum işlemci soğutma ve taşınabilir kripto-cihazlar için güç kaynağı olarak entegrasyonu"
+      ],
+      "bottlenecksAndLimits": [
+        "Fotonik kayıplar nedeniyle fiber optik hatlarda mesafe kısıtı ve kuantum belleklerin kısa koherans süreleri",
+        "Landauer limiti gereği, kuantum durumlarını işlemek için gereken düşük sıcaklık ortamlarının (kriyojenik) enerji verimliliği ve ölçeklenebilirlik kısıtı"
+      ],
+      "crossDomainImpacts": [
+        {
+          "targetDomain": "Enerji",
+          "impactDescription": "800 Wh/kg enerji yoğunluğuna sahip bataryalar, kuantum şifreleme cihazlarının saha operasyonlarında (mobil/askeri) bağımsız güç ihtiyacını karşılayarak QKD ağlarının yaygınlaşmasını sağlar."
+        },
+        {
+          "targetDomain": "Kuantum",
+          "impactDescription": "Kuantum Avantajı ile mevcut RSA/ECC şifreleme algoritmalarının geçersiz kılınması, post-kuantum kriptografi (PQC) ve QKD'ye geçişi zorunlu kılarak siber güvenlik mimarisini kökten değiştirir."
+        }
+      ],
+      "telegramSignalsIncluded": [
+        {
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
+          "impactVerdict": "MODERATE_SIGNAL"
+        },
+        {
+          "newsTitle": "Unitree and Boston Dynamics revealed autonomous humanoid robot agile navigation achievi...",
+          "channelTitle": "Frontier AI & Robotics",
+          "impactVerdict": "MODERATE_SIGNAL"
+        },
+        {
+          "newsTitle": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+          "channelTitle": "Singularity Hub",
+          "impactVerdict": "MODERATE_SIGNAL"
+        }
+      ],
+      "lastEvaluatedAt": "2026-10-27T12:13:06.403Z",
       "evaluatedByModel": "gemini-3.1-flash-lite",
       "isAuthentic": true
     },
@@ -106,23 +106,23 @@
       "category": "Yapay Zeka & Bilişim",
       "trlLevel": "TRL 6 - Saha Prototipi",
       "scientificFeasibilityScore": 74,
-      "groundingProofSummary": "AGI gelişimi, LLM mimarilerinin ötesine geçerek nöromorfik hesaplama ve yüksek enerji yoğunluklu depolama (800 Wh/kg) ile fiziksel dünyada otonom karar verme kapasitesine ulaşmıştır. Mevcut donanım verimliliği, Landauer limitine yaklaşan çipler ve robotik navigasyon entegrasyonu ile laboratuvar ölçeğinden saha prototipleme aşamasına geçmiştir.",
+      "groundingProofSummary": "AGI gelişimi, nöromorfik hesaplama mimarileri ve 800 Wh/kg enerji yoğunluklu katı hal pilleri ile donanım kısıtlarını aşmaktadır. Landauer limiti ve termodinamik verimlilik sınırları dahilinde, otonom robotik navigasyonun %99 başarıya ulaşması, bilişsel modelleme ile fiziksel dünya etkileşiminin entegrasyonunu doğrulamaktadır.",
       "causalDependencies": [
-        "Algoritmik verimlilik için nöromorfik işlemci mimarilerinin seri üretimi ve ölçeklenmesi.",
-        "Yüksek enerji yoğunluklu solid-state bataryaların otonom sistemlerin kesintisiz operasyonu için endüstriyel standardizasyonu."
+        "Yüksek bant genişlikli, düşük gecikmeli nöromorfik işlemci mimarilerinin seri üretimi",
+        "Sentetik veri setleri yerine gerçek dünya fiziksel etkileşimlerinden öğrenen 'Embodied AI' algoritmalarının olgunlaşması"
       ],
       "bottlenecksAndLimits": [
-        "Yapay zeka modellerinin çıkarım (inference) süreçlerinde karşılaştığı termodinamik ısı dağılımı ve enerji verimliliği kısıtları.",
-        "Otonom sistemlerin karmaşık ve kaotik gerçek dünya verilerinde 'halüsinasyon' payını sıfıra indiren güvenilir mantıksal çıkarım (reasoning) darboğazı."
+        "Hesaplama yoğunluğu arttıkça ortaya çıkan ısı dağılımı ve Landauer limitine yaklaşan enerji verimliliği kısıtları",
+        "Yüksek enerji yoğunluklu bataryaların döngü ömrü ve termal kararlılık sınırları"
       ],
       "crossDomainImpacts": [
         {
           "targetDomain": "Enerji",
-          "impactDescription": "800 Wh/kg enerji yoğunluğu, otonom robotik sistemlerin operasyonel süresini 3 kat artırarak lojistik ve üretimde tam otomasyonu mümkün kılar."
+          "impactDescription": "Yüksek enerji yoğunluklu bataryalar, otonom sistemlerin operasyonel süresini artırarak enerji şebekelerinde merkeziyetsiz yük dengeleme kapasitesini optimize eder."
         },
         {
           "targetDomain": "Biyo",
-          "impactDescription": "AGI destekli otonom keşif, protein katlanması ve genetik dizileme süreçlerini hızlandırarak kişiselleştirilmiş tıp ve sentetik biyolojide devrim yaratır."
+          "impactDescription": "AGI destekli otonom keşif, protein katlanması ve genetik dizileme süreçlerini hızlandırarak kişiselleştirilmiş tıp ve poligenik hastalık tedavisinde devrim yaratır."
         }
       ],
       "telegramSignalsIncluded": [
@@ -142,7 +142,7 @@
           "impactVerdict": "MODERATE_SIGNAL"
         }
       ],
-      "lastEvaluatedAt": "2026-10-20T11:04:39.800Z",
+      "lastEvaluatedAt": "2026-10-27T12:18:08.891Z",
       "evaluatedByModel": "gemini-3.1-flash-lite",
       "isAuthentic": true
     },
@@ -465,6 +465,33 @@
   ],
   "recentLogs": [
     {
+      "cycleId": 43,
+      "timestamp": "2026-10-27T12:18:08.891Z",
+      "status": "SUCCESS",
+      "modelUsed": "gemini-3.1-flash-lite",
+      "nodeProcessed": "2029 - Yapay Genel Zeka (AGI) & Otonom Bilimsel Keşif",
+      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %74",
+      "durationMs": 5160
+    },
+    {
+      "cycleId": 42,
+      "timestamp": "2026-10-27T12:13:06.403Z",
+      "status": "SUCCESS",
+      "modelUsed": "gemini-3.1-flash-lite",
+      "nodeProcessed": "2028 - Kuantum Avantajı & Kırılmayan Şifreleme (QKD)",
+      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %82",
+      "durationMs": 2672
+    },
+    {
+      "cycleId": 41,
+      "timestamp": "2026-10-27T12:08:23.476Z",
+      "status": "SUCCESS",
+      "modelUsed": "gemini-3.1-flash-lite",
+      "nodeProcessed": "2026 - Otonom Bilişsel AI Ajanları & Multi-Agent Ağları",
+      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %82",
+      "durationMs": 4744
+    },
+    {
       "cycleId": 40,
       "timestamp": "2026-10-27T11:41:42.363Z",
       "status": "SUCCESS",
@@ -706,33 +733,6 @@
       "nodeProcessed": "2031 - CRISPR-Cas9 ile Monogenik Hastalıkların Eradikasyonu",
       "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %72",
       "durationMs": 4245
-    },
-    {
-      "cycleId": 13,
-      "timestamp": "2026-09-25T07:55:23.240Z",
-      "status": "SUCCESS",
-      "modelUsed": "gemini-3-flash-preview",
-      "nodeProcessed": "2029 - Yapay Genel Zeka (AGI) & Otonom Bilimsel Keşif",
-      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3-flash-preview). TRL: TRL 6 - Saha Prototipi, Skor: %84",
-      "durationMs": 10643
-    },
-    {
-      "cycleId": 12,
-      "timestamp": "2026-09-25T07:47:33.236Z",
-      "status": "SUCCESS",
-      "modelUsed": "gemini-3.1-flash-lite",
-      "nodeProcessed": "2028 - Kuantum Avantajı & Kırılmayan Şifreleme (QKD)",
-      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %74",
-      "durationMs": 5638
-    },
-    {
-      "cycleId": 11,
-      "timestamp": "2026-09-25T07:39:15.744Z",
-      "status": "SUCCESS",
-      "modelUsed": "gemini-3.1-flash-lite",
-      "nodeProcessed": "2026 - Otonom Bilişsel AI Ajanları & Multi-Agent Ağları",
-      "details": "Gerçek Gemini bilişsel sentezi başarıyla tamamlandı (gemini-3.1-flash-lite). TRL: TRL 6 - Saha Prototipi, Skor: %82",
-      "durationMs": 3533
     }
   ]
 }

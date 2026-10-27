@@ -14,5 +14,9 @@
   "spin_test_1793101306454@example.com": {
     "lastSpinDate": "2026-10-27",
     "totalSpins": 1
+  },
+  "spin_test_1793103499668@example.com": {
+    "lastSpinDate": "2026-10-27",
+    "totalSpins": 1
   }
 }
