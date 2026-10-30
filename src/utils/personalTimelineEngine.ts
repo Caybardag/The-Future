@@ -29,7 +29,10 @@ export interface LiveIntelligenceSignal extends Partial<TelegramFeedItem> {
   confidenceScore?: number;
   impactVerdict?: string;
   channelTitle?: string;
+  sourceChannel?: string;
+  sourceOrg?: string;
   receivedAt?: string;
+  publishedAt?: string;
   timestamp?: string | number;
   sources?: any[];
 }
@@ -81,6 +84,23 @@ export interface MilestoneActionPlan {
   outcomeFollowUpAdvice?: string;
   timelinePhaseText?: string;
   risk?: any;
+  expectedValue?: any;
+  forWhom?: any;
+  isProfilePending?: boolean;
+  timeCost?: any;
+  decisionOptions?: any[];
+  userReflectionNote?: string;
+  employmentContext?: any;
+  actionStatus?: string;
+  acceleratedHorizonShiftYears?: number;
+  relevantLiveSignals?: any[];
+}
+
+export function getDomainContextualDecisionOptions(milestone?: any, profile?: any): any[] {
+  return [
+    { id: "opt_primary", label: "Birincil Eksen Adaptasyonu", description: "Mevcut yetkinlikleri güncelleme", expectedValue: 85, timeCost: "orta" },
+    { id: "opt_pivot", label: "Stratejik Pivot", description: "Alternatif teknoloji alanına geçiş", expectedValue: 78, timeCost: "yüksek" },
+  ];
 }
 
 export function calculateMilestonePersonalImpact(
