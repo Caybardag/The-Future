@@ -108,6 +108,8 @@ export function getUserAgentScanReports(userEmail?: string | null): AgentScanRep
   }
 }
 
+export const getLocalAgentReports = getUserAgentScanReports;
+
 /**
  * Fetches user's saved agent scan reports from Firestore ('agent_reports' collection)
  * completely free of charge (0 Credits). Merges with local storage.

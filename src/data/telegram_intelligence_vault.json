@@ -1,5 +1,57 @@
 [
   {
+    "id": "tg_singularity_hub_dedup_test_1793265427413_1793265427413",
+    "telegramMessageId": "dedup_test_1793265427413",
+    "channelId": "singularity_hub",
+    "channelTitle": "Singularity Hub",
+    "receivedAt": "2026-10-29T09:17:07.413Z",
+    "sourceCapturedAt": "2026-10-29T09:17:07.413Z",
+    "originalText": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotive lab road testing.",
+    "extractedYear": 2031,
+    "title": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotiv...",
+    "category": "Enerji & Çevre",
+    "summary": "Solid-state lithium silicon battery packs achieve 800 Wh/kg energy density in automotive lab road testing.",
+    "trlLevel": 6,
+    "confidenceScore": 80,
+    "impactVerdict": "MODERATE_SIGNAL",
+    "sourceUrl": "https://web.telegram.org/",
+    "aiAnalysisNotes": "Ham Telegram sinyali anında kaydedildi. Detaylı analiz hazır.",
+    "status": "raw_received",
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "matchedMilestoneYear": 2028,
+    "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
+    "matchConfidence": 55,
+    "isIntegrated": true
+  },
+  {
+    "id": "tg_tech_breakthroughs_test_msg_1793265427354_1793265427356",
+    "telegramMessageId": "test_msg_1793265427354",
+    "channelId": "tech_breakthroughs",
+    "channelTitle": "Frontier AI & Robotics",
+    "receivedAt": "2026-10-29T09:17:07.354Z",
+    "sourceCapturedAt": "2026-10-29T09:17:07.354Z",
+    "originalText": "Unitree and Boston Dynamics revealed autonomous humanoid robot agile navigation achieving 99% factory floor automation.",
+    "extractedYear": 2028,
+    "title": "Unitree and Boston Dynamics revealed autonomous humanoid robot agile navigation achievi...",
+    "category": "Otonom & Lojistik",
+    "summary": "Unitree and Boston Dynamics revealed autonomous humanoid robot agile navigation achieving 99% factory floor automation.",
+    "trlLevel": 7,
+    "confidenceScore": 80,
+    "impactVerdict": "MODERATE_SIGNAL",
+    "sourceUrl": "https://web.telegram.org/",
+    "aiAnalysisNotes": "Ham Telegram sinyali anında kaydedildi. Detaylı analiz hazır.",
+    "status": "raw_received",
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "matchedMilestoneYear": 2032,
+    "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
+    "matchConfidence": 48,
+    "isIntegrated": true
+  },
+  {
     "id": "tg_singularity_hub_dedup_test_1793008918455_1793008918456",
     "telegramMessageId": "dedup_test_1793008918455",
     "channelId": "singularity_hub",
@@ -19,7 +71,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-26T10:01:58.455Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1793008918403_1793008918404",
@@ -41,7 +97,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-26T10:01:58.403Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1793006076636_1793006076636",
@@ -63,7 +123,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-26T09:14:36.636Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1793006076567_1793006076569",
@@ -85,7 +149,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-26T09:14:36.567Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1793006010970_1793006010971",
@@ -107,7 +175,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-26T09:13:30.970Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1793006010917_1793006010918",
@@ -129,7 +201,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-26T09:13:30.917Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792943076193_1792943076193",
@@ -151,7 +227,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-25T15:44:36.193Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792943076148_1792943076150",
@@ -173,7 +253,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-25T15:44:36.148Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792928617392_1792928617393",
@@ -195,7 +279,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-25T11:43:37.392Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792928617351_1792928617352",
@@ -217,7 +305,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-25T11:43:37.351Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792869911950_1792869911950",
@@ -239,7 +331,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-24T19:25:11.950Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792869911901_1792869911902",
@@ -261,7 +357,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-24T19:25:11.901Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792869813311_1792869813312",
@@ -283,7 +383,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-24T19:23:33.311Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792869813266_1792869813268",
@@ -305,7 +409,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-24T19:23:33.266Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792748118030_1792748118030",
@@ -327,7 +435,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-23T09:35:18.030Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792748117980_1792748117981",
@@ -349,7 +461,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-23T09:35:17.980Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792582656168_1792582656169",
@@ -371,7 +487,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-21T11:37:36.168Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792582656121_1792582656123",
@@ -393,7 +513,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-21T11:37:36.121Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792494739825_1792494739826",
@@ -415,7 +539,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-20T11:12:19.825Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792494739778_1792494739780",
@@ -437,7 +565,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-20T11:12:19.778Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792494624168_1792494624168",
@@ -459,7 +591,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-20T11:10:24.168Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792494624129_1792494624131",
@@ -481,7 +617,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-20T11:10:24.129Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792316762295_1792316762296",
@@ -503,7 +643,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-18T09:46:02.295Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792316762186_1792316762187",
@@ -525,7 +669,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-18T09:46:02.186Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792232209753_1792232209753",
@@ -547,7 +695,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-17T10:16:49.753Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792232209713_1792232209714",
@@ -569,7 +721,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-17T10:16:49.713Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792231144914_1792231144915",
@@ -591,7 +747,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-17T09:59:04.914Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792231144875_1792231144877",
@@ -613,7 +773,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-17T09:59:04.875Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792175239249_1792175239249",
@@ -635,7 +799,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T18:27:19.249Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792175239200_1792175239201",
@@ -657,7 +825,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T18:27:19.200Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792142103237_1792142103238",
@@ -679,7 +851,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:15:03.237Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792142103197_1792142103198",
@@ -701,7 +877,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:15:03.197Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792141913038_1792141913039",
@@ -723,7 +903,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:11:53.038Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792141912994_1792141912996",
@@ -745,7 +929,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:11:52.994Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792141896241_1792141896242",
@@ -767,7 +955,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:11:36.241Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792141896207_1792141896208",
@@ -789,7 +981,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:11:36.207Z"
   },
   {
     "id": "tg_singularity_hub_dedup_test_1792141855668_1792141855669",
@@ -811,7 +1007,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:10:55.668Z"
   },
   {
     "id": "tg_tech_breakthroughs_test_msg_1792141855633_1792141855634",
@@ -833,7 +1033,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-10-16T09:10:55.633Z"
   },
   {
     "id": "tg_-1004388658742_421_1789500172900",
@@ -877,7 +1081,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 40,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-01T19:18:09.000Z"
   },
   {
     "id": "tg_-1004388658742_420_1789500172821",
@@ -921,7 +1129,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-07T11:25:42.000Z"
   },
   {
     "id": "tg_-1004388658742_419_1789500172729",
@@ -965,7 +1177,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-07T17:55:41.000Z"
   },
   {
     "id": "tg_-1004388658742_418_1789500172637",
@@ -1009,7 +1225,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-08T16:32:55.000Z"
   },
   {
     "id": "tg_-1004388658742_417_1789500172512",
@@ -1053,7 +1273,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-08T20:40:05.000Z"
   },
   {
     "id": "tg_-1004388658742_415_1789500172330",
@@ -1097,7 +1321,11 @@
     "matchedMilestoneYear": 2029,
     "matchedMilestoneTitle": "Yapay Genel Zeka (AGI) & Mantıksal Akıl Yürütme",
     "matchConfidence": 70,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-10T22:17:16.000Z"
   },
   {
     "id": "tg_-1004388658742_414_1789500172238",
@@ -1141,7 +1369,11 @@
     "matchedMilestoneYear": 2026,
     "matchedMilestoneTitle": "Yapay Zeka Ajanları Çağı",
     "matchConfidence": 64,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-11T04:09:42.000Z"
   },
   {
     "id": "tg_-1004388658742_413_1789500172132",
@@ -1185,7 +1417,11 @@
     "matchedMilestoneYear": 2051,
     "matchedMilestoneTitle": "Derin Uzay Madenciliği",
     "matchConfidence": 40,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-12T20:51:09.000Z"
   },
   {
     "id": "tg_-1004388658742_412_1789500171846",
@@ -1229,7 +1465,11 @@
     "matchedMilestoneYear": 2026,
     "matchedMilestoneTitle": "Yapay Zeka Ajanları Çağı",
     "matchConfidence": 70,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-14T04:09:51.000Z"
   },
   {
     "id": "tg_-1004388658742_411_1789500147292",
@@ -1251,7 +1491,11 @@
     "matchedMilestoneYear": 2026,
     "matchedMilestoneTitle": "Yapay Zeka Ajanları Çağı",
     "matchConfidence": 70,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "TIMELINE_MATCHED",
+    "sourceCapturedAt": "2026-09-15T19:22:27.290Z"
   },
   {
     "id": "tg_-1004388658742_278_1788950470900",
@@ -1295,7 +1539,11 @@
     "matchedMilestoneYear": 2026,
     "matchedMilestoneTitle": "Yapay Zeka Ajanları Çağı",
     "matchConfidence": 64,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-30T00:57:18.000Z"
   },
   {
     "id": "tg_-1004388658742_280_1788950470686",
@@ -1339,7 +1587,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-30T04:10:08.000Z"
   },
   {
     "id": "tg_-1004388658742_281_1788950470509",
@@ -1383,7 +1635,11 @@
     "matchedMilestoneYear": 2026,
     "matchedMilestoneTitle": "Yapay Zeka Ajanları Çağı",
     "matchConfidence": 64,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-01T18:20:05.000Z"
   },
   {
     "id": "tg_-1004388658742_282_1788950470228",
@@ -1427,7 +1683,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-04T21:46:14.000Z"
   },
   {
     "id": "tg_-1004388658742_287_1788950469360",
@@ -1471,7 +1731,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-08T23:37:16.000Z"
   },
   {
     "id": "tg_-1004388658742_288_1788950469090",
@@ -1515,7 +1779,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-07T09:43:15.000Z"
   },
   {
     "id": "tg_-1004388658742_289_1788950468803",
@@ -1559,7 +1827,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-07T04:12:33.000Z"
   },
   {
     "id": "tg_-1004388658742_290_1788950468522",
@@ -1603,7 +1875,11 @@
     "matchedMilestoneYear": 2026,
     "matchedMilestoneTitle": "Yapay Zeka Ajanları Çağı",
     "matchConfidence": 64,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-06T18:41:12.000Z"
   },
   {
     "id": "tg_-1004388658742_291_1788950468231",
@@ -1647,7 +1923,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-05T04:10:11.000Z"
   },
   {
     "id": "tg_-1004388658742_292_1788950467942",
@@ -1691,7 +1971,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-04T21:46:14.000Z"
   },
   {
     "id": "tg_-1004388658742_293_1788950467704",
@@ -1735,7 +2019,11 @@
     "matchedMilestoneYear": 2029,
     "matchedMilestoneTitle": "Yapay Genel Zeka (AGI) & Mantıksal Akıl Yürütme",
     "matchConfidence": 70,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-03T10:17:14.000Z"
   },
   {
     "id": "tg_-1004388658742_294_1788950467260",
@@ -1779,7 +2067,11 @@
     "matchedMilestoneYear": 2051,
     "matchedMilestoneTitle": "Derin Uzay Madenciliği",
     "matchConfidence": 40,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-03T04:10:25.000Z"
   },
   {
     "id": "tg_-1004388658742_295_1788950466915",
@@ -1823,7 +2115,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-01T02:51:09.000Z"
   },
   {
     "id": "tg_-1004388658742_296_1788950466667",
@@ -1867,7 +2163,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-31T14:39:08.000Z"
   },
   {
     "id": "tg_-1004388658742_297_1788950466408",
@@ -1911,7 +2211,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-30T04:10:08.000Z"
   },
   {
     "id": "tg_-1004388658742_298_1788950466052",
@@ -1955,7 +2259,11 @@
     "matchedMilestoneYear": 2027,
     "matchedMilestoneTitle": "Sentetik Gerçeklik Krizi",
     "matchConfidence": 70,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-28T04:10:39.000Z"
   },
   {
     "id": "tg_-1004388658742_299_1788950465795",
@@ -1999,7 +2307,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-26T05:20:32.000Z"
   },
   {
     "id": "tg_-1004388658742_300_1788950465215",
@@ -2043,7 +2355,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-25T18:51:11.000Z"
   },
   {
     "id": "tg_-1004388658742_301_1788950464994",
@@ -2087,7 +2403,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-24T04:09:22.000Z"
   },
   {
     "id": "tg_-1004388658742_302_1788950464761",
@@ -2131,7 +2451,11 @@
     "matchedMilestoneYear": 2027,
     "matchedMilestoneTitle": "Sentetik Gerçeklik Krizi",
     "matchConfidence": 70,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-23T13:13:10.000Z"
   },
   {
     "id": "tg_-1004388658742_303_1788950464418",
@@ -2175,7 +2499,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-23T08:24:12.000Z"
   },
   {
     "id": "tg_-1004388658742_304_1788950464028",
@@ -2219,7 +2547,11 @@
     "matchedMilestoneYear": 2026,
     "matchedMilestoneTitle": "Yapay Zeka Ajanları Çağı",
     "matchConfidence": 64,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-22T04:09:48.000Z"
   },
   {
     "id": "tg_-1004388658742_305_1788950463686",
@@ -2263,7 +2595,11 @@
     "matchedMilestoneYear": 2029,
     "matchedMilestoneTitle": "Yapay Genel Zeka (AGI) & Mantıksal Akıl Yürütme",
     "matchConfidence": 70,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-21T14:01:12.000Z"
   },
   {
     "id": "tg_-1004388658742_306_1788950463467",
@@ -2307,7 +2643,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 40,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-20T04:09:43.000Z"
   },
   {
     "id": "tg_-1004388658742_307_1788950463151",
@@ -2351,7 +2691,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-08T20:40:05.000Z"
   },
   {
     "id": "tg_-1004388658742_308_1788950462821",
@@ -2395,7 +2739,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-08T16:32:55.000Z"
   },
   {
     "id": "tg_-1004388658742_309_1788950462592",
@@ -2439,7 +2787,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-07T17:55:41.000Z"
   },
   {
     "id": "tg_-1004388658742_311_1788950462141",
@@ -2483,7 +2835,11 @@
     "matchedMilestoneYear": 2028,
     "matchedMilestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-07T11:25:42.000Z"
   },
   {
     "id": "tg_-1004388658742_312_1788950461553",
@@ -2527,7 +2883,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-06T08:03:39.000Z"
   },
   {
     "id": "tg_-1004388658742_313_1788950461167",
@@ -2571,7 +2931,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-11T00:32:16.000Z"
   },
   {
     "id": "tg_-1004388658742_314_1788950460739",
@@ -2615,7 +2979,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-10T19:38:09.000Z"
   },
   {
     "id": "tg_-1004388658742_315_1788950460460",
@@ -2659,7 +3027,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-09T03:49:10.000Z"
   },
   {
     "id": "tg_-1004388658742_316_1788950460117",
@@ -2703,7 +3075,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-07T08:46:19.000Z"
   },
   {
     "id": "tg_-1004388658742_317_1788950459794",
@@ -2747,7 +3123,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-05T04:52:10.000Z"
   },
   {
     "id": "tg_-1004388658742_318_1788950459583",
@@ -2791,7 +3171,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-03T02:38:08.000Z"
   },
   {
     "id": "tg_-1004388658742_319_1788950459291",
@@ -2835,7 +3219,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-01T22:28:21.000Z"
   },
   {
     "id": "tg_-1004388658742_320_1788950459088",
@@ -2879,7 +3267,11 @@
     "matchedMilestoneYear": 2032,
     "matchedMilestoneTitle": "Otonom Sistemlerin Hakimiyeti",
     "matchConfidence": 40,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-08-01T19:18:09.000Z"
   },
   {
     "id": "tg_-1004388658742_321_1788950458771",
@@ -2923,7 +3315,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 55,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-07-31T22:59:11.000Z"
   },
   {
     "id": "tg_-1004388658742_322_1788950458458",
@@ -2967,7 +3363,11 @@
     "matchedMilestoneYear": 2051,
     "matchedMilestoneTitle": "Derin Uzay Madenciliği",
     "matchConfidence": 40,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-07-21T04:11:56.000Z"
   },
   {
     "id": "tg_-1004388658742_323_1788950457865",
@@ -3011,7 +3411,11 @@
     "matchedMilestoneYear": 2031,
     "matchedMilestoneTitle": "CRISPR'ın Ticarileşmesi",
     "matchConfidence": 48,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-05-11T08:07:12.000Z"
   },
   {
     "id": "tg_-1004388658742_286_1788615855260",
@@ -3055,6 +3459,10 @@
     "matchedMilestoneYear": 2029,
     "matchedMilestoneTitle": "Yapay Genel Zeka (AGI) & Mantıksal Akıl Yürütme",
     "matchConfidence": 85,
-    "isIntegrated": true
+    "isIntegrated": true,
+    "sourceType": "TELEGRAM",
+    "dataOrigin": "EXTERNAL_SOURCE",
+    "processingStatus": "AI_ANALYZED",
+    "sourceCapturedAt": "2026-09-05T13:44:11.000Z"
   }
 ]

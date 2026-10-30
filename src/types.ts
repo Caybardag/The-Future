@@ -169,6 +169,7 @@ export interface Milestone {
 
   // Research & Citations Transparency
   citations?: ResearchCitation[];
+  academicPapers?: ResearchCitation[];
   
   // Multi-Modal Signal Intelligence (6 Sinyal İzleme Katmanı)
   signals?: SignalIntelligenceItem[];
@@ -438,21 +439,55 @@ export interface ScientificSourceItem {
   publishedDate?: string;
 }
 
+export type InformationSourceType =
+  | "MANUAL"
+  | "TELEGRAM"
+  | "ACADEMIC"
+  | "PUBLIC_WEB"
+  | "USER_SUBMISSION"
+  | "OTHER"
+  | "telegram_bot"
+  | "academic_openalex"
+  | "scraped"
+  | "manual";
+
+export type DataOriginType =
+  | "EXTERNAL_SOURCE"
+  | "MANUAL_ENTRY"
+  | "MODEL_DERIVED";
+
+export type ProcessingStatusType =
+  | "RAW"
+  | "CLASSIFIED"
+  | "AI_ANALYZED"
+  | "TIMELINE_MATCHED";
+
 export interface TelegramFeedItem {
   id: string;
-  telegramMessageId: number;
-  channelName: string;
-  channelUsername: string;
+  telegramMessageId: number | string;
+  channelName?: string;
+  channelUsername?: string;
+  channelId?: string | number;
   channelTitle?: string;
   sourceUrl?: string;
   impactVerdict?: string;
-  sourceType: "telegram_bot" | "academic_openalex" | "scraped" | "manual";
+  sourceType: InformationSourceType;
+  dataOrigin?: DataOriginType;
+  processingStatus?: ProcessingStatusType;
+  sourceCapturedAt?: string;
+  analyzedAt?: string;
+  author?: string;
   originalText: string;
   receivedAt: string;
   extractedYear?: number;
-  category?: CategoryType;
+  category?: CategoryType | string;
   title?: string;
   summary?: string;
+  trlLevel?: number;
+  status?: string;
+  aiAnalysisNotes?: string;
+  deepAnalysisReport?: any;
+  customNotes?: string;
   academicProof?: {
     doi?: string;
     primaryAuthor?: string;
@@ -467,5 +502,38 @@ export interface TelegramFeedItem {
   matchedMilestoneYear?: number;
   matchedMilestoneTitle?: string;
   matchConfidence?: number;
+}
+
+export type SupportCategory =
+  | "ban_appeal"
+  | "credit_issue"
+  | "account_issue"
+  | "login_issue"
+  | "bug_report"
+  | "feature_request"
+  | "privacy"
+  | "other";
+
+export type TicketStatus = "open" | "in_review" | "resolved" | "closed";
+
+export interface SupportTicket {
+  id: string;
+  userId?: string;
+  userEmail: string;
+  userName?: string;
+  userPhone?: string;
+  category: SupportCategory;
+  categoryTitle?: string;
+  subject: string;
+  description: string;
+  banReasonSnapshot?: string;
+  status: TicketStatus;
+  priority: "low" | "medium" | "high" | "urgent";
+  createdAt: string;
+  updatedAt: string;
+  adminReply?: string;
+  adminRepliedAt?: string;
+  adminRepliedBy?: string;
+  resolvedAt?: string;
 }
 

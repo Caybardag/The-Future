@@ -63,6 +63,8 @@ export function getPredictionHistory(userEmailOrId?: string | null): PredictionH
   return PredictionHistoryService.getLocalPredictions(userEmailOrId);
 }
 
+export const getLocalPredictionHistory = getPredictionHistory;
+
 /**
  * Save a new simulation / prediction query outcome into history (User-Isolated)
  */

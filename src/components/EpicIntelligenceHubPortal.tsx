@@ -50,6 +50,7 @@ import {
   getAllMilestoneReassessmentAcknowledged,
   calculateMilestonePersonalImpact,
 } from "../utils/personalTimelineEngine";
+import { formatRealTimeAgo } from "./TelegramIntelligenceHubView";
 
 interface EpicIntelligenceHubPortalProps {
   onEnterConsole: (targetView?: ViewMode) => void;
@@ -374,10 +375,10 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
             const rawText = (item.text || item.title || item.message || "").replace(/<[^>]+>/g, "").trim();
             const cleanTitle = rawText.length > 100 ? rawText.slice(0, 97) + "..." : rawText;
             const cat = item.category || (idx === 0 ? "Teknoloji" : idx === 1 ? "Ekonomi" : "Enerji");
-            const timeAgo = idx === 0 ? "2 saat önce" : idx === 1 ? "4 saat önce" : "6 saat önce";
+            const timeAgo = formatRealTimeAgo(item.sourceCapturedAt || item.receivedAt);
             return {
               id: item.id || String(idx),
-              title: cleanTitle || "Yeni teknolojik gelişme ve sinyal doğrulandı.",
+              title: cleanTitle || "Teknolojik gelişme kaydı.",
               category: cat,
               timeAgo,
             };
@@ -391,19 +392,19 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
               id: "sig-1",
               title: "Yapay zeka ile biyoteknolojik araştırmalarda yeni patent başvuruları artıyor.",
               category: "Teknoloji",
-              timeAgo: "2 saat önce",
+              timeAgo: "Zaman bilgisi mevcut değil",
             },
             {
               id: "sig-2",
               title: "2032'de robotik sektöründe %40 büyüme öngörülüyor.",
               category: "Ekonomi",
-              timeAgo: "4 saat önce",
+              timeAgo: "Zaman bilgisi mevcut değil",
             },
             {
               id: "sig-3",
               title: "Yeni nesil batarya teknolojilerinde önemli ilerleme kaydedildi.",
               category: "Enerji",
-              timeAgo: "6 saat önce",
+              timeAgo: "Zaman bilgisi mevcut değil",
             },
           ]);
         }
@@ -415,19 +416,19 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
             id: "sig-fallback-1",
             title: "Yapay zeka ile biyoteknolojik araştırmalarda yeni patent başvuruları artıyor.",
             category: "Teknoloji",
-            timeAgo: "2 saat önce",
+            timeAgo: "Zaman bilgisi mevcut değil",
           },
           {
             id: "sig-fallback-2",
             title: "2032'de robotik sektöründe %40 büyüme öngörülüyor.",
             category: "Ekonomi",
-            timeAgo: "4 saat önce",
+            timeAgo: "Zaman bilgisi mevcut değil",
           },
           {
             id: "sig-fallback-3",
             title: "Yeni nesil batarya teknolojilerinde önemli ilerleme kaydedildi.",
             category: "Enerji",
-            timeAgo: "6 saat önce",
+            timeAgo: "Zaman bilgisi mevcut değil",
           },
         ]);
       }
@@ -1238,7 +1239,7 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
                     className="px-5 py-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-medium text-sm transition-all flex items-center gap-2 cursor-pointer"
                   >
                     <Radio className="w-4 h-4 text-cyan-400" />
-                    <span>Yeni Sinyalleri İncele</span>
+                    <span>Gelişmeleri İncele</span>
                   </button>
                 </div>
               </div>
@@ -1509,14 +1510,14 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
             <div className="space-y-4 text-left">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl sm:text-2xl font-black text-white">
-                  Son Sinyaller
+                  Son Gelişmeler & Bilgi Havuzu
                 </h2>
                 <button
                   type="button"
                   onClick={() => onEnterConsole("telegram_feed")}
                   className="text-xs font-semibold text-cyan-400 hover:text-cyan-300 flex items-center gap-1 transition-colors cursor-pointer"
                 >
-                  <span>Tüm Sinyalleri Gör</span>
+                  <span>Tüm Gelişmeleri Gör</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>

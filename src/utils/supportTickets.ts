@@ -1,5 +1,5 @@
 import { db, doc, setDoc, getDoc, getDocs, collection, deleteDoc } from "../lib/firebase";
-import { SupportTicket, SupportCategory, TicketStatus } from "../types/support";
+import { SupportTicket, SupportCategory, TicketStatus } from "../types";
 import { saveAccount, getAccountByEmail } from "./userAccounts";
 import { safeFetchJson } from "./apiClient";
 
@@ -81,9 +81,11 @@ export async function createSupportTicket(data: {
   const categoryTitles: Record<SupportCategory, string> = {
     ban_appeal: "⛔ Hesap Yasağı İtirazı",
     login_issue: "🔑 Oturum & Giriş Sorunu",
+    account_issue: "👤 Hesap & Profil Sorunu",
     credit_issue: "💎 Kredi & Bakiye Problemi",
     bug_report: "🐛 Hata & Sistem Bildirimi",
     feature_request: "💡 Öneri & Özellik Talebi",
+    privacy: "🔒 Gizlilik & Veri Güvenliği",
     other: "💬 Genel Destek",
   };
 

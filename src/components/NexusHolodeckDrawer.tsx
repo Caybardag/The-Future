@@ -170,16 +170,16 @@ export const NexusHolodeckDrawer: React.FC<NexusHolodeckDrawerProps> = ({
       },
       {
         id: "evidence_stream",
-        title: language === "tr" ? "Canlı İstihbarat & Kanıt Radarı" : "Live Evidence & Intelligence",
+        title: language === "tr" ? "Gelişmeler & Bilgi Havuzu" : "Information Pool & Records",
         icon: Radio,
         items: [
           {
             id: "telegram_feed" as ViewMode,
-            label: language === "tr" ? "Canlı İstihbarat & Sinyal Akışı" : "Live Tech Intelligence & Signals",
-            desc: language === "tr" ? "Dönüm noktalarını doğrulayan anlık bilimsel ve teknolojik sinyaller" : "Real-time science telemetry & signals verifying milestones",
+            label: language === "tr" ? "Gelişmeler ve Bilgi Havuzu" : "Tech Records & Information Pool",
+            desc: language === "tr" ? "Dünyadaki teknolojik gelişmeleri ve seçtiğiniz kaynaklardan gelen bilgileri toplar ve takvimle ilişkilendirir" : "Aggregates tech developments and sources correlated with the future timeline",
             icon: Radio,
-            badge: "CANLI",
-            color: "text-emerald-400 bg-emerald-950/60 border-emerald-500/30",
+            badge: "HAVUZ",
+            color: "text-purple-400 bg-purple-950/60 border-purple-500/30",
           },
           {
             id: "verification" as ViewMode,

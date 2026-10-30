@@ -51,7 +51,7 @@ import { useAdmin, SystemAuditLog, CreditDisputeLog, AdminUserRecord } from "../
 import { getAllAccounts, saveAccount, StoredUserAccount } from "../utils/userAccounts";
 import { getDisputeLogs } from "../utils/creditDisputes";
 import { db, doc, getDoc, setDoc, deleteDoc, collection, getDocs, onSnapshot } from "../lib/firebase";
-import { SupportTicket, TicketStatus, SupportCategory } from "../types/support";
+import { SupportTicket, TicketStatus, SupportCategory } from "../types";
 import {
   getLocalSupportTickets,
   fetchAllSupportTickets,

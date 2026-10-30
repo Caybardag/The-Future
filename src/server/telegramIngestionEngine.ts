@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import { initializeApp, getApps } from "firebase/app";
 import { getFirestore, collection, getDocs, doc, setDoc } from "firebase/firestore";
-import { Milestone, SignalIntelligenceItem } from "../types";
+import { Milestone, SignalIntelligenceItem, InformationSourceType, DataOriginType, ProcessingStatusType } from "../types";
 import { TIMELINE_DATA } from "../data/timelineData";
 
 export interface RawTelegramMessage {
@@ -34,6 +34,8 @@ export interface ExtractedTelegramIntelligence {
   channelId: string | number;
   channelTitle: string;
   receivedAt: string;
+  sourceCapturedAt?: string;
+  analyzedAt?: string;
   originalText: string;
   extractedYear: number;
   title: string;
@@ -51,6 +53,10 @@ export interface ExtractedTelegramIntelligence {
   matchedMilestoneYear?: number;
   matchedMilestoneTitle?: string;
   matchConfidence?: number;
+  sourceType?: InformationSourceType;
+  dataOrigin?: DataOriginType;
+  processingStatus?: ProcessingStatusType;
+  author?: string;
 }
 
 // In-memory store for incoming Telegram intelligence feed
@@ -234,6 +240,20 @@ export function loadTelegramVaultFromDisk(): ExtractedTelegramIntelligence[] {
         // Merge without losing current in-memory items
         const existingIds = new Set(telegramIntelligenceFeed.map((i) => i.id));
         items.forEach((item) => {
+          // Backward compatibility migration for provenance fields
+          if (!item.sourceType) {
+            item.sourceType = (item.channelId === "manual_user_entry" || String(item.id).startsWith("manual_")) ? "MANUAL" : "TELEGRAM";
+          }
+          if (!item.dataOrigin) {
+            item.dataOrigin = item.sourceType === "MANUAL" ? "MANUAL_ENTRY" : "EXTERNAL_SOURCE";
+          }
+          if (!item.processingStatus) {
+            item.processingStatus = item.status === "analyzed" ? "AI_ANALYZED" : item.matchedMilestoneYear ? "TIMELINE_MATCHED" : "RAW";
+          }
+          if (!item.sourceCapturedAt) {
+            item.sourceCapturedAt = item.receivedAt || new Date().toISOString();
+          }
+
           if (!existingIds.has(item.id)) {
             telegramIntelligenceFeed.push(item);
             existingIds.add(item.id);
@@ -1043,12 +1063,14 @@ export function ingestRawTelegramMessageFirst(msg: RawTelegramMessage): Extracte
 
   const itemRecordId = `tg_${msg.channelId}_${msg.id}_${Date.now()}`;
 
+  const recordDate = typeof msg.date === "string" ? msg.date : new Date().toISOString();
   const record: ExtractedTelegramIntelligence = {
     id: itemRecordId,
     telegramMessageId: msg.id,
     channelId: msg.channelId,
     channelTitle: channelMeta.name,
-    receivedAt: typeof msg.date === "string" ? msg.date : new Date().toISOString(),
+    receivedAt: recordDate,
+    sourceCapturedAt: recordDate,
     originalText: cleanText,
     extractedYear: classified.estimatedHorizon,
     title: fallbackTitle,
@@ -1060,6 +1082,9 @@ export function ingestRawTelegramMessageFirst(msg: RawTelegramMessage): Extracte
     sourceUrl,
     aiAnalysisNotes: "Ham Telegram sinyali anında kaydedildi. Detaylı analiz hazır.",
     status: "raw_received",
+    sourceType: "TELEGRAM",
+    dataOrigin: "EXTERNAL_SOURCE",
+    processingStatus: "RAW",
   };
 
   // Check if this message already exists
@@ -1078,6 +1103,7 @@ export function ingestRawTelegramMessageFirst(msg: RawTelegramMessage): Extracte
     record.matchedMilestoneTitle = match.matchedMilestoneTitle;
     record.matchConfidence = match.matchConfidence;
     record.isIntegrated = true;
+    record.processingStatus = "TIMELINE_MATCHED";
   }
 
   if (existingIdx >= 0) {
@@ -1087,6 +1113,9 @@ export function ingestRawTelegramMessageFirst(msg: RawTelegramMessage): Extracte
       existing.matchedMilestoneTitle = match.matchedMilestoneTitle;
       existing.matchConfidence = match.matchConfidence;
       existing.isIntegrated = true;
+      if (existing.processingStatus === "RAW") {
+        existing.processingStatus = "TIMELINE_MATCHED";
+      }
     }
     // Keep existing analysis if already performed
     if (existing.status === "analyzed" || existing.status === "integrated_to_timeline") {
@@ -1105,6 +1134,69 @@ export function ingestRawTelegramMessageFirst(msg: RawTelegramMessage): Extracte
   }
 
   // Persist to disk immediately
+  saveTelegramVaultToDisk();
+  return record;
+}
+
+/**
+ * Bilgi Havuzuna manuel kullanıcı veya araştırmacı kaydı ekler.
+ * KURAL: sourceType: "MANUAL", dataOrigin: "MANUAL_ENTRY", processingStatus: "RAW" (veya eşleştiğinde "TIMELINE_MATCHED")
+ * Harici Telegram veya bilimsel kanıt olarak ASLA etiketlenmez.
+ */
+export function ingestManualInformationItem(data: {
+  title?: string;
+  text: string;
+  category?: string;
+  extractedYear?: number;
+  sourceUrl?: string;
+  author?: string;
+}): ExtractedTelegramIntelligence {
+  const cleanText = (data.text || "").trim();
+  const classified = classifyScientificTaxonomy(cleanText);
+  const targetYear =
+    data.extractedYear && data.extractedYear >= 2026 && data.extractedYear <= 2060
+      ? data.extractedYear
+      : classified.estimatedHorizon;
+  const title = (data.title || extractSmartTitle(cleanText)).trim();
+  const category = (data.category || classified.category) as string;
+
+  const itemRecordId = `manual_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+  const now = new Date().toISOString();
+
+  const record: ExtractedTelegramIntelligence = {
+    id: itemRecordId,
+    telegramMessageId: 0,
+    channelId: "manual_user_entry",
+    channelTitle: data.author ? `Kullanıcı: ${data.author}` : "Manuel Kullanıcı Kaydı",
+    receivedAt: now,
+    sourceCapturedAt: now,
+    originalText: cleanText,
+    extractedYear: targetYear,
+    title,
+    category,
+    summary: cleanText.substring(0, 320),
+    trlLevel: classified.trlLevel,
+    confidenceScore: 75,
+    impactVerdict: "MODERATE_SIGNAL",
+    sourceUrl: data.sourceUrl || "",
+    aiAnalysisNotes: "Kullanıcı tarafından manuel olarak bilgi havuzuna eklendi.",
+    status: "raw_received",
+    sourceType: "MANUAL",
+    dataOrigin: "MANUAL_ENTRY",
+    processingStatus: "RAW",
+    author: data.author,
+  };
+
+  const match = matchSignalToMilestone(record, TIMELINE_DATA);
+  if (match) {
+    record.matchedMilestoneYear = match.matchedMilestoneYear;
+    record.matchedMilestoneTitle = match.matchedMilestoneTitle;
+    record.matchConfidence = match.matchConfidence;
+    record.isIntegrated = true;
+    record.processingStatus = "TIMELINE_MATCHED";
+  }
+
+  telegramIntelligenceFeed.unshift(record);
   saveTelegramVaultToDisk();
   return record;
 }
@@ -1334,6 +1426,8 @@ export async function processTelegramMessageWithAI(
     aiAnalysisNotes: baseline.aiAnalysisNotes,
     deepAnalysisReport: baseline.deepAnalysisReport,
     status: "analyzed",
+    processingStatus: "AI_ANALYZED",
+    analyzedAt: new Date().toISOString(),
   };
 
   // If Gemini AI client is available and concurrency limit is not exceeded
@@ -1436,6 +1530,8 @@ Strict JSON formatında yanıt ver:
             aiAnalysisNotes: parsed.aiAnalysisNotes || record.aiAnalysisNotes,
             deepAnalysisReport: parsed.deepAnalysisReport || record.deepAnalysisReport,
             status: "analyzed",
+            processingStatus: "AI_ANALYZED",
+            analyzedAt: new Date().toISOString(),
           };
         }
       }
@@ -1672,8 +1768,8 @@ export function synthesizeLivingMilestoneOverrides(baseMilestones: Milestone[]):
       updatedProbabilities[m.year] = calibratedProb;
 
       const topSignal = matchingSignals[0];
-      const liveCiting = ` [⚡ CANLI İSTİHBARAT: ${topSignal.title} (${topSignal.sourceOrg}) — ${topSignal.summary}]`;
-      if (!m.description.includes("CANLI İSTİHBARAT")) {
+      const liveCiting = ` [İlişkili Gelişme: ${topSignal.title} (${topSignal.sourceOrg}) — ${topSignal.summary}]`;
+      if (!m.description.includes("İlişkili Gelişme:") && !m.description.includes("CANLI İSTİHBARAT")) {
         updatedDescriptions[m.year] = `${m.description}${liveCiting}`;
       }
     }
@@ -1702,7 +1798,7 @@ export function synthesizeLivingMilestoneOverrides(baseMilestones: Milestone[]):
         humanAugmentationIndex: dynYear <= 2030 ? 35 : dynYear <= 2045 ? 68 : 92,
         bioDigitalIntegrationRate: dynYear <= 2030 ? 25 : dynYear <= 2045 ? 60 : 88,
         iconName: "Zap",
-        keyDrivers: top.deepReport?.keyDrivers || ["Telegram Canlı İstihbarat", "Hızlandırılmış AR-GE", "Saha Denemeleri"],
+        keyDrivers: top.deepReport?.keyDrivers || ["Dış Kaynak Gelişmesi", "Hızlandırılmış AR-GE", "Saha Denemeleri"],
         ethicalRisks: top.deepReport?.riskAndEthicalChallenges || ["Yeni teknolojik dağılım eşitsizliği ve adaptasyon hızı"],
         societalOpportunities: [top.deepReport?.breakthroughSignificance || "Üretkenlik artışı ve hızlandırılmış küresel inovasyon"],
         dailyLifeImpact: "Bireysel yaşamda ve iş akışlarında doğrudan ölçülebilir verimlilik artışı.",
