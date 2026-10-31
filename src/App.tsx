@@ -71,6 +71,7 @@ import { calculateDynamicProbability } from "./utils/probabilityCalculator";
 import { applyScenarioTransform } from "./utils/scenarioTransformer";
 import { aiService } from "./services/AIService";
 import { safeFetchJson } from "./utils/apiClient";
+import { initializeNativeMobile, setupAndroidBackButton } from "./services/mobileNativeService";
 
 function MainAppContent() {
   const { language, t } = useLanguage();
@@ -246,6 +247,118 @@ function MainAppContent() {
   const [embedModalMilestone, setEmbedModalMilestone] = useState<Milestone | null>(null);
   const [userProfileModalOpen, setUserProfileModalOpen] = useState<boolean>(false);
   const [userProfileModalDefaultTab, setUserProfileModalDefaultTab] = useState<"profile" | "badges" | "collection">("profile");
+
+  useEffect(() => {
+    const handleOpenUserProfileEvent = () => {
+      if (!currentUser) {
+        setUserAuthModalOpen(true);
+      } else {
+        setUserProfileModalDefaultTab("profile");
+        setUserProfileModalOpen(true);
+      }
+    };
+    window.addEventListener("future-open-user-profile", handleOpenUserProfileEvent);
+    return () => {
+      window.removeEventListener("future-open-user-profile", handleOpenUserProfileEvent);
+    };
+  }, [currentUser, setUserAuthModalOpen]);
+
+  // Mobile Android Native Integration: Splash Screen, Status Bar, and Hardware Back Button
+  useEffect(() => {
+    initializeNativeMobile();
+  }, []);
+
+  useEffect(() => {
+    const cleanupBackButton = setupAndroidBackButton(() => {
+      // 1. Close open modals first
+      if (detailModalMilestone) {
+        setDetailModalMilestone(null);
+        return true;
+      }
+      if (userProfileModalOpen) {
+        setUserProfileModalOpen(false);
+        return true;
+      }
+      if (userAuthModalOpen) {
+        setUserAuthModalOpen(false);
+        return true;
+      }
+      if (isNexusDrawerOpen) {
+        setIsNexusDrawerOpen(false);
+        return true;
+      }
+      if (guideModalOpen) {
+        setGuideModalOpen(false);
+        return true;
+      }
+      if (supportModalOpen) {
+        setSupportModalOpen(false);
+        return true;
+      }
+      if (helpSupportModalOpen) {
+        setHelpSupportModalOpen(false);
+        return true;
+      }
+      if (privacyModalOpen) {
+        setPrivacyModalOpen(false);
+        return true;
+      }
+      if (isOnboardingModalOpen) {
+        setIsOnboardingModalOpen(false);
+        return true;
+      }
+      if (shareCardMilestone) {
+        setShareCardMilestone(null);
+        return true;
+      }
+      if (embedModalMilestone) {
+        setEmbedModalMilestone(null);
+        return true;
+      }
+      if (isGlobalTermsModalOpen) {
+        setIsGlobalTermsModalOpen(false);
+        return true;
+      }
+      if (creditStoreModalOpen) {
+        setCreditStoreModalOpen(false);
+        return true;
+      }
+      if (upsellModalOpen) {
+        closeUpsellModal();
+        return true;
+      }
+
+      // 2. Return to portal if user is in an inner view
+      if (currentView !== "portal") {
+        setCurrentView("portal");
+        return true;
+      }
+
+      // 3. Already on portal with no modal open -> allow native default (exit app)
+      return false;
+    });
+
+    return cleanupBackButton;
+  }, [
+    currentView,
+    detailModalMilestone,
+    userProfileModalOpen,
+    userAuthModalOpen,
+    isNexusDrawerOpen,
+    guideModalOpen,
+    supportModalOpen,
+    helpSupportModalOpen,
+    privacyModalOpen,
+    isOnboardingModalOpen,
+    shareCardMilestone,
+    embedModalMilestone,
+    isGlobalTermsModalOpen,
+    creditStoreModalOpen,
+    upsellModalOpen,
+    closeUpsellModal,
+    setCreditStoreModalOpen,
+    setUserAuthModalOpen,
+  ]);
 
   // Scientific Verification Engine & Anomaly Notification State
   const [customDescriptions, setCustomDescriptions] = useState<Record<number, string>>(() => {
@@ -818,6 +931,14 @@ function MainAppContent() {
                   } catch {}
                   setCurrentView(targetView || "timeline");
                   window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                }}
+                onOpenUserProfile={() => {
+                  if (!currentUser) {
+                    setUserAuthModalOpen(true);
+                  } else {
+                    setUserProfileModalDefaultTab("profile");
+                    setUserProfileModalOpen(true);
+                  }
                 }}
               />
             )}

@@ -51,11 +51,13 @@ import {
   calculateMilestonePersonalImpact,
 } from "../utils/personalTimelineEngine";
 import { formatRealTimeAgo } from "./TelegramIntelligenceHubView";
+import { getLocalPredictionHistory } from "../utils/predictionHistory";
 
 interface EpicIntelligenceHubPortalProps {
   onEnterConsole: (targetView?: ViewMode) => void;
   onOpenQuickJobRisk?: (profession: string) => void;
   onStartNarratorTour?: () => void;
+  onOpenUserProfile?: () => void;
 }
 
 interface FeatureCardConfig {
@@ -165,6 +167,7 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
   onEnterConsole: rawOnEnterConsole,
   onOpenQuickJobRisk,
   onStartNarratorTour,
+  onOpenUserProfile,
 }) => {
   const onEnterConsole = (targetView?: ViewMode) => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
@@ -175,6 +178,18 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
   const isTr = language === "tr";
   const { currentUser, openAuthModal } = useAuth();
   const isMember = Boolean(currentUser && currentUser.email);
+
+  const handleUserAvatarClick = () => {
+    if (isMember) {
+      if (onOpenUserProfile) {
+        onOpenUserProfile();
+      } else {
+        window.dispatchEvent(new CustomEvent("future-open-user-profile"));
+      }
+    } else {
+      openAuthModal();
+    }
+  };
 
   // Background Looping Video
   const bgVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -216,7 +231,8 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
   // Member computed state (100% genuine data provenance, zero hardcoded illusion constants)
   const memberProfileScore = useMemo(() => {
     if (!currentUser) return 0;
-    let score = 20; // Base account registered
+    let score = 0;
+    if (currentUser.email) score += 20;
     if (currentUser.fullName && currentUser.fullName.trim().length > 2) score += 20;
     if (currentUser.profession && currentUser.profession.trim().length > 1) score += 20;
     if (currentUser.age && currentUser.age > 0) score += 15;
@@ -231,17 +247,18 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
   }, [currentUser]);
 
   const activeMilestoneCount = useMemo(() => {
-    if (!currentUser?.email) return 0;
+    if (!currentUser?.email) return "Henüz seçilmedi";
     const selected = getAllMilestoneSelectedOptions(currentUser.email);
-    return Object.keys(selected).length;
+    const count = Object.keys(selected).length;
+    return count > 0 ? `${count} dönüm noktası` : "Henüz seçilmedi";
   }, [currentUser]);
 
   const lastActionText = useMemo(() => {
-    if (!currentUser?.email) return "Henüz eylem yok";
+    if (!currentUser?.email) return "Henüz aksiyon kaydı yok";
     const actions = getAllMilestoneActionStatuses(currentUser.email);
     const count = Object.keys(actions).length;
-    if (count === 0) return "Henüz eylem yok";
-    return `${count} eylem kayıtlı`;
+    if (count === 0) return "Henüz aksiyon kaydı yok";
+    return `${count} aksiyon aktif`;
   }, [currentUser]);
 
   // Dynamically resolve member's most relevant critical milestone
@@ -259,90 +276,65 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
     return highestM;
   }, [currentUser]);
 
-  // Dynamically derive career automation risk based on user's profession
+  // Dynamically resolve career automation risk from genuine calculation history
   const memberJobRisk = useMemo(() => {
-    const prof = (currentUser?.profession || "").toLowerCase().trim();
-    if (!prof) {
+    if (!currentUser?.profession) {
       return {
         level: "Analiz Bekleniyor",
         percentage: 0,
-        sub: "Profilinizde mesleğinizi ekleyerek otomasyon risk skoru alın.",
+        sub: "Profilinizde mesleğinizi ekleyerek veya Meslek Riski konsolundan hesaplama yapabilirsiniz.",
+        isCalculated: false,
       };
     }
-    if (
-      prof.includes("yazılım") ||
-      prof.includes("kod") ||
-      prof.includes("developer") ||
-      prof.includes("data") ||
-      prof.includes("mühendis") ||
-      prof.includes("engineer")
-    ) {
-      return {
-        level: "Orta Risk",
-        percentage: 55,
-        sub: `${currentUser?.profession} için kod sentezi ve AI araç uyumu hesaplandı.`,
-      };
-    }
-    if (
-      prof.includes("tasarım") ||
-      prof.includes("grafik") ||
-      prof.includes("yazar") ||
-      prof.includes("içerik") ||
-      prof.includes("çevir")
-    ) {
-      return {
-        level: "Yüksek Risk",
-        percentage: 75,
-        sub: `${currentUser?.profession} için üretken modeller ve ikame oranı hesaplandı.`,
-      };
-    }
-    if (
-      prof.includes("doktor") ||
-      prof.includes("hekim") ||
-      prof.includes("hemşire") ||
-      prof.includes("sağlık") ||
-      prof.includes("cerrah")
-    ) {
-      return {
-        level: "Düşük Risk",
-        percentage: 25,
-        sub: `${currentUser?.profession} için klinik karar destek ve robotik cerrahi hesaplandı.`,
-      };
-    }
-    if (
-      prof.includes("avukat") ||
-      prof.includes("hukuk") ||
-      prof.includes("hakim") ||
-      prof.includes("savcı")
-    ) {
-      return {
-        level: "Orta Risk",
-        percentage: 60,
-        sub: `${currentUser?.profession} için içtihat tarama ve sözleşme otomasyonu hesaplandı.`,
-      };
-    }
+
+    try {
+      const history = getLocalPredictionHistory();
+      const userJobRiskRecord = history.find(
+        (p) =>
+          p.featureKey === "job_risk" &&
+          (!p.userEmail || p.userEmail.toLowerCase() === currentUser.email?.toLowerCase())
+      );
+
+      if (userJobRiskRecord && userJobRiskRecord.metrics) {
+        const percentage = Math.round(
+          userJobRiskRecord.metrics.impactLevel || userJobRiskRecord.metrics.feasibilityScore || 0
+        );
+        const level =
+          userJobRiskRecord.metrics.riskLevel ||
+          (percentage > 70 ? "Yüksek Risk" : percentage > 40 ? "Orta Risk" : "Düşük Risk");
+        return {
+          level,
+          percentage,
+          sub:
+            userJobRiskRecord.summarySnippet ||
+            `${currentUser.profession} için yapay zeka otomasyon etki analizi.`,
+          isCalculated: true,
+        };
+      }
+    } catch {}
+
+    // Not computed yet: zero fake numbers
     return {
-      level: "Orta Risk",
-      percentage: 50,
-      sub: `${currentUser?.profession} için genel bilişsel otomasyon ve beceri uyumu hesaplandı.`,
+      level: "Hesaplanmadı",
+      percentage: 0,
+      sub: "Risk analizi henüz hesaplanmadı. Meslek risk konsolundan hesaplayabilirsiniz.",
+      isCalculated: false,
     };
   }, [currentUser]);
 
   // Dynamically derive personalized action advice from user profile / goal
   const memberPersonalAction = useMemo(() => {
-    if (currentUser?.primaryGoal) {
-      const g = currentUser.primaryGoal.toLowerCase();
-      if (g.includes("teknoloji") || g.includes("beceri")) {
-        return "Yapay zeka orkestrasyon araçlarını ve yeni nesil bilişsel yetkinlikleri günlük iş akışına dahil et.";
-      }
-      if (g.includes("birikim") || g.includes("is_guvencesi") || g.includes("finans")) {
-        return "Kariyerini otomasyona dirençli stratejik rollerle çeşitlendir ve acil durum fonunu güçlendir.";
-      }
-      if (g.includes("saglik") || g.includes("omur") || g.includes("yaşam")) {
-        return "Biyometrik sağlık izleme ve koruyucu uzun ömür protokollerini bugünden benimse.";
-      }
+    if (!currentUser?.email) return "Kişisel hedeflerinize uygun eylem planı oluşturmak için yol haritasını başlatın.";
+    const actions = getAllMilestoneActionStatuses(currentUser.email);
+    const actionEntries = Object.entries(actions);
+    if (actionEntries.length > 0) {
+      const [year, status] = actionEntries[0];
+      return `${year} dönüm noktası için eylem durumu: ${status === "done" ? "Tamamlandı" : status === "in_progress" ? "Devam Ediyor" : "Planlandı"}.`;
     }
-    return "Gelecek yol haritandaki dönüm noktalarına göre kişisel eylem planını başlat.";
+    if (currentUser?.primaryGoal) {
+      return `Belirttiğiniz hedef (${currentUser.primaryGoal}) doğrultusunda ilk aksiyonunuzu planlayın.`;
+    }
+    return "Henüz bir aksiyon belirlenmedi. Yol haritanızdan ilk adımı seçebilirsiniz.";
   }, [currentUser]);
 
   // Check if member has unacknowledged reassessment
@@ -385,52 +377,14 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
           });
           setLiveSignals(formatted);
         } else {
-          // Curated genuine telemetry baseline
-          setLiveSignalCount(34);
-          setLiveSignals([
-            {
-              id: "sig-1",
-              title: "Yapay zeka ile biyoteknolojik araştırmalarda yeni patent başvuruları artıyor.",
-              category: "Teknoloji",
-              timeAgo: "Zaman bilgisi mevcut değil",
-            },
-            {
-              id: "sig-2",
-              title: "2032'de robotik sektöründe %40 büyüme öngörülüyor.",
-              category: "Ekonomi",
-              timeAgo: "Zaman bilgisi mevcut değil",
-            },
-            {
-              id: "sig-3",
-              title: "Yeni nesil batarya teknolojilerinde önemli ilerleme kaydedildi.",
-              category: "Enerji",
-              timeAgo: "Zaman bilgisi mevcut değil",
-            },
-          ]);
+          setLiveSignalCount(0);
+          setLiveSignals([]);
         }
       } catch {
         if (!isMounted) return;
         setIsServerOnline(false);
-        setLiveSignals([
-          {
-            id: "sig-fallback-1",
-            title: "Yapay zeka ile biyoteknolojik araştırmalarda yeni patent başvuruları artıyor.",
-            category: "Teknoloji",
-            timeAgo: "Zaman bilgisi mevcut değil",
-          },
-          {
-            id: "sig-fallback-2",
-            title: "2032'de robotik sektöründe %40 büyüme öngörülüyor.",
-            category: "Ekonomi",
-            timeAgo: "Zaman bilgisi mevcut değil",
-          },
-          {
-            id: "sig-fallback-3",
-            title: "Yeni nesil batarya teknolojilerinde önemli ilerleme kaydedildi.",
-            category: "Enerji",
-            timeAgo: "Zaman bilgisi mevcut değil",
-          },
-        ]);
+        setLiveSignalCount(0);
+        setLiveSignals([]);
       }
     };
 
@@ -692,7 +646,7 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
               {/* User Avatar & Name */}
               <button
                 type="button"
-                onClick={openAuthModal}
+                onClick={handleUserAvatarClick}
                 className="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-white/10 to-white/5 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
               >
                 <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-md">
@@ -929,7 +883,7 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
                         Teknolojik Ufuk Radarı
                       </div>
                       <div className="text-[11px] text-slate-400 max-w-[180px]">
-                        34 Küresel Kırılma • Anlık Kanıt Takibi
+                        {TIMELINE_DATA.length} Teknolojik Dönüm Noktası • Gelecek Ufku
                       </div>
                     </div>
                   </div>
@@ -1523,31 +1477,42 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
               </div>
 
               <div className="space-y-2.5">
-                {liveSignals.map((signal) => (
-                  <div
-                    key={signal.id}
-                    onClick={() => onEnterConsole("telegram_feed")}
-                    className="p-4 rounded-2xl bg-[#0c1222]/80 hover:bg-[#101730] border border-white/10 hover:border-cyan-500/30 transition-all cursor-pointer flex items-center justify-between gap-4"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                        <Radio className="w-4 h-4 text-cyan-400" />
+                {liveSignals.length > 0 ? (
+                  liveSignals.map((signal) => (
+                    <div
+                      key={signal.id}
+                      onClick={() => onEnterConsole("telegram_feed")}
+                      className="p-4 rounded-2xl bg-[#0c1222]/80 hover:bg-[#101730] border border-white/10 hover:border-cyan-500/30 transition-all cursor-pointer flex items-center justify-between gap-4"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
+                          <Radio className="w-4 h-4 text-cyan-400" />
+                        </div>
+                        <div>
+                          <p className="text-xs sm:text-sm text-slate-200 font-medium">
+                            {signal.title}
+                          </p>
+                          <span className="text-[11px] text-slate-500">
+                            {signal.timeAgo}
+                          </span>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs sm:text-sm text-slate-200 font-medium">
-                          {signal.title}
-                        </p>
-                        <span className="text-[11px] text-slate-500">
-                          {signal.timeAgo}
-                        </span>
-                      </div>
-                    </div>
 
-                    <span className="text-xs px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-300 font-medium shrink-0">
-                      {signal.category}
-                    </span>
+                      <span className="text-xs px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-300 font-medium shrink-0">
+                        {signal.category}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-6 rounded-2xl bg-[#0c1222]/60 border border-white/5 text-center">
+                    <p className="text-sm text-slate-400">
+                      Henüz kaynak kaydı bulunmuyor.
+                    </p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Bu bölüm dış kaynaklardan veya bilgi havuzundan yeni kayıtlar alındığında güncellenecektir.
+                    </p>
                   </div>
-                ))}
+                )}
               </div>
             </div>
 
@@ -1606,7 +1571,7 @@ export const EpicIntelligenceHubPortal: React.FC<EpicIntelligenceHubPortalProps>
           </button>
           <button
             type="button"
-            onClick={openAuthModal}
+            onClick={handleUserAvatarClick}
             className="hover:text-white transition-colors cursor-pointer"
           >
             Ayarlar

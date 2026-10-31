@@ -1262,9 +1262,9 @@ export function generateDeterministicDeepAnalysisReport(
   const impactedSectors = categorySectors[category] || ["Bilişim", "Mühendislik", "Endüstriyel Üretim"];
   const riskAndEthicalChallenges = categoryRisks[category] || ["Saha ölçekleme riskleri", "Regülasyon uyumu", "Etik denetim gereksinimi"];
 
-  const breakthroughSignificance = `Bu teknolojik sinyal (${category}), 2026-2060 evrimsel ufkunda TRL ${trl} seviyesinden endüstriyel olgunluğa geçişi hızlandıracak kritik bir yapı taşıdır. Laboratuvar veya saha verileri, ilgili disiplinde paradigma değişiminin tetiklendiğini göstermektedir.`;
+  const breakthroughSignificance = `Bu model çıkarımı (${category}), 2026-2060 evrimsel ufkunda tahmini TRL ${trl} seviyesinde bir sektörel adaptasyon eğrisine işaret etmektedir. Bu metrik mutlak bir kanıt değil, modelin analitik projeksiyonudur.`;
 
-  const timelineIntegrationSuggestion = `${year} hedef yılı itibarıyla küresel ekosistemde yaygın ticarileşme ve sektörel entegrasyon aşamasına geçmesi beklenmektedir.`;
+  const timelineIntegrationSuggestion = `${year} hedef yılı; teknolojinin ekosistemdeki tahmini yaygınlaşma dönemini modellemektedir.`;
 
   const keyDrivers = [
     "Ar-Ge sermaye akışı ve açık kaynak işbirlikleri",
@@ -1273,19 +1273,19 @@ export function generateDeterministicDeepAnalysisReport(
   ];
 
   const validationStatus = trl >= 8
-    ? "Saha Kanıtı ve Ticarileşme Aşaması"
+    ? "Model Projeksiyonu: Saha Uygulama Düzeyi"
     : trl >= 6
-    ? "Klinik / Pilot Prototip Doğrulaması"
-    : "Laboratuvar Kanıtı ve Deneysel Doğrulama";
+    ? "Model Projeksiyonu: Pilot / Prototip Düzeyi"
+    : "Model Projeksiyonu: Erken Araştırma Düzeyi";
 
-  const yearRationale = `${year} yılı; teknolojinin TRL ${trl} seviyesinden tam pazar penetrasyonuna ve küresel ölçekte belirleyici dönüm noktasına ulaşması için gerekli ortalama endüstriyel olgunlaşma eğrisine (S-Curve) dayanmaktadır.`;
+  const yearRationale = `${year} yılı; teknolojinin tahmini TRL ${trl} seviyesinden tam pazar penetrasyonuna ulaşması için hesaplanan analitik olgunlaşma eğrisine (S-Curve) dayanmaktadır.`;
 
   return {
     title: cleanTitle,
     summary: text.length > 280 ? `${text.substring(0, 277)}...` : text,
     confidenceScore,
     impactVerdict,
-    aiAnalysisNotes: `⚡ Fütüristik Analiz: Model TRL ${trl}/9 seviyesinde derecelendirilmiştir (Model Tahmini). ${year} projeksiyonu için öncelikli istihbarat sinyali.`,
+    aiAnalysisNotes: `Model Değerlendirmesi: Tahmini TRL ${trl}/9 (Analitik Model Çıkarımı). ${year} ufkuna yönelik sentez.`,
     deepAnalysisReport: {
       breakthroughSignificance,
       impactedSectors,
