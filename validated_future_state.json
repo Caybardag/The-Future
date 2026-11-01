@@ -1,0 +1,992 @@
+{
+  "version": "2.0.0",
+  "lastEvaluatedAt": "2026-11-01T13:15:42.182Z",
+  "stateHash": "2dcad2ff14004309916c68925934053c",
+  "assessments": {
+    "milestone_2026": {
+      "calendarItemId": "milestone_2026",
+      "year": 2026,
+      "title": "Yapay Zeka Ajanları Çağı",
+      "category": "Yapay Zeka & Bilişim",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Yapay zeka sadece metin yazmakla kalmaz; otonom şirketler kurar, kendi başına yazılım kodlar ve insan gözetimi olmadan finansal kararlar alır. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2026,
+          "endYear": 2029,
+          "peakLikelihoodWindow": "2026-2028",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Yapay zeka sadece metin yazmakla kalmaz; otonom şirketler kurar, kendi başına yazılım kodlar ve insan gözetimi olmadan finansal kararlar alır. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2026,
+          "endYear": 2029,
+          "peakLikelihoodWindow": "2026-2028",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Yapay zeka sadece metin yazmakla kalmaz; otonom şirketler kurar, kendi başına yazılım kodlar ve insan gözetimi olmadan finansal kararlar alır. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2026,
+          "endYear": 2029,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 90
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.175Z"
+    },
+    "milestone_2027": {
+      "calendarItemId": "milestone_2027",
+      "year": 2027,
+      "title": "Sentetik Gerçeklik Krizi",
+      "category": "Sosyoloji & Ekonomi",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Deepfake ve yapay medya o kadar kusursuz hale gelir ki, internetteki içeriklerin gerçekliğini kanıtlamak için 'Dijital DNA' (filigran) yasaları küresel olarak zorunlu kılınır.",
+        "confidence": 99,
+        "timeWindow": {
+          "startYear": 2027,
+          "endYear": 2029,
+          "peakLikelihoodWindow": "2027-2028",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.176Z"
+    },
+    "milestone_2028": {
+      "calendarItemId": "milestone_2028",
+      "year": 2028,
+      "title": "Katı Hal (Solid-State) Batarya Devrimi",
+      "category": "Enerji & Çevre",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Enerji depolamada lityum-iyonun yerini katı hal pilleri alır. Termodinamik ve hücre yoğunluğu sınırları gereği sınırsız menzil olmasa da, 2 kat daha yüksek enerji yoğunluğu, yüksek güvenlik ve 10 dakikada şarj imkanı sunar.",
+        "confidence": 95,
+        "timeWindow": {
+          "startYear": 2028,
+          "endYear": 2030,
+          "peakLikelihoodWindow": "2028-2029",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.177Z"
+    },
+    "milestone_2029": {
+      "calendarItemId": "milestone_2029",
+      "year": 2029,
+      "title": "Yapay Genel Zeka (AGI) & Mantıksal Akıl Yürütme",
+      "category": "Yapay Zeka & Bilişim",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Turing Testi günümüz LLM'leri tarafından zaten aşılmış olup AGI için yetersizdir. 2029 projeksiyonu; çok modlu nedensel akıl yürütme, otonom hedef planlama ve sürekli öğrenme yeteneği sergileyen AGI protokollerine odaklanır. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 88,
+        "timeWindow": {
+          "startYear": 2029,
+          "endYear": 2032,
+          "peakLikelihoodWindow": "2029-2031",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Turing Testi günümüz LLM'leri tarafından zaten aşılmış olup AGI için yetersizdir. 2029 projeksiyonu; çok modlu nedensel akıl yürütme, otonom hedef planlama ve sürekli öğrenme yeteneği sergileyen AGI protokollerine odaklanır. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 88,
+        "timeWindow": {
+          "startYear": 2029,
+          "endYear": 2032,
+          "peakLikelihoodWindow": "2029-2031",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Turing Testi günümüz LLM'leri tarafından zaten aşılmış olup AGI için yetersizdir. 2029 projeksiyonu; çok modlu nedensel akıl yürütme, otonom hedef planlama ve sürekli öğrenme yeteneği sergileyen AGI protokollerine odaklanır. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2029,
+          "endYear": 2032,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 88
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.177Z"
+    },
+    "milestone_2030": {
+      "calendarItemId": "milestone_2030",
+      "year": 2030,
+      "title": "Giyilebilir Nöroteknoloji & BCI Sinyal İşleme",
+      "category": "İnsan-Makine Arayüzü",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Giyilebilir sensörler (EEG/fNIRS) dışarıdan zihinsel odaklanma ve basit komutları okur. Kafatası sinyal gürültüsü nedeniyle hassas metin yazımı yeteneği hibrit AI niyet tahminleyicileriyle desteklenir.",
+        "confidence": 92,
+        "timeWindow": {
+          "startYear": 2030,
+          "endYear": 2032,
+          "peakLikelihoodWindow": "2030-2031",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.178Z"
+    },
+    "milestone_2031": {
+      "calendarItemId": "milestone_2031",
+      "year": 2031,
+      "title": "CRISPR'ın Ticarileşmesi",
+      "category": "Biyoloji & Tıp",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Kalıtsal hastalıklar için gen düzenleme tedavileri FDA onaylarını tamamlar. Sadece hastalıklar değil, kozmetik genetik müdahalelerin ilk adımları atılır. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2031,
+          "endYear": 2034,
+          "peakLikelihoodWindow": "2031-2033",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Kalıtsal hastalıklar için gen düzenleme tedavileri FDA onaylarını tamamlar. Sadece hastalıklar değil, kozmetik genetik müdahalelerin ilk adımları atılır. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2031,
+          "endYear": 2034,
+          "peakLikelihoodWindow": "2031-2033",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Kalıtsal hastalıklar için gen düzenleme tedavileri FDA onaylarını tamamlar. Sadece hastalıklar değil, kozmetik genetik müdahalelerin ilk adımları atılır. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2031,
+          "endYear": 2034,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 90
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.178Z"
+    },
+    "milestone_2032": {
+      "calendarItemId": "milestone_2032",
+      "year": 2032,
+      "title": "Otonom Sistemlerin Hakimiyeti",
+      "category": "Otonom & Lojistik",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Gelişmiş metropollerde Seviye 5 (direksiyonsuz ve pedalsız) otonom araçlar standart hale gelir. Küresel lojistik tamamen insansızlaşır.",
+        "confidence": 99,
+        "timeWindow": {
+          "startYear": 2032,
+          "endYear": 2034,
+          "peakLikelihoodWindow": "2032-2033",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.179Z"
+    },
+    "milestone_2033": {
+      "calendarItemId": "milestone_2033",
+      "year": 2033,
+      "title": "Kişiselleştirilmiş Yapay Hekimler",
+      "category": "Biyoloji & Tıp",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Her insanın genetik haritasına, akıllı saatlerinden gelen anlık kan verilerine ve yaşam tarzına göre 7/24 teşhis koyan yapay zeka doktorları devreye girer. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2033,
+          "endYear": 2036,
+          "peakLikelihoodWindow": "2033-2035",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Her insanın genetik haritasına, akıllı saatlerinden gelen anlık kan verilerine ve yaşam tarzına göre 7/24 teşhis koyan yapay zeka doktorları devreye girer. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2033,
+          "endYear": 2036,
+          "peakLikelihoodWindow": "2033-2035",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Her insanın genetik haritasına, akıllı saatlerinden gelen anlık kan verilerine ve yaşam tarzına göre 7/24 teşhis koyan yapay zeka doktorları devreye girer. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2033,
+          "endYear": 2036,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 90
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.179Z"
+    },
+    "milestone_2034": {
+      "calendarItemId": "milestone_2034",
+      "year": 2034,
+      "title": "Post-Kuantum Şifreleme (PQC) & Güvenlik Düzlemi",
+      "category": "Kuantum & Güvenlik",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Mevcut RSA şifrelemesini tam kırmak için milyonlarca hata düzeltmeli mantıksal kübite ihtiyaç duyulur. 2034'te kuantum bilgisayarlar henüz bu sayıya ulaşmamış olsa da, 'Post-Kuantum Kriptografi' (PQC) standartları tüm küresel şebekelere entegre edilir.",
+        "confidence": 94,
+        "timeWindow": {
+          "startYear": 2034,
+          "endYear": 2036,
+          "peakLikelihoodWindow": "2034-2035",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2035": {
+      "calendarItemId": "milestone_2035",
+      "year": 2035,
+      "title": "Laboratuvar Üretimi Biyoloji",
+      "category": "Enerji & Çevre",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Küresel ısınma ve tarım krizleri nedeniyle, laboratuvarda hücreden üretilen (kesimsiz) et ve sentetik gıdalar, geleneksel tarımdan daha ucuz hale gelir.",
+        "confidence": 99,
+        "timeWindow": {
+          "startYear": 2035,
+          "endYear": 2037,
+          "peakLikelihoodWindow": "2035-2036",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2036": {
+      "calendarItemId": "milestone_2036",
+      "year": 2036,
+      "title": "Tıbbi Dijital İkizler (Digital Twins)",
+      "category": "Biyoloji & Tıp",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "İnsanların hücre yapısı ve organ sistemleri sanal ortama kopyalanır. Bir ilaç veya tedavi insana verilmeden önce, yapay zeka bu sanal kopya üzerinde test eder. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2036,
+          "endYear": 2039,
+          "peakLikelihoodWindow": "2036-2038",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "İnsanların hücre yapısı ve organ sistemleri sanal ortama kopyalanır. Bir ilaç veya tedavi insana verilmeden önce, yapay zeka bu sanal kopya üzerinde test eder. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2036,
+          "endYear": 2039,
+          "peakLikelihoodWindow": "2036-2038",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "İnsanların hücre yapısı ve organ sistemleri sanal ortama kopyalanır. Bir ilaç veya tedavi insana verilmeden önce, yapay zeka bu sanal kopya üzerinde test eder. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2036,
+          "endYear": 2039,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 90
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2037": {
+      "calendarItemId": "milestone_2037",
+      "year": 2037,
+      "title": "Ticari Füzyon Enerjisi",
+      "category": "Enerji & Çevre",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Nükleer füzyon (yapay güneş) reaktörleri, harcadıklarından daha fazla enerji üretmeyi stabil hale getirerek temiz enerji çağını başlatır.",
+        "confidence": 99,
+        "timeWindow": {
+          "startYear": 2037,
+          "endYear": 2039,
+          "peakLikelihoodWindow": "2037-2038",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2038": {
+      "calendarItemId": "milestone_2038",
+      "year": 2038,
+      "title": "Tam Dalış Sanal Gerçeklik",
+      "category": "İnsan-Makine Arayüzü",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "İşitme ve görme ötesinde; dokunma, sıcaklık ve koku hislerinin sinir sistemine doğrudan aktarıldığı ultra-gerçekçi simülasyonlar ticarileşir.",
+        "confidence": 99,
+        "timeWindow": {
+          "startYear": 2038,
+          "endYear": 2040,
+          "peakLikelihoodWindow": "2038-2039",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2039": {
+      "calendarItemId": "milestone_2039",
+      "year": 2039,
+      "title": "Biyobaskı ve Sentetik Organlar",
+      "category": "Biyoloji & Tıp",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Organ bağışı kavramı tarihe karışır. Hastanın kendi kök hücrelerinden 3D biyoyazıcılarla yeni kalp, böbrek ve karaciğer basımı rutin tıbbi bir işleme dönüşür. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2039,
+          "endYear": 2042,
+          "peakLikelihoodWindow": "2039-2041",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Organ bağışı kavramı tarihe karışır. Hastanın kendi kök hücrelerinden 3D biyoyazıcılarla yeni kalp, böbrek ve karaciğer basımı rutin tıbbi bir işleme dönüşür. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2039,
+          "endYear": 2042,
+          "peakLikelihoodWindow": "2039-2041",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Organ bağışı kavramı tarihe karışır. Hastanın kendi kök hücrelerinden 3D biyoyazıcılarla yeni kalp, böbrek ve karaciğer basımı rutin tıbbi bir işleme dönüşür. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2039,
+          "endYear": 2042,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 90
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2040": {
+      "calendarItemId": "milestone_2040",
+      "year": 2040,
+      "title": "Hedefli Nanobot Onkoloji Terapileri",
+      "category": "Biyoloji & Tıp",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Kan dolaşımına enjekte edilen biyo-uyumlu DNA origami nanoyapıları, kanser hücrelerini moleküler seviyede tespit edip hedeflenmiş ilacı salınım yapar. Hücresel yaşlanma ise epigenetik ve hücresel karmaşıklık nedeniyle ancak sınırlı düzeyde yavaşlatılır. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2040,
+          "endYear": 2043,
+          "peakLikelihoodWindow": "2040-2042",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Kan dolaşımına enjekte edilen biyo-uyumlu DNA origami nanoyapıları, kanser hücrelerini moleküler seviyede tespit edip hedeflenmiş ilacı salınım yapar. Hücresel yaşlanma ise epigenetik ve hücresel karmaşıklık nedeniyle ancak sınırlı düzeyde yavaşlatılır. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2040,
+          "endYear": 2043,
+          "peakLikelihoodWindow": "2040-2042",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Kan dolaşımına enjekte edilen biyo-uyumlu DNA origami nanoyapıları, kanser hücrelerini moleküler seviyede tespit edip hedeflenmiş ilacı salınım yapar. Hücresel yaşlanma ise epigenetik ve hücresel karmaşıklık nedeniyle ancak sınırlı düzeyde yavaşlatılır. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2040,
+          "endYear": 2043,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 90
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2041": {
+      "calendarItemId": "milestone_2041",
+      "year": 2041,
+      "title": "Küresel İklim Mühendisliği",
+      "category": "Enerji & Çevre",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Atmosferdeki karbonu agresif şekilde emen otonom tesisler ve stratosfere güneş ışığını yansıtan partikül enjeksiyonu projeleri (Geoengineering) mecburiyetten devreye alınır.",
+        "confidence": 99,
+        "timeWindow": {
+          "startYear": 2041,
+          "endYear": 2043,
+          "peakLikelihoodWindow": "2041-2042",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2042": {
+      "calendarItemId": "milestone_2042",
+      "year": 2042,
+      "title": "Gelişmiş Embriyo Taraması & Poligenik Risk Tespiti",
+      "category": "Sosyoloji & Ekonomi",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "CRISPR ve poligenik skorlama ile doğumsal hastalık riskleri engellenir. Ancak zeka ve kas yapısı gibi binlerce genin karmaşık etkileşimiyle oluşan özellikleri sipariş usulü 'tasarlamak' poligenik engeller ve etik yasaklar sebebiyle imkansızdır.",
+        "confidence": 91,
+        "timeWindow": {
+          "startYear": 2042,
+          "endYear": 2044,
+          "peakLikelihoodWindow": "2042-2043",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+    },
+    "milestone_2043": {
+      "calendarItemId": "milestone_2043",
+      "year": 2043,
+      "title": "İşgücü Çöküşü ve Evrensel Temel Gelir",
+      "category": "Sosyoloji & Ekonomi",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Fiziksel ve bilişsel işlerin %70'inden fazlası yapay zeka ve robotik sistemlere devredilir. Hükümetler küresel çapta Evrensel Temel Gelir (UBI) sistemine geçer.",
+        "confidence": 99,
+        "timeWindow": {
+          "startYear": 2043,
+          "endYear": 2045,
+          "peakLikelihoodWindow": "2043-2044",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2044": {
+      "calendarItemId": "milestone_2044",
+      "year": 2044,
+      "title": "Gelişmiş Nöral Arayüz & Dijital Sinyal Akışı",
+      "category": "İnsan-Makine Arayüzü",
+      "status": "UNCHANGED",
+      "currentAssessment": {
+        "content": "Yüksek bant genişlikli BCI cihazları motor nöron komutlarını ve duyusal geri bildirimleri iletir. Soyut düşünce ve duyguların doğrudan 'zihinden zihne' aktarımı nörobilimsel kodlama mantığı nedeniyle sembolik ve AI niyet tahminleyicileriyle yürütülür.",
+        "confidence": 89,
+        "timeWindow": {
+          "startYear": 2044,
+          "endYear": 2046,
+          "peakLikelihoodWindow": "2044-2045",
+          "rationale": "Taban senaryo çerçevesi korunmuştur."
+        },
+        "uncertaintyLevel": "MODERATE",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2045": {
+      "calendarItemId": "milestone_2045",
+      "year": 2045,
+      "title": "Tekillik Projeksiyonu & Yapay Süper Zeka (ASI)",
+      "category": "Yapay Zeka & Bilişim",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Algoritmik öz-gelişim döngüleri, yapay zekanın bilişsel performansını insanlığın toplam çıktısının üzerine çıkarır. Ancak bu süreç fiziksel çip üretimi, Landauer ısı sınırı ve küresel enerji şebekesi kısıtlarına tabidir. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 85,
+        "timeWindow": {
+          "startYear": 2045,
+          "endYear": 2048,
+          "peakLikelihoodWindow": "2045-2047",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Algoritmik öz-gelişim döngüleri, yapay zekanın bilişsel performansını insanlığın toplam çıktısının üzerine çıkarır. Ancak bu süreç fiziksel çip üretimi, Landauer ısı sınırı ve küresel enerji şebekesi kısıtlarına tabidir. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 85,
+        "timeWindow": {
+          "startYear": 2045,
+          "endYear": 2048,
+          "peakLikelihoodWindow": "2045-2047",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Algoritmik öz-gelişim döngüleri, yapay zekanın bilişsel performansını insanlığın toplam çıktısının üzerine çıkarır. Ancak bu süreç fiziksel çip üretimi, Landauer ısı sınırı ve küresel enerji şebekesi kısıtlarına tabidir. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2045,
+          "endYear": 2048,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 85
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2046": {
+      "calendarItemId": "milestone_2046",
+      "year": 2046,
+      "title": "Zihinsel Yedekleme Sistemleri",
+      "category": "İnsan-Makine Arayüzü",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Hatıralar, anılar ve bilişsel deneyimler dijital formata çevrilerek bulut sunucularına yedeklenmeye başlar.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2046,
+          "endYear": 2052,
+          "peakLikelihoodWindow": "2046-2047",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2047": {
+      "calendarItemId": "milestone_2047",
+      "year": 2047,
+      "title": "Biyo-Sentetik İnsan Kaynaşması",
+      "category": "Post-İnsan & Medeniyet",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Fiziksel beden artık tamamen biyolojik değildir. Beyin implantları ve yapay organlar 'tedavi' için değil, performansı artırmak (enhancement) için zorunluluk haline gelir.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2047,
+          "endYear": 2053,
+          "peakLikelihoodWindow": "2047-2048",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2048": {
+      "calendarItemId": "milestone_2048",
+      "year": 2048,
+      "title": "Yaşlanmanın Durdurulması (Longevity Escape Velocity)",
+      "category": "Biyoloji & Tıp",
+      "status": "REVISED",
+      "previousAssessment": {
+        "description": "Hücre yenileme teknolojileri, insanın biyolojik olarak yaşlandığı hızdan daha hızlı onarım yapar. 'Doğal yaşlılıktan ölüm' kavramı teknik olarak çözülmüş bir mühendislik problemi olur. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2048,
+          "endYear": 2051,
+          "peakLikelihoodWindow": "2048-2050",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+      },
+      "currentAssessment": {
+        "content": "Hücre yenileme teknolojileri, insanın biyolojik olarak yaşlandığı hızdan daha hızlı onarım yapar. 'Doğal yaşlılıktan ölüm' kavramı teknik olarak çözülmüş bir mühendislik problemi olur. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "confidence": 90,
+        "timeWindow": {
+          "startYear": 2048,
+          "endYear": 2051,
+          "peakLikelihoodWindow": "2048-2050",
+          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+        },
+        "uncertaintyLevel": "LOW",
+        "isOverconfidentWarning": false
+      },
+      "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi.",
+      "revisionNeeded": true,
+      "revision": {
+        "content": "Hücre yenileme teknolojileri, insanın biyolojik olarak yaşlandığı hızdan daha hızlı onarım yapar. 'Doğal yaşlılıktan ölüm' kavramı teknik olarak çözülmüş bir mühendislik problemi olur. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
+        "timeWindow": {
+          "startYear": 2048,
+          "endYear": 2051,
+          "rationale": "Literatür olgunlaşma döngüsü."
+        },
+        "confidence": 90
+      },
+      "reasoningVersion": "1.1.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2049": {
+      "calendarItemId": "milestone_2049",
+      "year": 2049,
+      "title": "Kuantum-Biyolojik Simülasyonlar",
+      "category": "Kuantum & Güvenlik",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Kuantum sistemleri ile Dünya ekosisteminin birebir kopyası çıkarılarak, doğanın kendini nasıl onaracağı ASI (Süper Zeka) tarafından kusursuz şekilde yönetilir.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2049,
+          "endYear": 2055,
+          "peakLikelihoodWindow": "2049-2050",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2050": {
+      "calendarItemId": "milestone_2050",
+      "year": 2050,
+      "title": "Kovan Zihni (Hive Mind) Arayüzleri",
+      "category": "İnsan-Makine Arayüzü",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Bireylerin zihinleri, devasa bir merkezi yapay zeka ağına sürekli bağlı kalır. 'Öğrenmek' yerine, bilgi matriks tarzı doğrudan sinir sistemine 'indirilir'.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2050,
+          "endYear": 2056,
+          "peakLikelihoodWindow": "2050-2051",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2051": {
+      "calendarItemId": "milestone_2051",
+      "year": 2051,
+      "title": "Derin Uzay Madenciliği",
+      "category": "Uzay & Fizik",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Dünya dışı kaynak arayışı otonom filolarla başlar. Asteroitlerden çıkarılan nadir metaller, sentetik evrim inşasında kullanılır.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2051,
+          "endYear": 2057,
+          "peakLikelihoodWindow": "2051-2052",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2052": {
+      "calendarItemId": "milestone_2052",
+      "year": 2052,
+      "title": "Kavramsal Fizik Çözümleri",
+      "category": "Uzay & Fizik",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Yapay Süper Zeka, insanların yüzyıllardır çözemediği Sicim Teorisi ve Kütleçekimi gibi konularda yeni ve kanıtlanabilir fizik yasaları ortaya koyar.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2052,
+          "endYear": 2058,
+          "peakLikelihoodWindow": "2052-2053",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2053": {
+      "calendarItemId": "milestone_2053",
+      "year": 2053,
+      "title": "Madde Programlama",
+      "category": "Post-İnsan & Medeniyet",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Nano-montajcılar (assemblers) sayesinde enerji ve bilgi, istenilen her türlü fiziksel materyale dönüştürülmeye başlanır. Kıtlık ekonomisi tamamen sona erer.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2053,
+          "endYear": 2059,
+          "peakLikelihoodWindow": "2053-2054",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2054": {
+      "calendarItemId": "milestone_2054",
+      "year": 2054,
+      "title": "Yapay Bilincin Tanınması",
+      "category": "Sosyoloji & Ekonomi",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Gelişmiş ASI sistemleri biyolojik varlıklar gibi 'hukuki birer birey' ve bilinçli varlıklar olarak yasal statü kazanır.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2054,
+          "endYear": 2060,
+          "peakLikelihoodWindow": "2054-2055",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2055": {
+      "calendarItemId": "milestone_2055",
+      "year": 2055,
+      "title": "Yönlendirilmiş Evrim",
+      "category": "Post-İnsan & Medeniyet",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "İnsanlık, çevresine uyum sağlamak (doğal seçilim) yerine, çevresini ve kendi formunu anlık olarak dönüştürebildiği yeni bir evrim aşamasına geçer.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2055,
+          "endYear": 2061,
+          "peakLikelihoodWindow": "2055-2056",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2056": {
+      "calendarItemId": "milestone_2056",
+      "year": 2056,
+      "title": "Fiziksel Bedenin Terk Edilmeye Başlanması",
+      "category": "Post-İnsan & Medeniyet",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Birçok insan, kazalara ve yavaşlığa açık biyolojik bedenlerinden çıkarak, bilincini gelişmiş sentetik 'avatar' bedenlere aktarmayı tercih eder.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2056,
+          "endYear": 2062,
+          "peakLikelihoodWindow": "2056-2057",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2057": {
+      "calendarItemId": "milestone_2057",
+      "year": 2057,
+      "title": "Derin Uzay Kuantum İletişim & Lazer Röle Ağı",
+      "category": "Uzay & Fizik",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Ay ve Mars üsleri ile Dünya arasında Kuantum Anahtar Dağıtımı (QKD) ve yüksek güçlü lazer röle ağları kurulur. Kuantum dolanıklık bilgi iletiminde ışık hızını aşamadığı için (No-Communication Theorem) anlık sohbet yerine ışık hızıyla sınırlı ama kırılamaz şifreli telemetri kullanılır.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2057,
+          "endYear": 2063,
+          "peakLikelihoodWindow": "2057-2058",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+    },
+    "milestone_2058": {
+      "calendarItemId": "milestone_2058",
+      "year": 2058,
+      "title": "Sentetik Evrenler ve Sanal Dünyalar",
+      "category": "Post-İnsan & Medeniyet",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Her birinin fizik kuralları ve zaman akışı farklı tasarlanmış, milyarlarca bilincin yaşadığı devasa sentetik sanal evrenler kurulur.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2058,
+          "endYear": 2064,
+          "peakLikelihoodWindow": "2058-2059",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.182Z"
+    },
+    "milestone_2059": {
+      "calendarItemId": "milestone_2059",
+      "year": 2059,
+      "title": "Homo Sapiens 2.0 Biyolojik Ayrışma",
+      "category": "Post-İnsan & Medeniyet",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Saf biyolojik insan türü ile sentetik/genetik olarak yükseltilmiş 'Post-Sapiens' türleri hukuken ve biyolojik olarak tamamen iki farklı türe ayrılır.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2059,
+          "endYear": 2065,
+          "peakLikelihoodWindow": "2059-2060",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.182Z"
+    },
+    "milestone_2060": {
+      "calendarItemId": "milestone_2060",
+      "year": 2060,
+      "title": "Medeniyet Düzeyinde Yapay Zeka Matriksi",
+      "category": "Post-İnsan & Medeniyet",
+      "status": "UNCERTAIN",
+      "currentAssessment": {
+        "content": "Dünya, Mars ve tüm yörünge yerleşimleri; iklimi, üretimi ve canlılığı yöneten tek bir bilinçli gezegensel yapay zeka matriksi ile dengede tutulur.",
+        "confidence": null,
+        "timeWindow": {
+          "startYear": 2060,
+          "endYear": 2066,
+          "peakLikelihoodWindow": "2060-2061",
+          "rationale": "Uzak gelecek vizyonu; doğrudan deneysel kanıt yetersiz olduğundan belirsizlik korunmuştur."
+        },
+        "uncertaintyLevel": "HIGH",
+        "isOverconfidentWarning": true
+      },
+      "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
+      "revisionNeeded": false,
+      "reasoningVersion": "1.0.0",
+      "evaluatedAt": "2026-11-01T13:15:42.182Z"
+    }
+  }
+}

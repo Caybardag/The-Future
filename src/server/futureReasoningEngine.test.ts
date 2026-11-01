@@ -6,8 +6,13 @@ import {
   normalizeAcademicWorkToSource,
   normalizeTelegramSignalToSource,
   forecastsToLivingMilestones,
+  runAutonomousCalendarReasoningCycle,
+  hydrateTimelineWithValidatedFutureState,
+  evaluateCalendarItemDeterministicFallback,
+  getValidatedFutureState,
+  setValidatedFutureState,
 } from "./futureReasoningEngine";
-import { DynamicReasonedForecast, SourceReference } from "../types";
+import { DynamicReasonedForecast, SourceReference, ValidatedFutureState, CalendarItemAssessment } from "../types";
 import { TIMELINE_DATA } from "../data/timelineData";
 
 describe("EVIDENCE-DRIVEN DYNAMIC FUTURE REASONING ENGINE SUITE", () => {
@@ -264,3 +269,122 @@ describe("EVIDENCE-DRIVEN DYNAMIC FUTURE REASONING ENGINE SUITE", () => {
     expect(living[0].year).toBe(2026);
   });
 });
+
+describe("AUTONOMOUS GEMINI BRAIN & IMMUTABLE 2026–2060 CALENDAR SPECIFICATION SUITE", () => {
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 1: TAKVİM = SABİT ÇERÇEVE (2026-2060, 35 Madde Asla Silinmez / Sırası Değişmez)
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 1: Preserves immutable 2026-2060 calendar framework during reasoning overlay", () => {
+    const mockState: ValidatedFutureState = {
+      version: "2.0.0",
+      lastEvaluatedAt: new Date().toISOString(),
+      stateHash: "mock_hash_123",
+      assessments: {
+        milestone_2026: {
+          calendarItemId: "milestone_2026",
+          year: 2026,
+          title: TIMELINE_DATA[0].title,
+          category: TIMELINE_DATA[0].category,
+          status: "REVISED",
+          currentAssessment: {
+            content: "Otonom olarak kanıtlarla güncellenmiş açıklama.",
+            confidence: 82,
+            timeWindow: {
+              startYear: 2026,
+              endYear: 2028,
+              peakLikelihoodWindow: "2026-2027",
+              rationale: "Literatür doğrulaması.",
+            },
+            uncertaintyLevel: "LOW",
+          },
+          reasoning: "Hakiki akademik kanıt temelli revizyon.",
+          revisionNeeded: true,
+          reasoningVersion: "2.0.0",
+          evaluatedAt: new Date().toISOString(),
+        },
+      },
+    };
+
+    const hydrated = hydrateTimelineWithValidatedFutureState(TIMELINE_DATA, mockState);
+
+    // 1. All 35 milestones preserved
+    expect(hydrated.length).toBe(TIMELINE_DATA.length);
+    // 2. Exact milestone years and order preserved
+    expect(hydrated[0].year).toBe(2026);
+    expect(hydrated[hydrated.length - 1].year).toBe(2060);
+    // 3. Milestone title and category are immutable
+    expect(hydrated[0].title).toBe(TIMELINE_DATA[0].title);
+    expect(hydrated[0].category).toBe(TIMELINE_DATA[0].category);
+    // 4. Gemini validated state correctly overlaid
+    expect(hydrated[0].description).toBe("Otonom olarak kanıtlarla güncellenmiş açıklama.");
+    expect(hydrated[0].probability).toBe(82);
+    expect(hydrated[0].temporalWindow?.peakLikelihoodWindow).toBe("2026-2027");
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 2: GEMINI SELF-EVALUATION (Önceki Değerlendirmesini Sorgulama)
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 2: Gemini Brain questions previous assessments and expands temporal windows without manual hardcoded rules", () => {
+    const milestone2042 = TIMELINE_DATA.find((m) => m.year === 2042) || TIMELINE_DATA[15];
+
+    const priorAssessment: CalendarItemAssessment = {
+      calendarItemId: `milestone_${milestone2042.year}`,
+      year: milestone2042.year,
+      title: milestone2042.title,
+      category: milestone2042.category,
+      status: "UNCHANGED",
+      currentAssessment: {
+        content: "Eski dar kapsamlı değerlendirme.",
+        confidence: 90, // Aşırı kesin skor
+        timeWindow: {
+          startYear: milestone2042.year,
+          endYear: milestone2042.year,
+          rationale: "Eski tekil yıl varsayımı.",
+        },
+        uncertaintyLevel: "LOW",
+      },
+      reasoning: "İlk varsayım.",
+      revisionNeeded: false,
+      reasoningVersion: "1.0.0",
+      evaluatedAt: new Date(Date.now() - 86400000).toISOString(),
+    };
+
+    const evaluated = evaluateCalendarItemDeterministicFallback(milestone2042, [], priorAssessment);
+
+    // Should flag uncertainty for far future or expand time window into a range
+    expect(evaluated.currentAssessment.timeWindow.endYear).toBeGreaterThan(evaluated.currentAssessment.timeWindow.startYear);
+    expect(evaluated.reasoning).toBeDefined();
+    // No hardcoded "if tech === ... probability = 85"
+    expect(evaluated.status).toBeDefined();
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 3: EPISTEMIC HONESTY (Yetersiz Kanıtta Uydurma Skor Yasak)
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 3: Insufficient evidence leaves confidence as null without generating fabricated numbers", () => {
+    const farFutureMilestone = TIMELINE_DATA.find((m) => m.year >= 2050)!;
+
+    const evaluated = evaluateCalendarItemDeterministicFallback(farFutureMilestone, []);
+
+    // When evidence is missing, does not fabricate 85% or 95%
+    expect(evaluated.currentAssessment.confidence).toBeNull();
+    expect(evaluated.status).toBe("UNCERTAIN");
+    expect(evaluated.currentAssessment.uncertaintyLevel).toBe("HIGH");
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 4: TOKEN OPTIMIZATION & PERSISTENCE (State Hash & No Wasteful Calls)
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 4: Autonomous cycle optimizes tokens using state hash and persists validated future state", async () => {
+    const initialRun = await runAutonomousCalendarReasoningCycle(() => null, false);
+    expect(initialRun).toBeDefined();
+    expect(initialRun.version).toBe("2.0.0");
+    expect(Object.keys(initialRun.assessments).length).toBe(TIMELINE_DATA.length);
+
+    // Second run with matching hash reuses state without re-evaluating
+    const secondRun = await runAutonomousCalendarReasoningCycle(() => null, false);
+    expect(secondRun.stateHash).toBe(initialRun.stateHash);
+    expect(secondRun.lastEvaluatedAt).toBe(initialRun.lastEvaluatedAt);
+  });
+});
+

@@ -197,6 +197,8 @@ export interface Milestone {
   uncertaintyLevel?: UncertaintyLevel;
   epistemicProvenance?: "DYNAMIC_REASONED_FORECAST" | "STATIC_SCENARIO" | "MODEL_DERIVED" | "SOURCE_DERIVED";
   reEvaluationHistory?: ReEvaluationAction[];
+  assessment?: CalendarItemAssessment;
+  reasoningSummary?: string;
 }
 
 export interface MilestoneDecisionHistoryEntry {
@@ -639,4 +641,79 @@ export interface FutureReasoningAudit {
   lastCycleTimestamp: string;
   engineMode: "EVIDENCE_DRIVEN_DYNAMIC" | "OFFLINE_DETERMINISTIC_EVAL";
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTONOMOUS FUTURE REASONING BRAIN SPECIFICATION (SECTION 8 & 9 CONTRACT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type ReasoningStatus = "UNCHANGED" | "REVISED" | "UNCERTAIN" | "NOT_ASSESSED";
+
+export interface CalendarItemAssessment {
+  calendarItemId: string; // e.g. "milestone_2026"
+  year: number;
+  title: string;
+  category: CategoryType;
+  status: ReasoningStatus;
+  previousAssessment?: {
+    description?: string;
+    confidence?: number | null;
+    timeWindow?: { startYear: number; endYear: number };
+    reasoning?: string;
+  };
+  currentAssessment: {
+    content: string;
+    confidence: number | null; // null if ungrounded or unknown
+    timeWindow: {
+      startYear: number;
+      endYear: number;
+      peakLikelihoodWindow?: string;
+      rationale: string;
+    };
+    uncertaintyLevel: "LOW" | "MODERATE" | "HIGH" | "VERY_HIGH" | "UNKNOWN";
+    isOverconfidentWarning?: boolean;
+  };
+  reasoning: string;
+  revisionNeeded: boolean;
+  revision?: {
+    content?: string;
+    timeWindow?: {
+      startYear: number;
+      endYear: number;
+      rationale: string;
+    };
+    confidence?: number | null;
+    justification?: string;
+  };
+  reasoningVersion: string;
+  evaluatedAt: string;
+}
+
+export interface ValidatedFutureState {
+  version: string;
+  lastEvaluatedAt: string;
+  stateHash: string;
+  assessments: Record<string, CalendarItemAssessment>;
+}
+
+export interface CalendarReasoningContext {
+  calendarDefinition: {
+    year: number;
+    title: string;
+    category: string;
+    baselineDescription: string;
+    baselineProbability: number;
+  };
+  currentCalendarState: {
+    currentContent: string;
+    currentConfidence: number | null;
+    currentTimeWindow: { startYear: number; endYear: number };
+  };
+  previousReasoning?: string;
+  currentEvaluation?: string;
+  relevantContext: string[];
+  historicalReasoning: string[];
+  uncertainty: string;
+  constraints: string[];
+}
+
 

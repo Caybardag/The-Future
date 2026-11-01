@@ -1,5 +1,44 @@
 [
   {
+    "id": "TK-68758",
+    "userEmail": "user_b_sec6e@example.com",
+    "userName": "User B",
+    "category": "general",
+    "categoryTitle": "Genel Destek",
+    "subject": "B's Private Ticket",
+    "description": "Private details",
+    "status": "open",
+    "priority": "medium",
+    "createdAt": "2026-11-01T13:14:59.768Z",
+    "updatedAt": "2026-11-01T13:14:59.768Z"
+  },
+  {
+    "id": "TK-82427",
+    "userEmail": "user_b_sec6e@example.com",
+    "userName": "User B",
+    "category": "account",
+    "categoryTitle": "Hesap İşlemleri",
+    "subject": "User B Issue",
+    "description": "Private issue for B",
+    "status": "open",
+    "priority": "medium",
+    "createdAt": "2026-11-01T13:14:59.767Z",
+    "updatedAt": "2026-11-01T13:14:59.767Z"
+  },
+  {
+    "id": "TK-51603",
+    "userEmail": "user_a_sec6e@example.com",
+    "userName": "User A",
+    "category": "general",
+    "categoryTitle": "Genel Destek",
+    "subject": "User A Issue",
+    "description": "Need help with system",
+    "status": "open",
+    "priority": "medium",
+    "createdAt": "2026-11-01T13:14:59.766Z",
+    "updatedAt": "2026-11-01T13:14:59.766Z"
+  },
+  {
     "id": "TK-59914",
     "userEmail": "user_b_sec6e@example.com",
     "userName": "User B",

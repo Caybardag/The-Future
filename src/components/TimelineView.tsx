@@ -589,26 +589,17 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
             <span className="font-mono text-cyan-300 font-bold">
               {milestones.some((m) => m.epistemicProvenance === "DYNAMIC_REASONED_FORECAST")
-                ? "⚡ Canlı Gelecek Akıl Yürütme Modeli (Living Future Engine)"
-                : "🏛️ Taban Senaryo Modeli"}
+                ? "⚡ Otonom Gemini Beyin Doğrulaması Aktif"
+                : "🏛️ 2026–2060 Sabit Çerçeve"}
             </span>
             <span className="text-[11px] text-slate-400 hidden sm:inline">
-              (Statik kehanet yok; gerçek kaynaklar + Gemini çıkarımı)
+              (Statik kehanet yok; hakiki akademik ve AR-GE kanıtları + otonom akıl yürütme)
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            {onSyncTimelineLive && (
-              <button
-                type="button"
-                onClick={() => onSyncTimelineLive()}
-                disabled={isSyncingLiveScience}
-                className="px-3 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-500/30 font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 text-[11px]"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${isSyncingLiveScience ? "animate-spin" : ""}`} />
-                <span>{isSyncingLiveScience ? "Akıl Yürütülüyor..." : "Yeniden Akıl Yürüt (Gemini)"}</span>
-              </button>
-            )}
+          <div className="flex items-center gap-2 text-[11px] font-mono text-cyan-400/80 bg-cyan-950/40 px-2.5 py-1 rounded-lg border border-cyan-500/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span>Otonom Doğrulama Döngüsü</span>
           </div>
         </div>
 
