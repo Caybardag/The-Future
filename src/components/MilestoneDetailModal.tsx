@@ -26,7 +26,7 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
   currentUser,
   onNavigateToView,
 }) => {
-  const [activeTab, setActiveTab] = useState<"overview" | "layers" | "ethics">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "layers" | "ethics" | "reasoning">("overview");
   const worldState = getFiveLayerWorldState(milestone, currentUser?.age ? 2026 - currentUser.age : 1995);
 
   return (
@@ -42,9 +42,14 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
 
         <div className="flex items-center gap-3">
           <span className="px-3 py-1 rounded-xl bg-purple-500/20 text-purple-300 font-mono text-xs font-bold border border-purple-500/30">
-            {milestone.year}
+            {milestone.temporalWindow ? `${milestone.temporalWindow.startYear}–${milestone.temporalWindow.endYear}` : milestone.year}
           </span>
           <span className="text-xs text-slate-400 font-mono uppercase">{milestone.category}</span>
+          {milestone.epistemicProvenance === "DYNAMIC_REASONED_FORECAST" && (
+            <span className="text-[10px] text-cyan-300 font-mono px-2 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/30">
+              ⚡ Canlı Akıl Yürütme Modeli
+            </span>
+          )}
         </div>
 
         <div>
@@ -53,7 +58,7 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2 border-b border-white/10 pb-3 flex-wrap">
           <button
             type="button"
             onClick={() => setActiveTab("overview")}
@@ -62,6 +67,15 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
             }`}
           >
             Genel Bakış
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("reasoning")}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              activeTab === "reasoning" ? "bg-purple-600 text-white" : "text-slate-400 hover:text-white"
+            }`}
+          >
+            🧠 Akıl Yürütme & Kanıtlar
           </button>
           <button
             type="button"
@@ -108,6 +122,59 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
               <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs">
                 <span className="font-bold text-amber-300 font-mono">GÜNLÜK HAYATA ETKİSİ:</span>
                 <p className="text-slate-300 mt-1">{milestone.dailyLifeImpact}</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "reasoning" && (
+          <div className="space-y-4 text-xs font-mono">
+            {milestone.temporalWindow && (
+              <div className="p-3.5 rounded-xl bg-purple-950/40 border border-purple-500/30">
+                <div className="flex items-center justify-between text-purple-300 font-bold mb-1">
+                  <span>ZAMANSAL PENCERE: {milestone.temporalWindow.startYear} – {milestone.temporalWindow.endYear}</span>
+                  <span className="text-[10px] uppercase px-2 py-0.5 rounded bg-purple-500/20">{milestone.forecastStatus || "CONFIRMED_BY_EVIDENCE"}</span>
+                </div>
+                <p className="text-slate-300 text-[11px] font-sans">{milestone.temporalWindow.rationale}</p>
+              </div>
+            )}
+
+            {milestone.reasoningChain && milestone.reasoningChain.length > 0 && (
+              <div className="p-3.5 rounded-xl bg-slate-950/60 border border-white/10 space-y-2">
+                <span className="font-bold text-cyan-400 block uppercase">Akıl Yürütme Adımları (Premise → Deduction):</span>
+                {milestone.reasoningChain.map((step) => (
+                  <div key={step.stepIndex} className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                    <span className="text-amber-300 font-bold">Adım {step.stepIndex}: </span>
+                    <span className="text-slate-300 font-sans">{step.premise} ➔ </span>
+                    <span className="text-emerald-300 font-sans">{step.deduction}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {milestone.supportingEvidence && milestone.supportingEvidence.length > 0 && (
+              <div className="p-3.5 rounded-xl bg-slate-950/60 border border-white/10 space-y-2">
+                <span className="font-bold text-emerald-400 block uppercase">Doğrulanmış Bilimsel / Teknolojik Kanıtlar:</span>
+                {milestone.supportingEvidence.map((src) => (
+                  <div key={src.id} className="p-2.5 rounded-lg bg-white/5 border border-white/5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-white font-bold font-sans">{src.title}</span>
+                      <span className="text-[10px] text-cyan-400 uppercase">{src.sourceType} ({src.publicationYear})</span>
+                    </div>
+                    <p className="text-slate-300 text-[11px] font-sans mt-1">{src.extractedClaim}</p>
+                    {src.url && (
+                      <a href={src.url} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline text-[10px] mt-1 inline-block">
+                        Kaynak Bağlantısı / DOI
+                      </a>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {(!milestone.reasoningChain || milestone.reasoningChain.length === 0) && (
+              <div className="p-4 rounded-xl bg-slate-950/40 border border-white/10 text-slate-400 text-center font-sans">
+                Bu dönüm noktası taban senaryo modelindedir. En güncel canlı kanıt zincirlerini görüntülemek için Gelecek Akıl Yürütme döngüsünü çalıştırabilirsiniz.
               </div>
             )}
           </div>

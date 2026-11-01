@@ -121,8 +121,16 @@ export function extractConcepts(workOrConcepts: any = []): string[] {
     .filter(Boolean);
 }
 
-export function mapToAcademicKeywords(topic: string): string[] {
-  return [topic, "breakthrough", "empirical analysis", "technological forecasting"];
+export function mapToAcademicKeywords(topic: string, category: string = ""): { englishQuery: string; arxivCat: string } {
+  const cat = (category || "").toLowerCase();
+  let arxivCat = "cs.AI";
+  if (cat.includes("biyoloji") || cat.includes("tıp")) arxivCat = "q-bio";
+  else if (cat.includes("kuantum")) arxivCat = "quant-ph";
+  else if (cat.includes("fizik") || cat.includes("uzay")) arxivCat = "physics";
+  return {
+    englishQuery: topic || "artificial intelligence technology forecasting",
+    arxivCat,
+  };
 }
 
 export async function bulkIngestAllMilestonesOpenAlex(apiKey?: string): Promise<{ totalIngested: number; success: boolean }> {

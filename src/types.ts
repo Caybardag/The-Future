@@ -188,6 +188,15 @@ export interface Milestone {
 
   isCommunitySubmission?: boolean;
   isDynamicBreakthrough?: boolean;
+
+  // Future Reasoning Engine Integration
+  temporalWindow?: TemporalWindow;
+  reasoningChain?: ReasoningChainStep[];
+  supportingEvidence?: SourceReference[];
+  forecastStatus?: ForecastStatus;
+  uncertaintyLevel?: UncertaintyLevel;
+  epistemicProvenance?: "DYNAMIC_REASONED_FORECAST" | "STATIC_SCENARIO" | "MODEL_DERIVED" | "SOURCE_DERIVED";
+  reEvaluationHistory?: ReEvaluationAction[];
 }
 
 export interface MilestoneDecisionHistoryEntry {
@@ -536,5 +545,98 @@ export interface SupportTicket {
   adminRepliedAt?: string;
   adminRepliedBy?: string;
   resolvedAt?: string;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FUTURE REASONING ENGINE (GEMINI EVIDENCE-DRIVEN REASONING CONTRACT)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type ForecastStatus =
+  | "CONFIRMED_BY_EVIDENCE"
+  | "EMERGING_HYPOTHESIS"
+  | "INSUFFICIENT_EVIDENCE"
+  | "WEAKENED_BY_CONTRADICTION"
+  | "DEFERRED_BY_BOTTLENECK"
+  | "REVOKED";
+
+export type UncertaintyLevel = "LOW" | "MODERATE" | "HIGH" | "VERY_HIGH" | "UNKNOWN";
+
+export interface TemporalWindow {
+  startYear: number;
+  endYear: number;
+  peakLikelihoodWindow?: string;
+  rationale: string;
+}
+
+export interface SourceReference {
+  id: string;
+  title: string;
+  sourceType: "openalex" | "arxiv" | "patent" | "telegram_signal" | "peer_reviewed_journal" | "official_whitepaper";
+  url?: string;
+  doi?: string;
+  citationCount?: number;
+  publicationYear?: number;
+  extractedClaim: string;
+}
+
+export interface ReasoningChainStep {
+  stepIndex: number;
+  premise: string;
+  deduction: string;
+  evidenceRefId?: string;
+}
+
+export interface DynamicReasonedForecast {
+  id: string;
+  title: string;
+  category: CategoryType;
+  temporalWindow: TemporalWindow;
+  forecastEventSummary: string;
+  supportingEvidence: SourceReference[];
+  reasoningChain: ReasoningChainStep[];
+  dependencies: {
+    prerequisiteTech: string[];
+    infrastructureNeeds: string[];
+    regulatoryRequirements: string[];
+  };
+  contradictions: {
+    identifiedConflict?: string;
+    physicalOrResourceConstraint?: string;
+    impactOnForecast: "NONE" | "WEAKENS" | "POSTPONES";
+  };
+  uncertainty: {
+    level: UncertaintyLevel;
+    primaryUnknowns: string[];
+    entropyFactor: number; // 0.0 - 1.0
+  };
+  confidenceBasis: {
+    evidenceStrength: "ROBUST" | "MODERATE" | "EARLY_SIGNAL" | "INSUFFICIENT";
+    technologicalMaturityTrl: number; // 1-9
+    convergenceDegree: string;
+    explanation: string;
+  };
+  status: ForecastStatus;
+  epistemicProvenance: "DYNAMIC_REASONED_FORECAST" | "STATIC_SCENARIO";
+  lastEvaluatedAt: string;
+}
+
+export interface ReEvaluationAction {
+  actionType: "STRENGTHENED" | "WEAKENED" | "DEFERRED" | "REVOKED" | "DISCOVERED_NEW" | "UNCHANGED";
+  forecastId: string;
+  forecastTitle: string;
+  previousWindow?: string;
+  newWindow?: string;
+  triggerSignalSummary: string;
+  reasoning: string;
+}
+
+export interface FutureReasoningAudit {
+  totalForecasts: number;
+  forecastsByStatus: Record<ForecastStatus, number>;
+  totalVerifiedSources: number;
+  averageUncertaintyLevel: string;
+  reEvaluationsCount: number;
+  lastCycleTimestamp: string;
+  engineMode: "EVIDENCE_DRIVEN_DYNAMIC" | "OFFLINE_DETERMINISTIC_EVAL";
 }
 

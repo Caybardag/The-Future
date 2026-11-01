@@ -45,6 +45,17 @@ import {
   getAutonomousBrainState,
   executeAutonomousBrainCycle,
 } from "./src/server/autonomousSystemBrainEngine";
+import {
+  runGeminiReasoningOnEvidence,
+  runDeterministicReasoningFallback,
+  reEvaluateFutureModelWithSignal,
+  normalizeAcademicWorkToSource,
+  normalizeTelegramSignalToSource,
+  forecastsToLivingMilestones,
+  getLivingEngineForecasts,
+  setLivingEngineForecasts,
+  getEngineAudit,
+} from "./src/server/futureReasoningEngine";
 import { TIMELINE_DATA } from "./src/data/timelineData";
 import { detectDomainCareerProfile } from "./src/server/domainCareerIntel";
 import {
@@ -1317,7 +1328,7 @@ function logAIError(error: any) {
 }
 
 function getAI(passedKey?: string): GoogleGenAI | null {
-  const apiKey = (
+  const candidate = (
     passedKey ||
     process.env.GEMINI_API_KEY ||
     process.env.GOOGLE_API_KEY ||
@@ -1327,9 +1338,20 @@ function getAI(passedKey?: string): GoogleGenAI | null {
     process.env.gizemli ||
     ""
   ).trim();
-  if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey.length < 8) {
+
+  // Strictly reject empty, placeholder, or JWT tokens (JWTs have dots or start with eyJ)
+  if (
+    !candidate ||
+    candidate === "MY_GEMINI_API_KEY" ||
+    candidate === "undefined" ||
+    candidate.includes(".") ||
+    candidate.startsWith("eyJ") ||
+    candidate.length < 15
+  ) {
     return null;
   }
+
+  const apiKey = candidate;
 
   if (!aiClient || lastApiKey !== apiKey) {
     try {
@@ -1353,14 +1375,20 @@ function getAI(passedKey?: string): GoogleGenAI | null {
 
 function getAIFromReq(req?: express.Request): GoogleGenAI | null {
   if (!req) return getAI();
-  const reqKey = (
+  const explicitKey = String(
     (req.headers["x-gemini-api-key"] as string) ||
-    (req.headers["authorization"]?.replace(/^Bearer\s+/i, "")) ||
     req.body?.apiKey ||
     req.query?.apiKey ||
     ""
-  );
-  return getAI(typeof reqKey === "string" && reqKey.length > 8 ? reqKey : undefined);
+  ).trim();
+
+  // ONLY treat explicitKey as a passedKey if it does NOT look like a JWT (no dots, not a bearer token)
+  const isCandidateKey =
+    explicitKey.length >= 20 &&
+    !explicitKey.includes(".") &&
+    !explicitKey.startsWith("eyJ");
+
+  return getAI(isCandidateKey ? explicitKey : undefined);
 }
 
 // Server-side Sequential AI Agent Task Queue Engine
@@ -7059,9 +7087,116 @@ app.get("/api/gemini/brain-status", (req, res) => {
       "9. 2057 Kuantum Dolanıklık: Dolanıklık ile ışık hızından hızlı iletişim imkansızdır (No-Communication Theorem)."
     ],
     lastDatasetAuditDate: new Date().toISOString(),
-    datasetComplianceScore: 100
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FUTURE REASONING ENGINE — DYNAMIC EVIDENCE-DRIVEN CALENDAR API
+// ─────────────────────────────────────────────────────────────────────────────
+
+// GET /api/reasoning/timeline - Returns the living dynamic timeline produced by reasoning engine
+app.get("/api/reasoning/timeline", async (req, res) => {
+  try {
+    let forecasts = getLivingEngineForecasts();
+    if (forecasts.length === 0) {
+      // Bootstrap from verified sources in academic knowledge store and telegram vault
+      const sources: any[] = [];
+      const openAlexCitations = academicKnowledgeStore.getTopCitationsForTopic("Otonom Ajanlar ve Yapay Zeka", "Yapay Zeka & Bilişim");
+      openAlexCitations.forEach((w) => sources.push(normalizeAcademicWorkToSource(w)));
+
+      const naturePapers = academicKnowledgeStore.getTopCitationsForTopic("CRISPR ve Sentetik Biyoloji", "Biyoloji & Tıp");
+      naturePapers.forEach((w) => sources.push(normalizeAcademicWorkToSource(w)));
+
+      telegramIntelligenceFeed.slice(0, 10).forEach((t) => sources.push(normalizeTelegramSignalToSource(t)));
+
+      forecasts = await runGeminiReasoningOnEvidence(() => getAIFromReq(req), sources, []);
+      setLivingEngineForecasts(forecasts);
+    }
+
+    const livingMilestones = forecastsToLivingMilestones(forecasts, TIMELINE_DATA);
+    return res.json({
+      success: true,
+      provenance: "DYNAMIC_REASONED_FORECAST",
+      forecasts,
+      milestones: livingMilestones,
+      audit: getEngineAudit(),
+      reEvaluationLog: [],
+    });
+  } catch (err: any) {
+    console.error("[Reasoning Timeline API] Error:", err);
+    return res.json({
+      success: true,
+      provenance: "STATIC_SCENARIO",
+      forecasts: [],
+      milestones: forecastsToLivingMilestones([], TIMELINE_DATA),
+      audit: getEngineAudit(),
+      reEvaluationLog: [],
+    });
+  }
+});
+
+// POST /api/reasoning/run-cycle - Triggers a comprehensive reasoning cycle with Gemini
+app.post("/api/reasoning/run-cycle", async (req, res) => {
+  try {
+    const sources: any[] = [];
+    const openAlex1 = academicKnowledgeStore.getTopCitationsForTopic("Otonom Ajanlar ve AGI", "Yapay Zeka & Bilişim");
+    openAlex1.forEach((w) => sources.push(normalizeAcademicWorkToSource(w)));
+
+    const openAlex2 = academicKnowledgeStore.getTopCitationsForTopic("Kuantum Kriptografi", "Kuantum & Güvenlik");
+    openAlex2.forEach((w) => sources.push(normalizeAcademicWorkToSource(w)));
+
+    telegramIntelligenceFeed.forEach((t) => sources.push(normalizeTelegramSignalToSource(t)));
+
+    const currentForecasts = getLivingEngineForecasts();
+    const updated = await runGeminiReasoningOnEvidence(() => getAIFromReq(req), sources, currentForecasts);
+    setLivingEngineForecasts(updated);
+
+    return res.json({
+      success: true,
+      provenance: "DYNAMIC_REASONED_FORECAST",
+      forecasts: updated,
+      milestones: forecastsToLivingMilestones(updated, TIMELINE_DATA),
+      audit: getEngineAudit(),
+    });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err?.message || "Reasoning cycle failed" });
+  }
+});
+
+// POST /api/reasoning/evaluate-signal - Re-evaluates living model when a new signal arrives
+app.post("/api/reasoning/evaluate-signal", async (req, res) => {
+  try {
+    const rawSignal = req.body?.signal;
+    if (!rawSignal) {
+      return res.status(400).json({ success: false, error: "signal required" });
+    }
+
+    const normalizedSource = rawSignal.doi
+      ? normalizeAcademicWorkToSource(rawSignal)
+      : normalizeTelegramSignalToSource(rawSignal);
+
+    const currentForecasts = getLivingEngineForecasts();
+    const outcome = await reEvaluateFutureModelWithSignal(() => getAIFromReq(req), normalizedSource, currentForecasts);
+
+    return res.json({
+      success: true,
+      actions: outcome.actions,
+      updatedForecastsCount: outcome.updatedForecasts.length,
+      audit: getEngineAudit(),
+    });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err?.message || "Signal re-evaluation failed" });
+  }
+});
+
+// GET /api/reasoning/audit - Returns epistemic reasoning audit metrics
+app.get("/api/reasoning/audit", (req, res) => {
+  res.json({
+    success: true,
+    audit: getEngineAudit(),
+  });
+});
+
 
 // Admin System Config & Kill Switch API
 let adminSystemRuntimeConfig = {

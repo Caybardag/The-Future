@@ -583,6 +583,35 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
       {/* 1. HORIZONTAL TIME SCRUBBER STRIP (Bento Header Cell) */}
       <div id="timeline-main-view" className="bg-slate-900/40 border border-white/5 rounded-2xl p-4 shadow-2xl relative overflow-hidden space-y-3">
         
+        {/* Future Reasoning Engine Status Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 rounded-xl bg-purple-950/40 border border-purple-500/20 text-xs">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <span className="font-mono text-cyan-300 font-bold">
+              {milestones.some((m) => m.epistemicProvenance === "DYNAMIC_REASONED_FORECAST")
+                ? "⚡ Canlı Gelecek Akıl Yürütme Modeli (Living Future Engine)"
+                : "🏛️ Taban Senaryo Modeli"}
+            </span>
+            <span className="text-[11px] text-slate-400 hidden sm:inline">
+              (Statik kehanet yok; gerçek kaynaklar + Gemini çıkarımı)
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {onSyncTimelineLive && (
+              <button
+                type="button"
+                onClick={() => onSyncTimelineLive()}
+                disabled={isSyncingLiveScience}
+                className="px-3 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-200 border border-cyan-500/30 font-bold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 text-[11px]"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${isSyncingLiveScience ? "animate-spin" : ""}`} />
+                <span>{isSyncingLiveScience ? "Akıl Yürütülüyor..." : "Yeniden Akıl Yürüt (Gemini)"}</span>
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* Top Control Bar: Title, Scenario Switcher & Clean Stepper */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 pb-2.5">
           {/* Left: Clean Title */}

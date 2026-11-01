@@ -70,6 +70,8 @@ import { getLocalizedTimelineData, getLocalizedMilestone } from "./utils/milesto
 import { calculateDynamicProbability } from "./utils/probabilityCalculator";
 import { applyScenarioTransform } from "./utils/scenarioTransformer";
 import { aiService } from "./services/AIService";
+import { futureReasoningService } from "./services/futureReasoningService";
+import { FutureReasoningAudit } from "./types";
 import { safeFetchJson } from "./utils/apiClient";
 import { initializeNativeMobile, setupAndroidBackButton } from "./services/mobileNativeService";
 
@@ -192,6 +194,11 @@ function MainAppContent() {
   const [scenarioMode, setScenarioMode] = useState<"baseline" | "optimistic" | "dystopian">("baseline");
   const [guideModalOpen, setGuideModalOpen] = useState<boolean>(false);
   const [isGlobalTermsModalOpen, setIsGlobalTermsModalOpen] = useState<boolean>(false);
+
+  // Future Reasoning Engine State (Dynamic Evidence Model vs Baseline Scenario)
+  const [reasonedMilestones, setReasonedMilestones] = useState<Milestone[]>([]);
+  const [reasoningAudit, setReasoningAudit] = useState<FutureReasoningAudit | null>(null);
+  const [timelineModelType, setTimelineModelType] = useState<"DYNAMIC_REASONED" | "STATIC_SCENARIO">("DYNAMIC_REASONED");
 
   const handleScenarioChange = (newMode: "baseline" | "optimistic" | "dystopian") => {
     setScenarioMode(newMode);
@@ -434,24 +441,37 @@ function MainAppContent() {
     }
   }, [customDescriptions]);
 
-  // Live Scientific & Technological Grounding Sync Trigger
+  // Initial Load: Future Reasoning Engine Living Model
+  useEffect(() => {
+    let isMounted = true;
+    const initReasonedTimeline = async () => {
+      try {
+        const res = await futureReasoningService.getReasonedTimeline();
+        if (isMounted && res?.milestones && res.milestones.length > 0) {
+          setReasonedMilestones(res.milestones);
+          setReasoningAudit(res.audit);
+        }
+      } catch (err) {
+        console.warn("[Reasoning Init] Fallback to baseline scenario:", err);
+      }
+    };
+    initReasonedTimeline();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // Live Scientific & Technological Grounding & Future Reasoning Cycle Trigger
   const handleSyncTimelineLive = useCallback(async () => {
     try {
       setIsSyncingLiveScience(true);
-      const res = await aiService.syncTimelineWithLiveScience(TIMELINE_DATA);
-      if (res.success && res.updatedMilestones && res.updatedMilestones.length > 0) {
-        const updates: Record<number, string> = {};
-        res.updatedMilestones.forEach((um) => {
-          if (um.updatedDescription) {
-            updates[um.year] = um.updatedDescription;
-          }
-        });
-        if (Object.keys(updates).length > 0) {
-          setCustomDescriptions((prev) => ({ ...prev, ...updates }));
-        }
+      const res = await futureReasoningService.runReasoningCycle();
+      if (res?.milestones && res.milestones.length > 0) {
+        setReasonedMilestones(res.milestones);
+        setReasoningAudit(res.audit);
       }
     } catch (e) {
-      console.warn("[Live Timeline Sync] Error syncing timeline with live science:", e);
+      console.warn("[Live Timeline Sync] Error syncing timeline with reasoning engine:", e);
     } finally {
       setIsSyncingLiveScience(false);
     }
@@ -567,17 +587,20 @@ function MainAppContent() {
     const top = feeds[0];
     const phase: PhaseId = yr <= 2030 ? 1 : yr <= 2045 ? 2 : 3;
     const cat = (top.category || "Yapay Zeka & Bilişim") as CategoryType;
+    const calculatedProbability = typeof top.confidenceScore === "number" ? Math.min(95, Math.max(20, top.confidenceScore)) : 60;
+    const dynamicTrl = top.trlLevel || (yr <= 2030 ? 6 : yr <= 2045 ? 4 : 2);
+    const calculatedImpact = dynamicTrl * 10;
     return {
       year: yr,
       title: top.title || `Teknolojik Kırılma (${yr})`,
       category: cat,
       phase,
       description: top.summary || top.originalText,
-      probability: top.confidenceScore || 85,
-      impactLevel: 88,
-      aiAutonomyIndex: yr <= 2030 ? 45 : yr <= 2045 ? 78 : 95,
-      humanAugmentationIndex: yr <= 2030 ? 35 : yr <= 2045 ? 68 : 92,
-      bioDigitalIntegrationRate: yr <= 2030 ? 25 : yr <= 2045 ? 60 : 88,
+      probability: calculatedProbability,
+      impactLevel: calculatedImpact,
+      aiAutonomyIndex: yr <= 2030 ? 40 : yr <= 2045 ? 70 : 90,
+      humanAugmentationIndex: yr <= 2030 ? 30 : yr <= 2045 ? 65 : 85,
+      bioDigitalIntegrationRate: yr <= 2030 ? 20 : yr <= 2045 ? 55 : 80,
       iconName: "Zap",
       keyDrivers: ["Telegram Canlı İstihbarat", "Hızlandırılmış Saha Deneyleri", top.channelTitle || "Kanal Verisi"],
       ethicalRisks: ["Yeni teknolojik dağılım eşitsizliği ve adaptasyon hızı"],
@@ -591,7 +614,7 @@ function MainAppContent() {
         sourceOrg: f.channelTitle || "Telegram İstihbarat Kanalı",
         summary: f.summary || f.originalText,
         url: f.sourceUrl,
-        confidenceWeight: f.confidenceScore || 85,
+        confidenceWeight: typeof f.confidenceScore === "number" ? f.confidenceScore : 60,
         signalStrength: "Güçlü Doğrulayıcı Sinyal (Saha/Onay/Patent)" as const,
         isVerifiedSignal: Boolean(
           f.sourceUrl &&
@@ -607,8 +630,11 @@ function MainAppContent() {
   });
 
   const localizedTimeline = useMemo(() => {
+    if (timelineModelType === "DYNAMIC_REASONED" && reasonedMilestones.length > 0) {
+      return reasonedMilestones;
+    }
     return [...baseLocalizedTimeline, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
-  }, [baseLocalizedTimeline, dynamicMilestoneItems]);
+  }, [timelineModelType, reasonedMilestones, baseLocalizedTimeline, dynamicMilestoneItems]);
 
   // Active milestone lookup preserving dynamic annotations, breakthroughs, and live signals
   const activeMilestone = useMemo(() => {
