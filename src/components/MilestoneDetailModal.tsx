@@ -86,8 +86,8 @@ export const MilestoneDetailModal: React.FC<MilestoneDetailModalProps> = ({
         {activeTab === "overview" && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
-              <div className="p-3 rounded-xl bg-slate-950 border border-white/10">
-                <span className="text-slate-400">Olasılık</span>
+              <div className="p-3 rounded-xl bg-slate-950 border border-white/10" title="Model Projeksiyon Skoru (Ampirik kesinlik değildir)">
+                <span className="text-slate-400 block truncate">Model Projeksiyonu</span>
                 <p className="text-emerald-400 text-base font-bold">%{milestone.probability}</p>
               </div>
               <div className="p-3 rounded-xl bg-slate-950 border border-white/10">

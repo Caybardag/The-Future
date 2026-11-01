@@ -80,4 +80,97 @@ describe("PORTAL AUTH, MEMBER AVATAR, & EPISTEMIC DATA INTEGRITY TESTS", () => {
     expect(telegramEngineContent).toContain('"Model Projeksiyonu:');
     expect(telegramEngineContent).toContain("Model Değerlendirmesi:");
   });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TEST 6: Registered User Google Login Bypasses Registration Steps
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("FuturisticRegistrationGate detects already registered users and logs them in directly without forcing Step 2", () => {
+    const gatePath = path.resolve(__dirname, "../components/FuturisticRegistrationGate.tsx");
+    const gateContent = fs.readFileSync(gatePath, "utf-8");
+
+    // Must check isAlreadyRegistered before pushing to Step 2
+    expect(gateContent).toContain("isAlreadyRegistered");
+    expect(gateContent).toContain("onLoginExistingUser(loggedUser)");
+
+    // Must not have the old hardcoded comment forcing wizard
+    expect(gateContent).not.toContain("CRITICAL: NEVER bypass the onboarding steps!");
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TEST 7: Step 1 Detects Existing Email and Switches to Login
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("handleNextStep in FuturisticRegistrationGate detects existing accounts in Step 1 and redirects to login", () => {
+    const gatePath = path.resolve(__dirname, "../components/FuturisticRegistrationGate.tsx");
+    const gateContent = fs.readFileSync(gatePath, "utf-8");
+
+    expect(gateContent).toContain("getAccountByEmail(email)");
+    expect(gateContent).toContain('setGateMode("login")');
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TEST 8: isUserProfileComplete Respects isOnboardingCompleted
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("isUserProfileComplete treats isOnboardingCompleted as true and demographic fields properly", () => {
+    const userAuthModalPath = path.resolve(__dirname, "../components/UserAuthModal.tsx");
+    const userAuthModalContent = fs.readFileSync(userAuthModalPath, "utf-8");
+
+    expect(userAuthModalContent).toContain("if (profile.isOnboardingCompleted) return true");
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TEST 9: Prediction History Record - Zero Fake Fallbacks (85, 88, 10, 2035)
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("recordPredictionHistoryEntry and PredictionHistoryService leave uncomputed metrics as null", () => {
+    const predHistUtilPath = path.resolve(__dirname, "../utils/predictionHistory.ts");
+    const predHistUtilContent = fs.readFileSync(predHistUtilPath, "utf-8");
+    const predHistServicePath = path.resolve(__dirname, "../services/predictionHistoryService.ts");
+    const predHistServiceContent = fs.readFileSync(predHistServicePath, "utf-8");
+
+    // Must NOT contain fake fallback metrics
+    expect(predHistUtilContent).not.toContain("feasibilityScore ?? 85");
+    expect(predHistUtilContent).not.toContain("impactLevel ?? 88");
+    expect(predHistUtilContent).not.toContain("creditsSpent ?? 10");
+    expect(predHistUtilContent).not.toContain("targetYear || 2035");
+
+    expect(predHistServiceContent).not.toContain("feasibilityScore: data.feasibilityScore ?? 85");
+    expect(predHistServiceContent).not.toContain("impactLevel: data.impactLevel ?? 88");
+    expect(predHistServiceContent).not.toContain("creditsSpent: data.creditsSpent ?? 10");
+    expect(predHistServiceContent).not.toContain("targetYear: data.targetYear || 2035");
+
+    // Must use null defaults for uncomputed fields
+    expect(predHistUtilContent).toContain("feasibilityScore: typeof entry.metrics?.feasibilityScore === \"number\" ? entry.metrics.feasibilityScore : null");
+    expect(predHistUtilContent).toContain("impactLevel: typeof entry.metrics?.impactLevel === \"number\" ? entry.metrics.impactLevel : null");
+    expect(predHistUtilContent).toContain("creditsSpent: typeof entry.creditsSpent === \"number\" ? entry.creditsSpent : null");
+    expect(predHistUtilContent).toContain("targetYear: typeof entry.targetYear === \"number\" ? entry.targetYear : null");
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TEST 10: FutureVerdictView - Inevitability Score Labeled as Model Değerlendirmesi
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("FutureVerdictView does not present static scenario metrics as real-world probability", () => {
+    const verdictPath = path.resolve(__dirname, "../components/FutureVerdictView.tsx");
+    const verdictContent = fs.readFileSync(verdictPath, "utf-8");
+
+    // Must have STATIC_SCENARIO_DATA badge
+    expect(verdictContent).toContain("STATİK SENARYO VERİSİ");
+    // Must label score as Model Değerlendirmesi
+    expect(verdictContent).toContain("Model Değerlendirmesi");
+    // Must NOT present it as real-world absolute probability (%95 gerçekleşecek etc)
+    expect(verdictContent).not.toContain("%95 gerçekleşecek");
+    expect(verdictContent).not.toContain("%{verdict.inevitabilityScore} Senaryo Ağırlığı");
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TEST 11: MilestoneDetailModal & ComparisonTool - Model Projection Provenance
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("MilestoneDetailModal and ComparisonTool present probability as Model Projeksiyonu / Model Skoru", () => {
+    const detailModalPath = path.resolve(__dirname, "../components/MilestoneDetailModal.tsx");
+    const detailModalContent = fs.readFileSync(detailModalPath, "utf-8");
+    const compToolPath = path.resolve(__dirname, "../components/ComparisonTool.tsx");
+    const compToolContent = fs.readFileSync(compToolPath, "utf-8");
+
+    expect(detailModalContent).toContain("Model Projeksiyonu");
+    expect(compToolContent).toContain("Model Skoru");
+  });
 });
+

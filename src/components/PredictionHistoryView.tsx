@@ -60,13 +60,52 @@ export const PredictionHistoryView: React.FC<PredictionHistoryViewProps> = ({
                   </div>
                   <h4 className="font-bold text-white text-sm">{item.queryTitle}</h4>
                   <p className="text-xs text-slate-400 line-clamp-1">{item.summarySnippet || item.generatedOutcome}</p>
+
+                  {/* Epistemic Metrics Row */}
+                  <div className="flex flex-wrap items-center gap-2 pt-1 text-[10px] font-mono text-slate-400">
+                    <span>
+                      Fizibilite (Model):{" "}
+                      {typeof item.metrics?.feasibilityScore === "number" ? (
+                        <strong className="text-emerald-400">%{item.metrics.feasibilityScore}</strong>
+                      ) : (
+                        <span className="text-slate-500 italic">Hesaplanmadı</span>
+                      )}
+                    </span>
+                    <span>•</span>
+                    <span>
+                      Etki Seviyesi:{" "}
+                      {typeof item.metrics?.impactLevel === "number" ? (
+                        <strong className="text-blue-400">%{item.metrics.impactLevel}</strong>
+                      ) : (
+                        <span className="text-slate-500 italic">Hesaplanmadı</span>
+                      )}
+                    </span>
+                    {typeof item.creditsSpent === "number" && (
+                      <>
+                        <span>•</span>
+                        <span>Harcanan: {item.creditsSpent} Kredi</span>
+                      </>
+                    )}
+                    {item.targetYear ? (
+                      <>
+                        <span>•</span>
+                        <span className="text-cyan-300">Hedef: {item.targetYear}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>•</span>
+                        <span className="text-slate-500">Hedef Yıl: Belirtilmedi</span>
+                      </>
+                    )}
+                  </div>
                 </div>
 
                 {item.targetYear && onNavigateToView && (
                   <button
                     type="button"
-                    onClick={() => onNavigateToView("timeline", item.targetYear)}
+                    onClick={() => onNavigateToView("timeline", item.targetYear!)}
                     className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-all cursor-pointer shrink-0"
+                    title={`${item.targetYear} zaman çizgisine git`}
                   >
                     <ArrowRight className="w-4 h-4" />
                   </button>

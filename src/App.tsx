@@ -1297,6 +1297,7 @@ function MainAppContent() {
         onLoginSuccess={handleLoginSuccess}
         onLogout={handleLogout}
         onOpenAdmin={() => setCurrentView("admin")}
+        initialMode="login"
       />
 
       {/* User Profile & Digital Collection Modal */}

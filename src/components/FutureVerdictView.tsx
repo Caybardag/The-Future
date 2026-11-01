@@ -650,17 +650,17 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
                 2. Soru & Cevap
               </span>
               <div className="flex items-center gap-1.5">
-                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold border border-amber-500/40">
-                  %{currentVerdict.criticalBreakthrough.inevitabilityScore} Senaryo Ağırlığı
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold border border-amber-500/40" title="Statik senaryo modelleme skoru (STATIC_SCENARIO_DATA); ampirik gerçekleşme garantisi değildir">
+                  Skor: {currentVerdict.criticalBreakthrough.inevitabilityScore}/100 (Model Değerlendirmesi)
                 </span>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono text-slate-400 bg-slate-900 border border-white/5" title="Statik senaryo projeksiyonudur, ampirik kesinlik değildir">
-                  SENARYO MODELİ
+                <span className="px-1.5 py-0.5 rounded text-[9px] font-mono text-slate-400 bg-slate-900 border border-white/5" title="Statik senaryo verisi (STATIC_SCENARIO_DATA)">
+                  STATİK SENARYO VERİSİ
                 </span>
               </div>
             </div>
 
             <h3 className="text-lg font-bold text-white font-sans">
-              En Büyük Kritik Eşik Ne? (Senaryo Modeli)
+              En Büyük Kritik Eşik Ne? (Model Projeksiyonu)
             </h3>
 
             {/* Main Milestone Card */}
@@ -705,9 +705,14 @@ export const FutureVerdictView: React.FC<FutureVerdictViewProps> = ({
             )}
           </div>
 
-          <div className="text-[11px] text-slate-400 font-mono flex items-center gap-1 pt-2">
-            <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-            <span>Bu eşiğe hazırlanmak için önünüzde yaklaşık <strong>{currentVerdict.criticalBreakthrough.year - 2026} yıl</strong> var.</span>
+          <div className="text-[11px] text-slate-400 font-mono flex flex-col gap-1 pt-2 border-t border-white/5">
+            <div className="flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>Bu eşiğe hazırlanmak için önünüzde yaklaşık <strong>{currentVerdict.criticalBreakthrough.year - 2026} yıl</strong> var.</span>
+            </div>
+            <span className="text-[9px] text-slate-500 italic">
+              * Bu skor senaryo mimarisi ağırlığıdır (STATIC_SCENARIO_DATA); ampirik gerçekleşme kesinliği değildir.
+            </span>
           </div>
         </div>
 

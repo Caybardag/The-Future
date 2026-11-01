@@ -37,13 +37,11 @@ export interface UserProfile {
 
 export function isUserProfileComplete(profile: Partial<UserProfile> | null | undefined): boolean {
   if (!profile) return false;
-  return Boolean(
-    profile.email &&
-    (profile.displayName || profile.fullName || profile.name) &&
-    (profile.profession || profile.occupation) &&
-    profile.age &&
-    profile.city
-  );
+  if (profile.isOnboardingCompleted) return true;
+  const hasName = Boolean(profile.displayName || profile.fullName || profile.name || profile.username);
+  const hasRole = Boolean(profile.profession || profile.occupation || profile.lifeRole || profile.lifeRoleLabel);
+  const hasDemographics = Boolean(profile.age && (profile.city || profile.country || profile.location?.city));
+  return Boolean(profile.email && hasName && (hasRole || hasDemographics));
 }
 
 interface UserAuthModalProps {
@@ -53,6 +51,7 @@ interface UserAuthModalProps {
   onLoginSuccess?: (user: UserProfile) => void;
   onLogout?: () => void;
   onOpenAdmin?: () => void;
+  initialMode?: "login" | "register";
 }
 
 export const UserAuthModal: React.FC<UserAuthModalProps> = ({
@@ -62,6 +61,7 @@ export const UserAuthModal: React.FC<UserAuthModalProps> = ({
   onLoginSuccess,
   onLogout,
   onOpenAdmin,
+  initialMode = "login",
 }) => {
   if (!isOpen) return null;
 
@@ -77,6 +77,7 @@ export const UserAuthModal: React.FC<UserAuthModalProps> = ({
         </button>
 
         <FuturisticRegistrationGate
+          initialMode={initialMode}
           onCompleteRegistration={(user) => {
             onLoginSuccess?.(user);
             onClose();

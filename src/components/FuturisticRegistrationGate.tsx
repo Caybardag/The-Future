@@ -42,6 +42,7 @@ import {
 } from "../lib/firebase";
 
 interface FuturisticRegistrationGateProps {
+  initialMode?: "login" | "register";
   onCompleteRegistration: (user: UserProfile) => void;
   onLoginExistingUser: (user: UserProfile) => void;
   onExploreAsGuest?: () => void;
@@ -49,13 +50,14 @@ interface FuturisticRegistrationGateProps {
 }
 
 export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProps> = ({
+  initialMode = "login",
   onCompleteRegistration,
   onLoginExistingUser,
   onExploreAsGuest,
   onClose,
 }) => {
   // Mode: "register" (5 steps) OR "login" (direct sign in)
-  const [gateMode, setGateMode] = useState<"register" | "login">("register");
+  const [gateMode, setGateMode] = useState<"register" | "login">(initialMode);
 
   // Multi-step Registration Progress: 1 to 5
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -145,7 +147,70 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
         }
       } catch {}
 
-      // Pre-fill existing data as defaults if available, so user can confirm/edit them
+      // Fallback check by email key if doc wasn't found by uid
+      if (!firestoreData) {
+        try {
+          const emailKey = gEmail.replace(/[^a-zA-Z0-9]/g, "_");
+          const userRef = doc(db, "users", emailKey);
+          const docSnap = await getDoc(userRef);
+          if (docSnap.exists()) {
+            firestoreData = docSnap.data();
+          }
+        } catch {}
+      }
+
+      const generatedUsername = (
+        firestoreData?.username ||
+        existing?.username ||
+        gEmail.split("@")[0]
+      )
+        .replace(/[^a-zA-Z0-9_]/g, "_")
+        .toLowerCase();
+
+      // Check if user is ALREADY registered:
+      const isAlreadyRegistered = Boolean(
+        isSuper ||
+        firestoreData?.isOnboardingCompleted === true ||
+        existing?.isOnboardingCompleted === true ||
+        Boolean(firestoreData && (firestoreData.email || firestoreData.fullName)) ||
+        Boolean(existing && (existing.email || existing.fullName))
+      );
+
+      if (isAlreadyRegistered) {
+        // Direct seamless login for returning user — NO redundant wizard steps!
+        const loggedUser: UserProfile = {
+          id: fbUser.uid,
+          fullName: firestoreData?.fullName || existing?.fullName || gName,
+          username: firestoreData?.username || existing?.username || generatedUsername,
+          email: gEmail,
+          phone: firestoreData?.phone || existing?.phone || (isSuper ? "+90 (Süper Yetki)" : ""),
+          role: isSuper ? "superadmin" : (firestoreData?.role || existing?.role || "user"),
+          plan: isSuper ? "quantum_vip" : (firestoreData?.plan || existing?.plan || "free"),
+          credits: isSuper ? 9999 : (firestoreData?.credits !== undefined ? firestoreData.credits : (existing?.credits ?? 0)),
+          isEmailVerified: true,
+          isPhoneVerified: true,
+          joinedDate: firestoreData?.joinedDate || existing?.joinedDate || new Date().toLocaleDateString("tr-TR"),
+          isOnboardingCompleted: true,
+          age: firestoreData?.age || existing?.age || 28,
+          gender: firestoreData?.gender || existing?.gender || "Erkek",
+          city: firestoreData?.city || existing?.city || "İstanbul",
+          country: firestoreData?.country || existing?.country || "Türkiye",
+          lifeRole: firestoreData?.lifeRole || existing?.lifeRole || "beyaz_yaka",
+          lifeRoleLabel: firestoreData?.lifeRoleLabel || existing?.lifeRoleLabel,
+          primaryGoal: firestoreData?.primaryGoal || existing?.primaryGoal || "gelecek_becerileri",
+          primaryGoalLabel: firestoreData?.primaryGoalLabel || existing?.primaryGoalLabel,
+          profession: firestoreData?.profession || existing?.profession || firestoreData?.lifeRoleLabel || existing?.lifeRoleLabel,
+          avatarUrl: fbUser.photoURL || firestoreData?.avatarUrl || existing?.avatarUrl,
+        };
+
+        saveAccount(loggedUser);
+        playPulseSound(880);
+        onLoginExistingUser(loggedUser);
+        onClose?.();
+        return;
+      }
+
+      // If user is truly brand new and needs onboarding:
       if (firestoreData?.age || existing?.age) {
         setAge(Number(firestoreData?.age || existing?.age));
       }
@@ -162,24 +227,15 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
         setSelectedPrimaryGoal(firestoreData?.primaryGoal || existing?.primaryGoal);
       }
 
-      // Populate identity fields from Google
       setFullName(gName);
       setEmail(gEmail);
-      const generatedUsername = (
-        firestoreData?.username ||
-        existing?.username ||
-        gEmail.split("@")[0]
-      )
-        .replace(/[^a-zA-Z0-9_]/g, "_")
-        .toLowerCase();
       setUsername(generatedUsername);
       setAvatarUrl(fbUser.photoURL || undefined);
       setIsGoogleAuth(true);
       setGoogleUid(fbUser.uid);
 
-      // CRITICAL: NEVER bypass the onboarding steps! Always take user through the demographic & priority wizard!
       setGateMode("register");
-      setCurrentStep(2); // Advance directly to Step 2 (Yaş, Cinsiyet, Şehir)
+      setCurrentStep(2); // Advance directly to Step 2 for first-time profile completion
       playPulseSound(720);
     } catch (err: any) {
       if (
@@ -189,7 +245,7 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
       ) {
         setValidationError("Google giriş penceresi kapatıldı.");
       } else {
-        setValidationError("Google ile bağlantı kurulamadı. Lütfen e-posta ile kayıt olmayı deneyin.");
+        setValidationError("Google ile bağlantı kurulamadı. Lütfen e-posta ile giriş yapmayı deneyin.");
       }
     } finally {
       setIsGoogleLoading(false);
@@ -207,6 +263,13 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
       }
       if (!email.trim() || !email.includes("@")) {
         setValidationError("Lütfen geçerli bir e-posta adresi girin.");
+        return;
+      }
+      const existingAccount = getAccountByEmail(email);
+      if (existingAccount) {
+        setLoginEmail(email);
+        setValidationError(`"${email}" e-posta adresiyle zaten bir protokol kaydı bulunmaktadır. Lütfen şifrenizle giriş yapın.`);
+        setGateMode("login");
         return;
       }
       if (!isGoogleAuth && (!password || password.length < 6)) {
@@ -490,6 +553,42 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
           </div>
         </div>
 
+        {/* Top-Level Mode Navigation Segmented Control */}
+        <div className="flex items-center gap-1.5 p-1 rounded-2xl bg-slate-950/80 border border-white/10 mb-5">
+          <button
+            type="button"
+            onClick={() => {
+              setGateMode("login");
+              setValidationError("");
+              setLoginError("");
+            }}
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              gateMode === "login"
+                ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <LogIn className="w-3.5 h-3.5 text-cyan-300" />
+            <span>Giriş Yap</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setGateMode("register");
+              setValidationError("");
+              setLoginError("");
+            }}
+            className={`flex-1 py-2 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
+              gateMode === "register"
+                ? "bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md shadow-cyan-600/30"
+                : "text-slate-400 hover:text-white hover:bg-white/5"
+            }`}
+          >
+            <User className="w-3.5 h-3.5 text-teal-300" />
+            <span>Yeni Kayıt</span>
+          </button>
+        </div>
+
         {/* MODE 1: MULTI-STEP REGISTRATION */}
         {gateMode === "register" ? (
           <div className="space-y-6">
@@ -638,7 +737,7 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
                           />
                         </svg>
                       )}
-                      <span>Google ile Devam Et (Kayıt Adımlarını Başlat)</span>
+                      <span>Google ile Devam Et / Giriş Yap</span>
                     </button>
 
                     <div className="relative flex items-center justify-center my-3">
@@ -1148,7 +1247,7 @@ export const FuturisticRegistrationGate: React.FC<FuturisticRegistrationGateProp
                   />
                 </svg>
               )}
-              <span>Google ile Bağlan & Kayıt Adımlarını Tamamla</span>
+              <span>Google ile Tek Tıkla Giriş Yap</span>
             </button>
 
             <div className="relative flex items-center justify-center my-3">

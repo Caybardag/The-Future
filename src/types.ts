@@ -140,7 +140,8 @@ export interface Milestone {
   description: string;
   phase: PhaseId;
   category: CategoryType;
-  probability: number; // e.g. 99%
+  /** Epistemic Provenance: Model Projeksiyon Skoru / Senaryo Ağırlığı (0-100). Ampirik reel-dünya olasılığı değildir. */
+  probability: number;
   iconName: string;
   
   // Rich analytical fields

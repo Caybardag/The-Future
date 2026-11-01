@@ -54,8 +54,8 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ milestones }) =>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                    <span className="text-slate-400 text-[10px]">Olasılık</span>
+                  <div className="p-2.5 rounded-lg bg-white/5 border border-white/5" title="Model Projeksiyon Skoru (Ampirik kesinlik değildir)">
+                    <span className="text-slate-400 text-[10px]">Model Skoru</span>
                     <p className="text-emerald-400 font-bold">%{leftMilestone.probability}</p>
                   </div>
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
@@ -100,8 +100,8 @@ export const ComparisonTool: React.FC<ComparisonToolProps> = ({ milestones }) =>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">
-                    <span className="text-slate-400 text-[10px]">Olasılık</span>
+                  <div className="p-2.5 rounded-lg bg-white/5 border border-white/5" title="Model Projeksiyon Skoru (Ampirik kesinlik değildir)">
+                    <span className="text-slate-400 text-[10px]">Model Skoru</span>
                     <p className="text-emerald-400 font-bold">%{rightMilestone.probability}</p>
                   </div>
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/5">

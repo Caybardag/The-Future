@@ -33,5 +33,10 @@
     "date": "2026-10-31",
     "count": 1,
     "lastClaimTimestamp": 1793457633271
+  },
+  "ad_test_1793533049635@example.com": {
+    "date": "2026-11-01",
+    "count": 1,
+    "lastClaimTimestamp": 1793533049636
   }
 }

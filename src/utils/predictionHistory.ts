@@ -35,16 +35,17 @@ export interface PredictionHistoryRecord {
   generatedOutcome: string;
   summarySnippet: string;
   category: string;
-  targetYear: number;
+  targetYear?: number | null;
   scenarioMode: "baseline" | "optimistic" | "dystopian";
-  creditsSpent: number;
+  creditsSpent?: number | null;
   metrics: {
-    feasibilityScore: number; // 0 - 100
-    impactLevel: number; // 0 - 100
-    riskLevel: "Düşük" | "Orta" | "Yüksek" | "Kritik";
-    sentiment: PredictionSentiment;
+    feasibilityScore?: number | null; // 0 - 100 or null if not computed
+    impactLevel?: number | null; // 0 - 100 or null if not computed
+    riskLevel?: "Düşük" | "Orta" | "Yüksek" | "Kritik" | null;
+    sentiment?: PredictionSentiment | null;
     wordCount?: number;
     tokensEstimated?: number;
+    provenance?: "MODEL_DERIVED" | "STATIC_SCENARIO_DATA" | "SOURCE_DERIVED" | "USER_PERSONALIZED";
   };
   userEngagement: {
     isBookmarked: boolean;
@@ -77,6 +78,8 @@ export function recordPredictionHistoryEntry(
     summarySnippet?: string;
     tags?: string[];
     userNotes?: string;
+    targetYear?: number | null;
+    creditsSpent?: number | null;
   }
 ): PredictionHistoryRecord {
   const now = new Date();
@@ -116,16 +119,17 @@ export function recordPredictionHistoryEntry(
     generatedOutcome: entry.generatedOutcome,
     summarySnippet: autoSummary,
     category: entry.category || "Genel Gelecek",
-    targetYear: entry.targetYear || 2035,
+    targetYear: typeof entry.targetYear === "number" ? entry.targetYear : null,
     scenarioMode: entry.scenarioMode || "baseline",
-    creditsSpent: entry.creditsSpent ?? 10,
+    creditsSpent: typeof entry.creditsSpent === "number" ? entry.creditsSpent : null,
     metrics: {
-      feasibilityScore: entry.metrics?.feasibilityScore ?? 85,
-      impactLevel: entry.metrics?.impactLevel ?? 88,
-      riskLevel: entry.metrics?.riskLevel ?? "Orta",
-      sentiment: entry.metrics?.sentiment ?? "neutral",
+      feasibilityScore: typeof entry.metrics?.feasibilityScore === "number" ? entry.metrics.feasibilityScore : null,
+      impactLevel: typeof entry.metrics?.impactLevel === "number" ? entry.metrics.impactLevel : null,
+      riskLevel: entry.metrics?.riskLevel || null,
+      sentiment: entry.metrics?.sentiment || null,
       wordCount: words,
       tokensEstimated: estimatedTokens,
+      provenance: entry.metrics?.provenance || "MODEL_DERIVED",
     },
     userEngagement: {
       isBookmarked: false,
@@ -301,11 +305,15 @@ export function exportHistoryAsMarkdown(records: PredictionHistoryRecord[]): str
   md += `---\n\n`;
 
   records.forEach((rec, idx) => {
-    md += `### ${idx + 1}. [${rec.targetYear}] ${rec.queryTitle}\n`;
+    const targetLabel = rec.targetYear ? `[${rec.targetYear}] ` : "";
+    md += `### ${idx + 1}. ${targetLabel}${rec.queryTitle}\n`;
     md += `- **Modül / Özellik:** ${rec.featureName} (${rec.featureKey})\n`;
     md += `- **Kategori:** ${rec.category} | **Senaryo Modu:** ${rec.scenarioMode.toUpperCase()}\n`;
     md += `- **Tarih & Saat:** ${new Date(rec.timestamp).toLocaleString("tr-TR")}\n`;
-    md += `- **Metrikler:** Fizibilite: %${rec.metrics.feasibilityScore} | Etki: %${rec.metrics.impactLevel} | Risk: ${rec.metrics.riskLevel}\n`;
+    const feasStr = typeof rec.metrics?.feasibilityScore === "number" ? `%${rec.metrics.feasibilityScore}` : "Hesaplanmadı";
+    const impactStr = typeof rec.metrics?.impactLevel === "number" ? `%${rec.metrics.impactLevel}` : "Hesaplanmadı";
+    const riskStr = rec.metrics?.riskLevel || "Hesaplanmadı";
+    md += `- **Metrikler (Model Projeksiyonu):** Fizibilite: ${feasStr} | Etki: ${impactStr} | Risk: ${riskStr}\n`;
     if (rec.userEngagement.userNotes) {
       md += `- **Kullanıcı Notu:** _"${rec.userEngagement.userNotes}"_\n`;
     }

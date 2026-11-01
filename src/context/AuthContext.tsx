@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       // Restore user session if not banned
       const sanitizedProfession =
-        parsed.profession === "Kuantum Sistemler Araştırmacısı" ? undefined : parsed.profession;
+        parsed.profession === "Kuantum Sistemler Araştırmacısı" ? (parsed.lifeRoleLabel || "Teknoloji Kaşifi") : (parsed.profession || parsed.lifeRoleLabel);
       return {
         ...parsed,
         profession: sanitizedProfession,
@@ -481,15 +481,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (!activeUser || activeUser.id !== fbUser.uid || activeUser.email.toLowerCase().trim() !== userEmail) {
           try {
             const userRef = doc(db, "users", fbUser.uid);
-            const docSnap = await getDoc(userRef);
-            if (docSnap.exists()) {
-              const data = docSnap.data();
+            let docSnap = await getDoc(userRef);
 
-              if (!isSuper && data.isBanned) {
+            // Fallback check by email key if user doc was stored by email
+            const emailKey = userEmail.replace(/[^a-zA-Z0-9]/g, "_");
+            if (!docSnap.exists() && userEmail) {
+              const emailRef = doc(db, "users", emailKey);
+              const emailSnap = await getDoc(emailRef);
+              if (emailSnap.exists()) {
+                docSnap = emailSnap;
+              }
+            }
+
+            const existingLocal = getAccountByEmail(userEmail);
+
+            if (docSnap.exists() || existingLocal) {
+              const data = docSnap.exists() ? docSnap.data() : (existingLocal as any);
+
+              if (!isSuper && (data.isBanned || existingLocal?.isBanned)) {
                 await firebaseSignOut(auth);
                 setCurrentUser(null);
                 localStorage.removeItem("future_timeline_user");
-                setBanReasonState(data.banReason || "Hesabınız yönetici tarafından askıya alınmıştır.");
+                setBanReasonState(data.banReason || existingLocal?.banReason || "Hesabınız yönetici tarafından askıya alınmıştır.");
                 setBannedModalOpen(true);
                 return;
               }
@@ -497,55 +510,61 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               const hasPendingUnban = data.unbanNoticePending || localStorage.getItem(`future_unban_notice_${userEmail}`) === "true";
               const loadedUser: UserProfile = {
                 id: fbUser.uid,
-                fullName: data.fullName || fbUser.displayName || (isSuper ? "Süper Yönetici" : "Google User"),
+                fullName: data.fullName || existingLocal?.fullName || fbUser.displayName || (isSuper ? "Süper Yönetici" : "Google User"),
                 email: userEmail,
-                phone: data.phone || (isSuper ? "+90 (Süper Yetki)" : ""),
-                role: isSuper ? "superadmin" : (data.role || "user"),
+                phone: data.phone || existingLocal?.phone || (isSuper ? "+90 (Süper Yetki)" : ""),
+                role: isSuper ? "superadmin" : (data.role || existingLocal?.role || "user"),
                 isEmailVerified: true,
                 isPhoneVerified: true,
-                joinedDate: data.joinedDate || new Date().toISOString(),
-                credits: isSuper ? 9999 : (data.credits ?? 0),
-                plan: isSuper ? "quantum_vip" : (data.plan || "free"),
-                isBanned: data.isBanned ?? false,
-                banReason: data.banReason,
-                avatarUrl: fbUser.photoURL || data.avatarUrl || undefined,
+                joinedDate: data.joinedDate || existingLocal?.joinedDate || new Date().toISOString(),
+                credits: isSuper ? 9999 : (data.credits ?? existingLocal?.credits ?? 0),
+                plan: isSuper ? "quantum_vip" : (data.plan || existingLocal?.plan || "free"),
+                isBanned: data.isBanned ?? existingLocal?.isBanned ?? false,
+                banReason: data.banReason || existingLocal?.banReason,
+                avatarUrl: fbUser.photoURL || data.avatarUrl || existingLocal?.avatarUrl || undefined,
                 unbanNoticePending: hasPendingUnban,
                 isProbationRequired: data.isProbationRequired ?? hasPendingUnban,
                 probationAcceptedAt: data.probationAcceptedAt,
-                isOnboardingCompleted: data.isOnboardingCompleted === true,
-                age: data.age,
-                gender: data.gender,
-                country: data.country || "Türkiye",
-                city: data.city,
-                lifeRole: data.lifeRole,
-                lifeRoleLabel: data.lifeRoleLabel,
-                primaryGoal: data.primaryGoal,
-                primaryGoalLabel: data.primaryGoalLabel,
-                profession: data.profession === "Kuantum Sistemler Araştırmacısı" ? undefined : data.profession,
-                personalGoal: data.personalGoal,
-                employmentStatus: data.employmentStatus,
-                seniority: data.seniority,
-                industrySector: data.industrySector,
-                username: data.username,
-                isProfilePrivate: data.isProfilePrivate ?? true,
-                location: data.location,
-                device: data.device,
+                isOnboardingCompleted: data.isOnboardingCompleted ?? existingLocal?.isOnboardingCompleted ?? true,
+                age: data.age || existingLocal?.age,
+                gender: data.gender || existingLocal?.gender,
+                country: data.country || existingLocal?.country || "Türkiye",
+                city: data.city || existingLocal?.city,
+                lifeRole: data.lifeRole || existingLocal?.lifeRole,
+                lifeRoleLabel: data.lifeRoleLabel || existingLocal?.lifeRoleLabel,
+                primaryGoal: data.primaryGoal || existingLocal?.primaryGoal,
+                primaryGoalLabel: data.primaryGoalLabel || existingLocal?.primaryGoalLabel,
+                profession: data.profession || existingLocal?.profession || data.lifeRoleLabel || existingLocal?.lifeRoleLabel,
+                personalGoal: data.personalGoal || existingLocal?.personalGoal,
+                employmentStatus: data.employmentStatus || existingLocal?.employmentStatus,
+                seniority: data.seniority || existingLocal?.seniority,
+                industrySector: data.industrySector || existingLocal?.industrySector,
+                username: data.username || existingLocal?.username,
+                isProfilePrivate: data.isProfilePrivate ?? existingLocal?.isProfilePrivate ?? true,
+                location: data.location || existingLocal?.location,
+                device: data.device || existingLocal?.device,
               };
+
               setCurrentUser(loadedUser);
               saveAccount(loadedUser);
               try {
                 localStorage.setItem("future_timeline_user", JSON.stringify(loadedUser));
               } catch (e) {}
 
-              // Google Login & Session Restore: Check if profile is complete
-              const isProfileComplete = isUserProfileComplete(loadedUser);
+              // Sync back to uid-based doc if needed
+              if (!docSnap.exists() || docSnap.id !== fbUser.uid) {
+                setDoc(userRef, loadedUser, { merge: true }).catch(() => {});
+              }
+
+              // Google Login & Session Restore: Only open onboarding if user has truly never completed it
+              const isProfileComplete = loadedUser.isOnboardingCompleted === true || isUserProfileComplete(loadedUser);
               if (!isProfileComplete && !isSuper) {
                 setTimeout(() => {
                   window.dispatchEvent(new CustomEvent("open_profile_completion", { detail: loadedUser }));
                 }, 500);
               }
             } else {
-              // Create default doc for new Google user with incomplete onboarding
+              // Brand new user with no previous record in Firestore or local accounts
               const newUser: UserProfile = {
                 id: fbUser.uid,
                 fullName: isSuper ? "Süper Yönetici" : (fbUser.displayName || "Google User"),
