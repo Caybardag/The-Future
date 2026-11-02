@@ -630,8 +630,35 @@ function MainAppContent() {
   });
 
   const localizedTimeline = useMemo(() => {
-    if (timelineModelType === "DYNAMIC_REASONED" && reasonedMilestones.length > 0) {
-      return reasonedMilestones;
+    // CANONICAL IMMUTABLE FRAMEWORK (2026-2060, 35 Milestones):
+    // baseLocalizedTimeline is the inviolable backbone. Dynamic reasoning is strictly a hydration layer.
+    // It must NEVER shrink, delete, or replace the canonical 35 milestones.
+    if (timelineModelType === "DYNAMIC_REASONED" && reasonedMilestones && reasonedMilestones.length > 0) {
+      const reasonedMap = new Map<number, Milestone>();
+      reasonedMilestones.forEach((rm) => {
+        if (rm && typeof rm.year === "number") {
+          reasonedMap.set(rm.year, rm);
+        }
+      });
+
+      const hydratedBase = baseLocalizedTimeline.map((base) => {
+        const rm = reasonedMap.get(base.year);
+        if (!rm) return base;
+        return {
+          ...base,
+          // Hydrate with Gemini reasoned state while strictly preserving canonical structure
+          description: rm.description || base.description,
+          probability: typeof rm.probability === "number" ? rm.probability : base.probability,
+          temporalWindow: rm.temporalWindow || base.temporalWindow,
+          assessment: rm.assessment || base.assessment,
+          reasoningSummary: rm.reasoningSummary || base.reasoningSummary,
+          forecastStatus: rm.forecastStatus || base.forecastStatus,
+          uncertaintyLevel: rm.uncertaintyLevel || base.uncertaintyLevel,
+          epistemicProvenance: rm.epistemicProvenance || "DYNAMIC_REASONED_FORECAST",
+        };
+      });
+
+      return [...hydratedBase, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
     }
     return [...baseLocalizedTimeline, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
   }, [timelineModelType, reasonedMilestones, baseLocalizedTimeline, dynamicMilestoneItems]);

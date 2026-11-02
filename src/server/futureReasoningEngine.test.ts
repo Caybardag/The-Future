@@ -386,5 +386,77 @@ describe("AUTONOMOUS GEMINI BRAIN & IMMUTABLE 2026–2060 CALENDAR SPECIFICATION
     expect(secondRun.stateHash).toBe(initialRun.stateHash);
     expect(secondRun.lastEvaluatedAt).toBe(initialRun.lastEvaluatedAt);
   });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 5: REGRESSION GUARD — NEVER SHRINK TO 3 MILESTONES (ALWAYS 35)
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 5: Preserves all 35 canonical milestones even when reasoning input only contains 3 items", () => {
+    // Simulate a partial or 3-item reasoning input
+    const partialThreeForecasts = [
+      { id: "milestone_2026", year: 2026, status: "CONFIRMED_BY_EVIDENCE" },
+      { id: "milestone_2027", year: 2027, status: "CONFIRMED_BY_EVIDENCE" },
+      { id: "milestone_2028", year: 2028, status: "CONFIRMED_BY_EVIDENCE" },
+    ];
+
+    const result = forecastsToLivingMilestones(partialThreeForecasts, TIMELINE_DATA);
+
+    // MUST NOT shrink to 3! Must remain exactly 35 canonical milestones.
+    expect(result.length).toBe(35);
+    expect(result[0].year).toBe(2026);
+    expect(result[34].year).toBe(2060);
+    expect(result.map((m) => m.year)).toEqual(TIMELINE_DATA.map((m) => m.year));
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 6: DYNAMIC REASONING IS STRICTLY A HYDRATION LAYER OVER CANONICAL
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 6: Reasoning overlays attributes onto canonical milestone while keeping framework immutable", () => {
+    const singleYearState: ValidatedFutureState = {
+      version: "2.0.0",
+      lastEvaluatedAt: new Date().toISOString(),
+      stateHash: "single_test_hash",
+      assessments: {
+        milestone_2027: {
+          calendarItemId: "milestone_2027",
+          year: 2027,
+          title: "Sentetik Gerçeklik Krizi",
+          category: "Sosyoloji & Ekonomi",
+          status: "REVISED",
+          currentAssessment: {
+            content: "Doğrulanmış sentetik gerçeklik regülasyon çağı.",
+            confidence: 88,
+            timeWindow: {
+              startYear: 2027,
+              endYear: 2030,
+              peakLikelihoodWindow: "2027-2029",
+              rationale: "Literatür kanıtı.",
+            },
+            uncertaintyLevel: "LOW",
+          },
+          reasoning: "Regülasyon sinyalleri incelendi.",
+          revisionNeeded: true,
+          evaluatedAt: new Date().toISOString(),
+        },
+      },
+    };
+
+    const hydrated = hydrateTimelineWithValidatedFutureState(TIMELINE_DATA, singleYearState);
+
+    expect(hydrated.length).toBe(35);
+    const m2027 = hydrated.find((m) => m.year === 2027);
+    expect(m2027).toBeDefined();
+    // Invariant: Title and category are from immutable canonical framework
+    expect(m2027!.title).toBe(TIMELINE_DATA.find((m) => m.year === 2027)!.title);
+    expect(m2027!.category).toBe(TIMELINE_DATA.find((m) => m.year === 2027)!.category);
+    // Hydrated dynamic fields
+    expect(m2027!.description).toBe("Doğrulanmış sentetik gerçeklik regülasyon çağı.");
+    expect(m2027!.probability).toBe(88);
+    expect(m2027!.temporalWindow?.peakLikelihoodWindow).toBe("2027-2029");
+
+    // Other 34 milestones remain intact
+    const m2060 = hydrated.find((m) => m.year === 2060);
+    expect(m2060).toBeDefined();
+    expect(m2060!.title).toBe(TIMELINE_DATA.find((m) => m.year === 2060)!.title);
+  });
 });
 

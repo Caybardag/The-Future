@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "lastEvaluatedAt": "2026-11-01T13:15:42.182Z",
+  "lastEvaluatedAt": "2026-11-02T10:34:00.008Z",
   "stateHash": "2dcad2ff14004309916c68925934053c",
   "assessments": {
     "milestone_2026": {
@@ -44,7 +44,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.175Z"
+      "evaluatedAt": "2026-11-02T10:34:00.007Z"
     },
     "milestone_2027": {
       "calendarItemId": "milestone_2027",
@@ -67,7 +67,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.176Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2028": {
       "calendarItemId": "milestone_2028",
@@ -90,7 +90,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.177Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2029": {
       "calendarItemId": "milestone_2029",
@@ -133,7 +133,7 @@
         "confidence": 88
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.177Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2030": {
       "calendarItemId": "milestone_2030",
@@ -156,7 +156,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.178Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2031": {
       "calendarItemId": "milestone_2031",
@@ -199,7 +199,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.178Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2032": {
       "calendarItemId": "milestone_2032",
@@ -222,7 +222,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.179Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2033": {
       "calendarItemId": "milestone_2033",
@@ -265,7 +265,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.179Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2034": {
       "calendarItemId": "milestone_2034",
@@ -288,7 +288,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2035": {
       "calendarItemId": "milestone_2035",
@@ -311,7 +311,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2036": {
       "calendarItemId": "milestone_2036",
@@ -354,7 +354,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2037": {
       "calendarItemId": "milestone_2037",
@@ -377,7 +377,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2038": {
       "calendarItemId": "milestone_2038",
@@ -400,7 +400,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2039": {
       "calendarItemId": "milestone_2039",
@@ -443,7 +443,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2040": {
       "calendarItemId": "milestone_2040",
@@ -486,7 +486,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2041": {
       "calendarItemId": "milestone_2041",
@@ -509,7 +509,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2042": {
       "calendarItemId": "milestone_2042",
@@ -532,7 +532,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.180Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2043": {
       "calendarItemId": "milestone_2043",
@@ -555,7 +555,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2044": {
       "calendarItemId": "milestone_2044",
@@ -578,7 +578,7 @@
       "reasoning": "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2045": {
       "calendarItemId": "milestone_2045",
@@ -621,7 +621,7 @@
         "confidence": 85
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2046": {
       "calendarItemId": "milestone_2046",
@@ -644,7 +644,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2047": {
       "calendarItemId": "milestone_2047",
@@ -667,7 +667,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2048": {
       "calendarItemId": "milestone_2048",
@@ -710,7 +710,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2049": {
       "calendarItemId": "milestone_2049",
@@ -733,7 +733,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2050": {
       "calendarItemId": "milestone_2050",
@@ -756,7 +756,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2051": {
       "calendarItemId": "milestone_2051",
@@ -779,7 +779,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2052": {
       "calendarItemId": "milestone_2052",
@@ -802,7 +802,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2053": {
       "calendarItemId": "milestone_2053",
@@ -825,7 +825,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2054": {
       "calendarItemId": "milestone_2054",
@@ -848,7 +848,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2055": {
       "calendarItemId": "milestone_2055",
@@ -871,7 +871,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2056": {
       "calendarItemId": "milestone_2056",
@@ -894,7 +894,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2057": {
       "calendarItemId": "milestone_2057",
@@ -917,7 +917,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.181Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2058": {
       "calendarItemId": "milestone_2058",
@@ -940,7 +940,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.182Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2059": {
       "calendarItemId": "milestone_2059",
@@ -963,7 +963,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.182Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     },
     "milestone_2060": {
       "calendarItemId": "milestone_2060",
@@ -986,7 +986,7 @@
       "reasoning": "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur.",
       "revisionNeeded": false,
       "reasoningVersion": "1.0.0",
-      "evaluatedAt": "2026-11-01T13:15:42.182Z"
+      "evaluatedAt": "2026-11-02T10:34:00.008Z"
     }
   }
 }

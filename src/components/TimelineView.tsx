@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { Milestone, PhaseId, CategoryType } from "../types";
-import { PHASES } from "../data/timelineData";
+import { PHASES, TIMELINE_DATA } from "../data/timelineData";
 import { MilestoneIcon } from "../utils/iconHelper";
 import { useLanguage } from "../context/LanguageContext";
 import { isLegitimateProof } from "../services/evidenceService";
@@ -258,9 +258,22 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
     return () => window.removeEventListener("storage", loadVerified);
   }, []);
 
+  // CANONICAL INVARIANT: The 2026-2060 calendar framework (35 milestones) is immutable.
+  // Dynamic reasoning is strictly a hydration layer; if a truncated list is passed, it is re-hydrated over TIMELINE_DATA.
+  const effectiveMilestones = React.useMemo(() => {
+    if (milestones && milestones.length >= TIMELINE_DATA.length) {
+      return milestones;
+    }
+    const map = new Map((milestones || []).map((m) => [m.year, m]));
+    return TIMELINE_DATA.map((base) => {
+      const rm = map.get(base.year);
+      return rm ? { ...base, ...rm } : base;
+    });
+  }, [milestones]);
+
   const displayedMilestones = onlyVerified
-    ? (milestones || []).filter((m) => Boolean(verifiedMap[m.year]))
-    : (milestones || []);
+    ? effectiveMilestones.filter((m) => Boolean(verifiedMap[m.year]))
+    : effectiveMilestones;
 
   // Scope: Global World Timeline vs Personal Future Timeline ("Benim Geleceğim")
   const [timelineScope, setTimelineScope] = React.useState<"global" | "personal">("global");
