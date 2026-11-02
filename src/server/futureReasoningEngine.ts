@@ -356,14 +356,23 @@ export async function runAutonomousCalendarReasoningCycle(
   // Target evaluation: Evaluate baseline milestones in TIMELINE_DATA (immutable framework)
   const updatedAssessments: Record<string, CalendarItemAssessment> = { ...validatedFutureState.assessments };
 
-  // Evaluate prioritized milestones (to stay strictly within token budgets)
-  // Evaluate first 10 immediately, others on-demand or with deterministic fallback
-  for (let i = 0; i < TIMELINE_DATA.length; i++) {
-    const m = TIMELINE_DATA[i];
+  // DYNAMIC EVIDENCE-DRIVEN PRIORITIZATION & TOKEN ROTATION:
+  // Instead of an arbitrary index split, prioritize milestones dynamically:
+  // 1. Fresh matching scientific/intelligence sources (+50-80 pts)
+  // 2. Unassessed milestones (+40 pts)
+  // 3. High uncertainty or pending revision (+20 pts)
+  // 4. Time since last evaluation (+0-25 pts) to ensure round-robin rotation across all 35 years (2026-2060)
+  interface MilestoneEvalCandidate {
+    index: number;
+    milestone: Milestone;
+    relevantSources: SourceReference[];
+    previous?: CalendarItemAssessment;
+    priorityScore: number;
+  }
+
+  const candidates: MilestoneEvalCandidate[] = TIMELINE_DATA.map((m, idx) => {
     const itemId = `milestone_${m.year}`;
     const previous = validatedFutureState.assessments[itemId];
-
-    // Filter relevant sources for this milestone
     const mTitleLower = m.title.toLowerCase();
     const mCatLower = m.category.toLowerCase();
     const relevant = sources.filter((s) => {
@@ -371,13 +380,43 @@ export async function runAutonomousCalendarReasoningCycle(
       return sText.includes(mCatLower) || sText.includes(mTitleLower.slice(0, 8));
     });
 
-    if (i < 8) {
-      // Priority items evaluated with Gemini
-      const assessment = await evaluateCalendarItemWithGemini(getAiFn, m, relevant, previous);
+    let score = 0;
+    if (relevant.length > 0) score += 50 + Math.min(30, relevant.length * 10);
+    if (!previous) score += 40;
+    else if (previous.status === "UNCERTAIN") score += 20;
+
+    // Recency penalty: Older evaluations get higher priority to rotate across 2026-2060
+    const evalAgeMinutes = previous?.evaluatedAt
+      ? (Date.now() - new Date(previous.evaluatedAt).getTime()) / (60 * 1000)
+      : 999999;
+    score += Math.min(25, evalAgeMinutes / 10);
+
+    return { index: idx, milestone: m, relevantSources: relevant, previous, priorityScore: score };
+  });
+
+  // Sort candidates by priority score descending
+  candidates.sort((a, b) => b.priorityScore - a.priorityScore);
+
+  // Maximum Gemini calls per reasoning cycle to stay strictly within API and token budgets (max 8)
+  const MAX_GEMINI_CALLS_PER_CYCLE = 8;
+  const geminiTargetIndices = new Set(candidates.slice(0, MAX_GEMINI_CALLS_PER_CYCLE).map((c) => c.index));
+
+  for (let i = 0; i < TIMELINE_DATA.length; i++) {
+    const m = TIMELINE_DATA[i];
+    const itemId = `milestone_${m.year}`;
+    const previous = validatedFutureState.assessments[itemId];
+    const candidate = candidates.find((c) => c.index === i)!;
+
+    if (geminiTargetIndices.has(i)) {
+      // Prioritized by evidence & rotation: evaluated with Gemini
+      const assessment = await evaluateCalendarItemWithGemini(getAiFn, m, candidate.relevantSources, previous);
       updatedAssessments[itemId] = assessment;
+    } else if (previous) {
+      // Retain previously validated assessment (preserves token budget, zero regression)
+      updatedAssessments[itemId] = previous;
     } else {
-      // Remaining items hydrated deterministically to preserve tokens
-      const assessment = evaluateCalendarItemDeterministicFallback(m, relevant, previous);
+      // Deterministic fallback for unassessed items outside the active Gemini batch
+      const assessment = evaluateCalendarItemDeterministicFallback(m, candidate.relevantSources, previous);
       updatedAssessments[itemId] = assessment;
     }
   }
@@ -455,6 +494,30 @@ export function getEngineAudit(): FutureReasoningAudit {
 let inMemoryForecastsStore: any[] = [];
 
 export function getLivingEngineForecasts(): any[] {
+  if (inMemoryForecastsStore.length === 0 && Object.keys(validatedFutureState.assessments).length > 0) {
+    inMemoryForecastsStore = Object.values(validatedFutureState.assessments).map((a) => ({
+      id: a.calendarItemId,
+      title: a.title,
+      category: a.category,
+      temporalWindow: a.currentAssessment.timeWindow,
+      forecastEventSummary: a.currentAssessment.content,
+      supportingEvidence: a.sources || [],
+      uncertainty: {
+        level: a.currentAssessment.uncertaintyLevel,
+        primaryUnknowns: [],
+        entropyFactor: a.currentAssessment.uncertaintyLevel === "LOW" ? 0.2 : 0.6,
+      },
+      confidenceBasis: {
+        evidenceStrength: a.currentAssessment.confidence && a.currentAssessment.confidence > 70 ? "ROBUST" : "MODERATE",
+        technologicalMaturityTrl: 6,
+        convergenceDegree: "Literatür & AR-GE",
+        explanation: a.reasoning,
+      },
+      status: a.status === "REVISED" ? "CONFIRMED_BY_EVIDENCE" : a.status === "UNCERTAIN" ? "INSUFFICIENT_EVIDENCE" : "EMERGING_HYPOTHESIS",
+      epistemicProvenance: "DYNAMIC_REASONED_FORECAST",
+      lastEvaluatedAt: a.evaluatedAt,
+    }));
+  }
   return inMemoryForecastsStore;
 }
 
@@ -475,12 +538,19 @@ export function forecastsToLivingMilestones(
 
   // If specific ungrounded / insufficient evidence forecasts passed:
   if (forecasts.some((f) => f.status === "INSUFFICIENT_EVIDENCE")) {
-    return baseMilestones.map((m) => ({
-      ...m,
-      forecastStatus: "INSUFFICIENT_EVIDENCE" as const,
-      probability: 20,
-      epistemicProvenance: "DYNAMIC_REASONED_FORECAST" as const,
-    }));
+    const ungroundedCat = forecasts.find((f) => f.status === "INSUFFICIENT_EVIDENCE")?.category;
+    return baseMilestones.map((m) => {
+      const isTarget = !ungroundedCat || m.category === ungroundedCat || m.year === 2026;
+      if (isTarget) {
+        return {
+          ...m,
+          forecastStatus: "INSUFFICIENT_EVIDENCE" as const,
+          probability: Math.min(m.probability, 20),
+          epistemicProvenance: "DYNAMIC_REASONED_FORECAST" as const,
+        };
+      }
+      return m;
+    });
   }
 
   return hydrateTimelineWithValidatedFutureState(baseMilestones, validatedFutureState);

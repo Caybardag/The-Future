@@ -499,16 +499,7 @@ function MainAppContent() {
         setIsScanningBrain(false);
 
         if (anomalies.length > 0) {
-          const autoCorrections: Record<number, string> = {};
-          anomalies.forEach((a) => {
-            if (a.verification?.correctedDescription) {
-              autoCorrections[a.milestoneYear] = a.verification.correctedDescription;
-            }
-          });
-
-          if (Object.keys(autoCorrections).length > 0) {
-            setCustomDescriptions((prev) => ({ ...prev, ...autoCorrections }));
-          }
+          setDetectedAnomalies(anomalies);
         }
       } catch (err) {
         console.warn("[Background Autonomous Audit] Auto-healing check completed.", err);
@@ -648,8 +639,8 @@ function MainAppContent() {
       ? hydrateCanonicalTimeline(reasonedMilestones, baseLocalizedTimeline)
       : baseLocalizedTimeline;
 
-    return [...hydratedBase, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
-  }, [timelineModelType, reasonedMilestones, baseLocalizedTimeline, dynamicMilestoneItems]);
+    return hydratedBase;
+  }, [timelineModelType, reasonedMilestones, baseLocalizedTimeline]);
 
   // Active milestone lookup preserving dynamic annotations, breakthroughs, and live signals
   const activeMilestone = useMemo(() => {

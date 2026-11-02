@@ -136,7 +136,7 @@ export function calculateMilestonePersonalImpact(
   }
 
   const isTechUser = prof.includes("yazılım") || prof.includes("kod") || prof.includes("software") || prof.includes("developer") || prof.includes("mühendis");
-  const isMedUser = prof.includes("tıp") || prof.includes("doktor") || prof.includes("doctor") || prof.includes("kardiyoloji") || prof.includes("hekim") || prof.includes("sağlık");
+  const isMedUser = prof.includes("tıp") || prof.includes("doktor") || prof.includes("doctor") || prof.includes("kardiyo") || prof.includes("hekim") || prof.includes("sağlık");
   const isStudent = prof.includes("student") || prof.includes("öğrenci") || userProfile?.lifeRole === "ogrenci";
   const isManager = prof.includes("manager") || prof.includes("yönetici") || userProfile?.seniority === "Manager";
   const isTransition = userProfile?.primaryGoal === "career_transition" || Boolean(userProfile?.personalGoal && userProfile.personalGoal.includes("geçiş"));
@@ -243,16 +243,16 @@ export function calculateTelegramSignalPersonalImpact(
   const prof = (userProfile.profession || "").toLowerCase();
   const text = ((signal.title || "") + " " + (signal.originalText || "") + " " + (signal.category || "")).toLowerCase();
 
-  const isTechUser = prof.includes("yazılım") || prof.includes("software") || prof.includes("geliştirici");
-  const isMedUser = prof.includes("tıp") || prof.includes("doktor") || prof.includes("kardiyoloji");
+  const isTechUser = prof.includes("yazılım") || prof.includes("software") || prof.includes("geliştirici") || prof.includes("mühendis");
+  const isMedUser = prof.includes("tıp") || prof.includes("doktor") || prof.includes("doctor") || prof.includes("kardiyo") || prof.includes("hekim") || prof.includes("sağlık");
 
   let relevanceScore = 50;
   let relevanceLevel: "high" | "medium" | "low" = "medium";
 
-  if (isTechUser && (text.includes("yazılım") || text.includes("kodlama") || text.includes("yapay zeka"))) {
+  if (isTechUser && (text.includes("yazılım") || text.includes("kodlama") || text.includes("yapay zeka") || text.includes("ai") || text.includes("bilişim"))) {
     relevanceScore = 85;
     relevanceLevel = "high";
-  } else if (isMedUser && (text.includes("genetik") || text.includes("biyoteknoloji") || text.includes("tıp") || text.includes("tedavi") || text.includes("kardiyoloji"))) {
+  } else if (isMedUser && (text.includes("genetik") || text.includes("biyoteknoloji") || text.includes("biyoloji") || text.includes("tıp") || text.includes("tedavi") || text.includes("kardiyo") || text.includes("crispr") || text.includes("sağlık"))) {
     relevanceScore = 90;
     relevanceLevel = "high";
   } else {
@@ -569,6 +569,7 @@ export function deriveMilestoneActionPlan(
 
   let hasBottleneckSignal = false;
   let hasAcceleratingSignal = false;
+  let hasExpandingScopeSignal = false;
 
   for (const s of validSignals) {
     const text = `${s.title || ""} ${s.summary || ""} ${s.impactVerdict || ""}`.toLowerCase();
@@ -596,8 +597,16 @@ export function deriveMilestoneActionPlan(
       text.includes("devrim") ||
       text.includes("ahead of schedule");
 
+    const isExp =
+      s.impactVerdict === "EXPANDING_SCOPE" ||
+      text.includes("kapsam") ||
+      text.includes("genişle") ||
+      text.includes("çapraz sektör") ||
+      text.includes("entegre edildi");
+
     if (isBot) hasBottleneckSignal = true;
     if (isAcc) hasAcceleratingSignal = true;
+    if (isExp) hasExpandingScopeSignal = true;
   }
 
   if (hasBottleneckSignal && hasAcceleratingSignal) {
@@ -618,7 +627,12 @@ export function deriveMilestoneActionPlan(
     const allText = validSignals.map((s) => `${s.title || ""} ${s.summary || ""}`).join(" ").toLowerCase();
     const isMatureTrl9 = validSignals.some((s) => s.trlLevel === 9) && (allText.includes("seri üretim") || allText.includes("ticarileş") || allText.includes("küresel"));
     dynamicHorizonShiftYears = isMatureTrl9 ? -2 : -1;
-    liveSignalNotice = `Hızlanma Sinyali: ${validSignals[0].title}`;
+    liveSignalNotice = `Hızlanma Sinyali (ivmelenme baskısı): ${validSignals[0].title}`;
+  } else if (hasExpandingScopeSignal) {
+    impactEffect = "EXPANDING_SCOPE" as any;
+    hasLiveBreakthroughAcceleration = false;
+    dynamicHorizonShiftYears = 0;
+    liveSignalNotice = `Kapsam Genişleme Sinyali: ${validSignals[0]?.title || "Yeni uygulama alanı keşfedildi"}`;
   } else if (validSignals.length > 0) {
     impactEffect = "UNCERTAINTY_CHANGE";
     hasLiveBreakthroughAcceleration = false;
@@ -649,6 +663,23 @@ export function deriveMilestoneActionPlan(
       currentOptionId: "C",
       recommendedAlternativeOption: "B",
       reason: "Darboğaz nedeniyle yüksek atıl yatırım riski oluştu, B seçeneğine pivot önerilir.",
+      isAcknowledged: isAck,
+    };
+  } else if (effectiveSelectedOption === "A" && impactEffect === "ACCELERATING") {
+    decisionReassessment = {
+      needsReassessment: true,
+      reassessmentType: "ACCELERATION_RISK" as any,
+      currentOptionId: "A",
+      recommendedAlternativeOption: "B",
+      reason: "Hızlı teknolojik atılım nedeniyle mevcut koruyucu tutum geride kalma riski altındadır (stratejiniz risk altında), B veya C seçeneğine geçiş önerilir.",
+      isAcknowledged: isAck,
+    };
+  } else if (effectiveSelectedOption === "B" && impactEffect === "ACCELERATING") {
+    decisionReassessment = {
+      needsReassessment: false,
+      reassessmentType: "ALIGNMENT_OPTIMAL" as any,
+      currentOptionId: "B",
+      reason: "Mevcut dengeli stratejiniz gelen atılım sinyaliyle tam uyumludur.",
       isAcknowledged: isAck,
     };
   } else if (isOutcomeFriction) {
@@ -700,7 +731,7 @@ export function deriveMilestoneActionPlan(
   const isStudent = Boolean(prof.includes("student") || prof.includes("öğrenci") || userProfile?.lifeRole === "ogrenci");
   const isTransition = Boolean(userProfile?.primaryGoal === "career_transition" || (userProfile?.personalGoal && userProfile.personalGoal.includes("geçiş")));
   const isManager = Boolean(prof.includes("manager") || prof.includes("yönetici") || userProfile?.seniority === "Manager");
-  const isDoctor = Boolean(prof.includes("doktor") || prof.includes("doctor") || prof.includes("hekim"));
+  const isDoctor = Boolean(prof.includes("doktor") || prof.includes("doctor") || prof.includes("hekim") || prof.includes("kardiyo"));
   const isTechUser = Boolean(prof.includes("yazılım") || prof.includes("kod") || prof.includes("software") || prof.includes("developer") || prof.includes("mühendis"));
 
   let actionType: "skill_acquisition" | "strategic_positioning" | "monitoring" | "life_longevity" = "skill_acquisition";
@@ -748,6 +779,16 @@ export function deriveMilestoneActionPlan(
     reviewCheckpoint = "Sonraki Kontrol: 5 Yılda Bir Stratejik İnceleme";
   }
 
+  const timelinePhaseText = milestone.phase === 1 || milestone.year <= 2030
+    ? "2026–2030 (Faz 1: Kurulum & Erken Adaptasyon)"
+    : milestone.phase === 2 || milestone.year <= 2045
+    ? "2031–2045 (Faz 2: Üstel Ölçeklenme & Dönüşüm)"
+    : "2046–2060 (Faz 3: Tekillik & Sonrası)";
+
+  const riskNotice = hasBottleneckSignal
+    ? "Darboğaz & Kısıt Uyarısı: Mevcut regülasyonlar veya tedarik kısıtları nedeniyle zaman ufkunda sapma riski."
+    : undefined;
+
   return {
     urgencyBand,
     urgencyTitle,
@@ -767,6 +808,9 @@ export function deriveMilestoneActionPlan(
     impactEffect,
     hasLiveBreakthroughAcceleration,
     dynamicHorizonShiftYears,
+    acceleratedHorizonShiftYears: dynamicHorizonShiftYears,
+    timelinePhaseText,
+    risk: riskNotice,
     liveSignalCount,
     liveSignalNotice,
     outcomeStage,

@@ -265,7 +265,7 @@ export function hydrateCanonicalTimeline(
         rawAssessment.forecastStatus ||
         (rawAssessment.status === "REVISED"
           ? "CONFIRMED_BY_EVIDENCE"
-          : rawAssessment.status === "UNCERTAIN"
+          : rawAssessment.status === "UNCERTAIN" || rawAssessment.status === "INSUFFICIENT_EVIDENCE"
           ? "INSUFFICIENT_EVIDENCE"
           : "EMERGING_HYPOTHESIS"),
       uncertaintyLevel: current?.uncertaintyLevel || rawAssessment.uncertaintyLevel || canonical.uncertaintyLevel,

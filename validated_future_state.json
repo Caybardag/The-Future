@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
-  "lastEvaluatedAt": "2026-11-02T11:27:45.840Z",
-  "stateHash": "2dcad2ff14004309916c68925934053c",
+  "lastEvaluatedAt": "2026-11-02T12:44:55.471Z",
+  "stateHash": "0432689f75e190a8d11edbd386dc2e29",
   "assessments": {
     "milestone_2026": {
       "calendarItemId": "milestone_2026",
@@ -44,7 +44,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.839Z"
+      "evaluatedAt": "2026-11-02T12:44:55.469Z"
     },
     "milestone_2027": {
       "calendarItemId": "milestone_2027",
@@ -133,7 +133,7 @@
         "confidence": 88
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.839Z"
+      "evaluatedAt": "2026-11-02T12:44:55.469Z"
     },
     "milestone_2030": {
       "calendarItemId": "milestone_2030",
@@ -199,7 +199,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.839Z"
+      "evaluatedAt": "2026-11-02T12:44:55.470Z"
     },
     "milestone_2032": {
       "calendarItemId": "milestone_2032",
@@ -265,7 +265,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.839Z"
+      "evaluatedAt": "2026-11-02T12:44:55.470Z"
     },
     "milestone_2034": {
       "calendarItemId": "milestone_2034",
@@ -354,7 +354,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.839Z"
+      "evaluatedAt": "2026-11-02T12:44:55.470Z"
     },
     "milestone_2037": {
       "calendarItemId": "milestone_2037",
@@ -443,7 +443,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.840Z"
+      "evaluatedAt": "2026-11-02T12:44:55.470Z"
     },
     "milestone_2040": {
       "calendarItemId": "milestone_2040",
@@ -486,7 +486,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.840Z"
+      "evaluatedAt": "2026-11-02T12:44:55.471Z"
     },
     "milestone_2041": {
       "calendarItemId": "milestone_2041",
@@ -621,7 +621,7 @@
         "confidence": 85
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.840Z"
+      "evaluatedAt": "2026-11-02T12:40:22.974Z"
     },
     "milestone_2046": {
       "calendarItemId": "milestone_2046",
@@ -710,7 +710,7 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T11:27:45.840Z"
+      "evaluatedAt": "2026-11-02T12:44:55.471Z"
     },
     "milestone_2049": {
       "calendarItemId": "milestone_2049",
