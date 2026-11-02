@@ -135,6 +135,7 @@ export interface DetailedParametricAuditResult {
 }
 
 export interface Milestone {
+  id?: string;
   year: number;
   title: string;
   description: string;

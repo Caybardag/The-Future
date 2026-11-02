@@ -2,17 +2,13 @@ import { DynamicReasonedForecast, FutureReasoningAudit, Milestone, ReEvaluationA
 import { safeFetchJson, getApiHeaders } from "../utils/apiClient";
 import { safeStorage } from "../utils/safeStorage";
 import { TIMELINE_DATA } from "../data/timelineData";
+import {
+  validateCanonicalTimeline,
+  hydrateCanonicalTimeline,
+} from "../utils/canonicalTimelineValidator";
 
 const CACHE_KEY_REASONED_FORECASTS = "future_reasoned_forecasts_cache_v3";
 const CACHE_KEY_AUDIT = "future_reasoning_audit_cache_v3";
-
-// Clean up any legacy corrupted or shrunken caches (< 35 items)
-try {
-  const legacyCache = safeStorage.getJSON<any>("future_reasoned_forecasts_cache", null);
-  if (legacyCache && (!legacyCache.milestones || legacyCache.milestones.length < TIMELINE_DATA.length)) {
-    safeStorage.removeItem("future_reasoned_forecasts_cache");
-  }
-} catch {}
 
 export interface ReasoningTimelineResponse {
   success: boolean;
@@ -21,19 +17,63 @@ export interface ReasoningTimelineResponse {
   milestones: Milestone[];
   audit: FutureReasoningAudit;
   reEvaluationLog: ReEvaluationAction[];
+  version?: string;
+  updatedAt?: string;
 }
 
+type TimelineUpdateSubscriber = (res: ReasoningTimelineResponse) => void;
+
 export class FutureReasoningService {
+  private subscribers: Set<TimelineUpdateSubscriber> = new Set();
+  private lastEvaluatedTimestamp: number = 0;
+
+  /**
+   * Subscribe to timeline reasoning updates (ensures React State and Background Reasoning stay in sync)
+   */
+  onTimelineUpdated(subscriber: TimelineUpdateSubscriber): () => void {
+    this.subscribers.add(subscriber);
+    return () => {
+      this.subscribers.delete(subscriber);
+    };
+  }
+
+  private notifySubscribers(res: ReasoningTimelineResponse): void {
+    this.subscribers.forEach((sub) => {
+      try {
+        sub(res);
+      } catch (err) {
+        console.warn("[FutureReasoningService] Subscriber notification error:", err);
+      }
+    });
+  }
+
   async getReasonedTimeline(forceFresh: boolean = false): Promise<ReasoningTimelineResponse> {
     if (!forceFresh) {
       const cached = safeStorage.getJSON<ReasoningTimelineResponse | null>(CACHE_KEY_REASONED_FORECASTS, null);
-      // STRICT INVARIANT: Cache is ONLY valid if it contains all 35 canonical milestones (2026-2060).
-      // Any shrunken list (e.g. 3 items) is invalid and must be purged immediately.
-      if (cached && Array.isArray(cached.milestones) && cached.milestones.length >= TIMELINE_DATA.length) {
-        this.refreshInMemory().catch(() => {});
-        return cached;
-      } else if (cached) {
-        safeStorage.removeItem(CACHE_KEY_REASONED_FORECASTS);
+      if (cached && cached.milestones) {
+        const val = validateCanonicalTimeline(cached.milestones);
+        if (val.status === "VALID") {
+          // Re-hydrate over canonical baseline to guarantee canonical fields are grounded
+          const canonicalHydrated = hydrateCanonicalTimeline(cached.milestones);
+          const validatedResponse: ReasoningTimelineResponse = {
+            ...cached,
+            milestones: canonicalHydrated,
+          };
+          this.refreshInMemory().catch(() => {});
+          return validatedResponse;
+        } else if (val.status === "PARTIAL") {
+          // PARTIAL: Valid assessments applied to canonical 35 items; schedule background refresh
+          const partiallyHydrated = hydrateCanonicalTimeline(cached.milestones);
+          const partialResponse: ReasoningTimelineResponse = {
+            ...cached,
+            milestones: partiallyHydrated,
+          };
+          this.refreshInMemory().catch(() => {});
+          return partialResponse;
+        } else {
+          // INVALID: Purge corrupted cache safely (never touches other keys)
+          safeStorage.removeItem(CACHE_KEY_REASONED_FORECASTS);
+        }
       }
     }
 
@@ -44,24 +84,40 @@ export class FutureReasoningService {
       });
       const data = (res?.data || res) as any;
       if (data && data.success && Array.isArray(data.milestones)) {
-        // Guarantee all 35 canonical milestones are present (Dynamic reasoning is strictly a hydration layer)
-        if (data.milestones.length < TIMELINE_DATA.length) {
-          const map = new Map<number, Milestone>(data.milestones.map((m: Milestone) => [m.year, m]));
-          data.milestones = TIMELINE_DATA.map((base) => {
-            const rm = map.get(base.year);
-            return rm ? { ...base, ...rm } : base;
-          });
+        // Run central canonical validator & hydration
+        const hydratedMilestones = hydrateCanonicalTimeline(data.milestones);
+        const validatedResponse: ReasoningTimelineResponse = {
+          success: true,
+          provenance: data.provenance || "DYNAMIC_REASONED_FORECAST",
+          forecasts: data.forecasts || [],
+          milestones: hydratedMilestones,
+          audit: data.audit || this.createDefaultAudit(),
+          reEvaluationLog: data.reEvaluationLog || [],
+          updatedAt: new Date().toISOString(),
+        };
+
+        const resTime = new Date(validatedResponse.updatedAt || "").getTime() || Date.now();
+        if (resTime >= this.lastEvaluatedTimestamp) {
+          this.lastEvaluatedTimestamp = resTime;
+          safeStorage.setJSON(CACHE_KEY_REASONED_FORECASTS, validatedResponse);
+          this.notifySubscribers(validatedResponse);
         }
-        safeStorage.setJSON(CACHE_KEY_REASONED_FORECASTS, data);
-        return data as ReasoningTimelineResponse;
+        return validatedResponse;
       }
     } catch (err) {
       console.warn("[FutureReasoningService] API fetch warning, fallback to canonical framework:", err);
     }
 
+    // Fallback: Check if cached is valid or partial
     const fallbackCached = safeStorage.getJSON<ReasoningTimelineResponse | null>(CACHE_KEY_REASONED_FORECASTS, null);
-    if (fallbackCached && Array.isArray(fallbackCached.milestones) && fallbackCached.milestones.length >= TIMELINE_DATA.length) {
-      return fallbackCached;
+    if (fallbackCached && fallbackCached.milestones) {
+      const val = validateCanonicalTimeline(fallbackCached.milestones);
+      if (val.status === "VALID" || val.status === "PARTIAL") {
+        return {
+          ...fallbackCached,
+          milestones: hydrateCanonicalTimeline(fallbackCached.milestones),
+        };
+      }
     }
 
     // Default canonical fallback: Always return all 35 milestones (2026-2060)
@@ -69,24 +125,10 @@ export class FutureReasoningService {
       success: true,
       provenance: "STATIC_SCENARIO",
       forecasts: [],
-      milestones: TIMELINE_DATA.map((m) => ({ ...m, epistemicProvenance: "STATIC_SCENARIO" })),
-      audit: {
-        totalForecasts: TIMELINE_DATA.length,
-        forecastsByStatus: {
-          CONFIRMED_BY_EVIDENCE: 0,
-          EMERGING_HYPOTHESIS: 0,
-          INSUFFICIENT_EVIDENCE: 0,
-          WEAKENED_BY_CONTRADICTION: 0,
-          DEFERRED_BY_BOTTLENECK: 0,
-          REVOKED: 0,
-        },
-        totalVerifiedSources: 42,
-        averageUncertaintyLevel: "MODERATE",
-        reEvaluationsCount: 0,
-        lastCycleTimestamp: new Date().toISOString(),
-        engineMode: "EVIDENCE_DRIVEN_DYNAMIC",
-      },
+      milestones: hydrateCanonicalTimeline([]),
+      audit: this.createDefaultAudit(),
       reEvaluationLog: [],
+      updatedAt: new Date().toISOString(),
     };
   }
 
@@ -97,8 +139,19 @@ export class FutureReasoningService {
         headers: getApiHeaders(),
       });
       const data = (res?.data || res) as any;
-      if (data?.success && data.milestones) {
-        safeStorage.setJSON(CACHE_KEY_REASONED_FORECASTS, data);
+      if (data?.success && Array.isArray(data.milestones)) {
+        const hydrated = hydrateCanonicalTimeline(data.milestones);
+        const validatedResponse: ReasoningTimelineResponse = {
+          ...data,
+          milestones: hydrated,
+          updatedAt: new Date().toISOString(),
+        };
+        const resTime = Date.now();
+        if (resTime >= this.lastEvaluatedTimestamp) {
+          this.lastEvaluatedTimestamp = resTime;
+          safeStorage.setJSON(CACHE_KEY_REASONED_FORECASTS, validatedResponse);
+          this.notifySubscribers(validatedResponse);
+        }
       }
     } catch {}
   }
@@ -109,11 +162,38 @@ export class FutureReasoningService {
       headers: getApiHeaders(),
     });
     const data = (res?.data || res) as any;
-    if (data?.success) {
-      safeStorage.setJSON(CACHE_KEY_REASONED_FORECASTS, data);
-      return data as ReasoningTimelineResponse;
+    if (data?.success && Array.isArray(data.milestones)) {
+      const hydrated = hydrateCanonicalTimeline(data.milestones);
+      const validatedResponse: ReasoningTimelineResponse = {
+        ...data,
+        milestones: hydrated,
+        updatedAt: new Date().toISOString(),
+      };
+      this.lastEvaluatedTimestamp = Date.now();
+      safeStorage.setJSON(CACHE_KEY_REASONED_FORECASTS, validatedResponse);
+      this.notifySubscribers(validatedResponse);
+      return validatedResponse;
     }
     return this.getReasonedTimeline(true);
+  }
+
+  private createDefaultAudit(): FutureReasoningAudit {
+    return {
+      totalForecasts: TIMELINE_DATA.length,
+      forecastsByStatus: {
+        CONFIRMED_BY_EVIDENCE: 0,
+        EMERGING_HYPOTHESIS: 0,
+        INSUFFICIENT_EVIDENCE: 0,
+        WEAKENED_BY_CONTRADICTION: 0,
+        DEFERRED_BY_BOTTLENECK: 0,
+        REVOKED: 0,
+      },
+      totalVerifiedSources: 42,
+      averageUncertaintyLevel: "MODERATE",
+      reEvaluationsCount: 0,
+      lastCycleTimestamp: new Date().toISOString(),
+      engineMode: "EVIDENCE_DRIVEN_DYNAMIC",
+    };
   }
 
   async evaluateNewSignal(signal: any): Promise<{ success: boolean; actions: ReEvaluationAction[] }> {

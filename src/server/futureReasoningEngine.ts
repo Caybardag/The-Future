@@ -15,6 +15,7 @@ import {
 import { AcademicWorkItem, academicKnowledgeStore } from "./academicKnowledgeEngine";
 import { ExtractedTelegramIntelligence, telegramIntelligenceFeed } from "./telegramIngestionEngine";
 import { TIMELINE_DATA } from "../data/timelineData";
+import { hydrateCanonicalTimeline } from "../utils/canonicalTimelineValidator";
 
 const STATE_FILE_PATH = path.resolve(process.cwd(), "validated_future_state.json");
 
@@ -400,61 +401,10 @@ export function hydrateTimelineWithValidatedFutureState(
   baselineMilestones: Milestone[],
   state: ValidatedFutureState
 ): Milestone[] {
-  if (!baselineMilestones || baselineMilestones.length === 0) return [];
-
-  return baselineMilestones.map((base) => {
-    const itemId = `milestone_${base.year}`;
-    const assessment = state.assessments[itemId];
-
-    if (!assessment) {
-      return {
-        ...base,
-        epistemicProvenance: "STATIC_SCENARIO" as const,
-      };
-    }
-
-    const current = assessment.currentAssessment;
-    const isRevised = assessment.status === "REVISED";
-
-    return {
-      // 1. IMMUTABLE FRAMEWORK FIELDS (NEVER CHANGED)
-      year: base.year,
-      title: base.title,
-      phase: base.phase,
-      category: base.category,
-      iconName: base.iconName,
-
-      // 2. GEMINI REASONED & VALIDATED FUTURE STATE FIELDS
-      description: isRevised
-        ? (assessment.revision?.content || assessment.currentAssessment?.content || base.description)
-        : base.description,
-      probability: typeof current.confidence === "number" ? current.confidence : base.probability,
-      temporalWindow: current.timeWindow,
-      assessment,
-      reasoningSummary: assessment.reasoning,
-      forecastStatus: assessment.status === "REVISED"
-        ? "CONFIRMED_BY_EVIDENCE"
-        : assessment.status === "UNCERTAIN"
-        ? "INSUFFICIENT_EVIDENCE"
-        : "EMERGING_HYPOTHESIS",
-      uncertaintyLevel: current.uncertaintyLevel,
-      epistemicProvenance: "DYNAMIC_REASONED_FORECAST" as const,
-
-      // Analytical fields preserved
-      impactLevel: base.impactLevel,
-      humanAugmentationIndex: base.humanAugmentationIndex,
-      aiAutonomyIndex: base.aiAutonomyIndex,
-      bioDigitalIntegrationRate: base.bioDigitalIntegrationRate,
-      keyDrivers: base.keyDrivers,
-      dailyLifeImpact: base.dailyLifeImpact,
-      ethicalRisks: base.ethicalRisks,
-      societalOpportunities: base.societalOpportunities,
-      relatedYears: base.relatedYears,
-      patents: base.patents,
-      citations: base.citations,
-      signals: base.signals,
-    };
-  });
+  if (!baselineMilestones || baselineMilestones.length === 0) {
+    baselineMilestones = TIMELINE_DATA;
+  }
+  return hydrateCanonicalTimeline(state?.assessments || state, baselineMilestones);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

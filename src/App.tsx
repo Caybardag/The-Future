@@ -74,6 +74,7 @@ import { futureReasoningService } from "./services/futureReasoningService";
 import { FutureReasoningAudit } from "./types";
 import { safeFetchJson } from "./utils/apiClient";
 import { initializeNativeMobile, setupAndroidBackButton } from "./services/mobileNativeService";
+import { hydrateCanonicalTimeline } from "./utils/canonicalTimelineValidator";
 
 function MainAppContent() {
   const { language, t } = useLanguage();
@@ -441,23 +442,33 @@ function MainAppContent() {
     }
   }, [customDescriptions]);
 
-  // Initial Load: Future Reasoning Engine Living Model
+  // Initial Load & Reactive Subscription: Future Reasoning Engine Living Model
   useEffect(() => {
     let isMounted = true;
     const initReasonedTimeline = async () => {
       try {
         const res = await futureReasoningService.getReasonedTimeline();
-        if (isMounted && res?.milestones && res.milestones.length > 0) {
+        if (isMounted && res?.milestones) {
           setReasonedMilestones(res.milestones);
-          setReasoningAudit(res.audit);
+          if (res.audit) setReasoningAudit(res.audit);
         }
       } catch (err) {
         console.warn("[Reasoning Init] Fallback to baseline scenario:", err);
       }
     };
     initReasonedTimeline();
+
+    // Reactive sync: When background reasoning or signal re-evaluation finishes, update React state
+    const unsubscribe = futureReasoningService.onTimelineUpdated((updatedRes) => {
+      if (isMounted && updatedRes?.milestones) {
+        setReasonedMilestones(updatedRes.milestones);
+        if (updatedRes.audit) setReasoningAudit(updatedRes.audit);
+      }
+    });
+
     return () => {
       isMounted = false;
+      unsubscribe();
     };
   }, []);
 
@@ -633,34 +644,11 @@ function MainAppContent() {
     // CANONICAL IMMUTABLE FRAMEWORK (2026-2060, 35 Milestones):
     // baseLocalizedTimeline is the inviolable backbone. Dynamic reasoning is strictly a hydration layer.
     // It must NEVER shrink, delete, or replace the canonical 35 milestones.
-    if (timelineModelType === "DYNAMIC_REASONED" && reasonedMilestones && reasonedMilestones.length > 0) {
-      const reasonedMap = new Map<number, Milestone>();
-      reasonedMilestones.forEach((rm) => {
-        if (rm && typeof rm.year === "number") {
-          reasonedMap.set(rm.year, rm);
-        }
-      });
+    const hydratedBase = timelineModelType === "DYNAMIC_REASONED" && reasonedMilestones && reasonedMilestones.length > 0
+      ? hydrateCanonicalTimeline(reasonedMilestones, baseLocalizedTimeline)
+      : baseLocalizedTimeline;
 
-      const hydratedBase = baseLocalizedTimeline.map((base) => {
-        const rm = reasonedMap.get(base.year);
-        if (!rm) return base;
-        return {
-          ...base,
-          // Hydrate with Gemini reasoned state while strictly preserving canonical structure
-          description: rm.description || base.description,
-          probability: typeof rm.probability === "number" ? rm.probability : base.probability,
-          temporalWindow: rm.temporalWindow || base.temporalWindow,
-          assessment: rm.assessment || base.assessment,
-          reasoningSummary: rm.reasoningSummary || base.reasoningSummary,
-          forecastStatus: rm.forecastStatus || base.forecastStatus,
-          uncertaintyLevel: rm.uncertaintyLevel || base.uncertaintyLevel,
-          epistemicProvenance: rm.epistemicProvenance || "DYNAMIC_REASONED_FORECAST",
-        };
-      });
-
-      return [...hydratedBase, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
-    }
-    return [...baseLocalizedTimeline, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
+    return [...hydratedBase, ...dynamicMilestoneItems].sort((a, b) => a.year - b.year);
   }, [timelineModelType, reasonedMilestones, baseLocalizedTimeline, dynamicMilestoneItems]);
 
   // Active milestone lookup preserving dynamic annotations, breakthroughs, and live signals
