@@ -200,6 +200,10 @@ export interface Milestone {
   reEvaluationHistory?: ReEvaluationAction[];
   assessment?: CalendarItemAssessment;
   reasoningSummary?: string;
+  evaluationStatus?: MilestoneEvaluationStatus;
+  failureReason?: string;
+  lastEvaluationVersion?: number | string;
+  evaluatedAt?: string;
 }
 
 export interface MilestoneDecisionHistoryEntry {
@@ -636,11 +640,20 @@ export interface ReEvaluationAction {
 export interface FutureReasoningAudit {
   totalForecasts: number;
   forecastsByStatus: Record<ForecastStatus, number>;
-  totalVerifiedSources: number;
-  averageUncertaintyLevel: string;
+  totalVerifiedSources: number | "NOT_AVAILABLE";
+  averageUncertaintyLevel: string; // "LOW", "MODERATE", "HIGH", "VERY_HIGH", or "NOT_COMPUTED"
+  uncertaintySampleSize?: number;
   reEvaluationsCount: number;
   lastCycleTimestamp: string;
   engineMode: "EVIDENCE_DRIVEN_DYNAMIC" | "OFFLINE_DETERMINISTIC_EVAL";
+  revision?: number;
+  evaluationsSummary?: {
+    geminiEvaluatedCount: number;
+    pendingCount: number;
+    failedCount: number;
+    notAssessedCount: number;
+    requiresReevaluationCount: number;
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -649,12 +662,29 @@ export interface FutureReasoningAudit {
 
 export type ReasoningStatus = "UNCHANGED" | "REVISED" | "UNCERTAIN" | "NOT_ASSESSED";
 
+export type MilestoneEvaluationStatus =
+  | "NOT_ASSESSED"
+  | "PENDING"
+  | "GEMINI_EVALUATED"
+  | "REQUIRES_REEVALUATION"
+  | "EVALUATION_FAILED";
+
 export interface CalendarItemAssessment {
-  calendarItemId: string; // e.g. "milestone_2026"
+  milestoneId: string; // e.g. "milestone_2026"
+  calendarItemId?: string; // backwards compatibility alias for milestoneId
   year: number;
   title: string;
   category: CategoryType;
   status: ReasoningStatus;
+  evaluationStatus: MilestoneEvaluationStatus;
+  evaluatedAt: string;
+  lastEvidenceUpdateAt?: string;
+  lastEvaluationVersion: number | string;
+  reasoningSummary: string;
+  supportingEvidence: SourceReference[];
+  sources?: SourceReference[]; // compatibility alias
+  uncertaintyLevel: "LOW" | "MODERATE" | "HIGH" | "VERY_HIGH" | "UNKNOWN";
+  failureReason?: string;
   previousAssessment?: {
     description?: string;
     confidence?: number | null;
@@ -686,11 +716,12 @@ export interface CalendarItemAssessment {
     justification?: string;
   };
   reasoningVersion: string;
-  evaluatedAt: string;
+  epistemicProvenance?: "DYNAMIC_REASONED_FORECAST" | "STATIC_SCENARIO";
 }
 
 export interface ValidatedFutureState {
   version: string;
+  revision: number; // monotonic revision counter
   lastEvaluatedAt: string;
   stateHash: string;
   assessments: Record<string, CalendarItemAssessment>;

@@ -1768,7 +1768,7 @@ export function synthesizeLivingMilestoneOverrides(baseMilestones: Milestone[]):
       updatedProbabilities[m.year] = calibratedProb;
 
       const topSignal = matchingSignals[0];
-      const liveCiting = ` [İlişkili Gelişme: ${topSignal.title} (${topSignal.sourceOrg}) — ${topSignal.summary}]`;
+      const liveCiting = ` [CANLI İSTİHBARAT: ${topSignal.title} (${topSignal.sourceOrg}) — ${topSignal.summary}]`;
       if (!m.description.includes("İlişkili Gelişme:") && !m.description.includes("CANLI İSTİHBARAT")) {
         updatedDescriptions[m.year] = `${m.description}${liveCiting}`;
       }

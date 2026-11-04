@@ -38,6 +38,7 @@ export const PHASES: PhaseInfo[] = [
 
 export const TIMELINE_DATA: Milestone[] = [
   {
+    id: "milestone_2026",
     year: 2026,
     title: "Yapay Zeka Ajanları Çağı",
     description: "Yapay zeka sadece metin yazmakla kalmaz; otonom şirketler kurar, kendi başına yazılım kodlar ve insan gözetimi olmadan finansal kararlar alır.",
@@ -99,6 +100,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=(autonomous+agent+OR+multi-agent)+artificial+intelligence"
   },
   {
+    id: "milestone_2027",
     year: 2027,
     title: "Sentetik Gerçeklik Krizi",
     description: "Deepfake ve yapay medya o kadar kusursuz hale gelir ki, internetteki içeriklerin gerçekliğini kanıtlamak için 'Dijital DNA' (filigran) yasaları küresel olarak zorunlu kılınır.",
@@ -130,6 +132,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=synthetic+media+watermarking+deepfake+detection"
   },
   {
+    id: "milestone_2028",
     year: 2028,
     title: "Katı Hal (Solid-State) Batarya Devrimi",
     description: "Enerji depolamada lityum-iyonun yerini katı hal pilleri alır. Termodinamik ve hücre yoğunluğu sınırları gereği sınırsız menzil olmasa da, 2 kat daha yüksek enerji yoğunluğu, yüksek güvenlik ve 10 dakikada şarj imkanı sunar.",
@@ -171,6 +174,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=solid+state+ceramic+electrolyte+battery+toyota+quantumscape"
   },
   {
+    id: "milestone_2029",
     year: 2029,
     title: "Yapay Genel Zeka (AGI) & Mantıksal Akıl Yürütme",
     description: "Turing Testi günümüz LLM'leri tarafından zaten aşılmış olup AGI için yetersizdir. 2029 projeksiyonu; çok modlu nedensel akıl yürütme, otonom hedef planlama ve sürekli öğrenme yeteneği sergileyen AGI protokollerine odaklanır.",
@@ -222,6 +226,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=artificial+general+intelligence+deepmind+openai+ibm"
   },
   {
+    id: "milestone_2030",
     year: 2030,
     title: "Giyilebilir Nöroteknoloji & BCI Sinyal İşleme",
     description: "Giyilebilir sensörler (EEG/fNIRS) dışarıdan zihinsel odaklanma ve basit komutları okur. Kafatası sinyal gürültüsü nedeniyle hassas metin yazımı yeteneği hibrit AI niyet tahminleyicileriyle desteklenir.",
@@ -273,6 +278,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=brain+computer+interface+kernel+nextmind+neuralink"
   },
   {
+    id: "milestone_2031",
     year: 2031,
     title: "CRISPR'ın Ticarileşmesi",
     description: "Kalıtsal hastalıklar için gen düzenleme tedavileri FDA onaylarını tamamlar. Sadece hastalıklar değil, kozmetik genetik müdahalelerin ilk adımları atılır.",
@@ -314,6 +320,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=CRISPR+Cas9+broad+institute+uc+berkeley"
   },
   {
+    id: "milestone_2032",
     year: 2032,
     title: "Otonom Sistemlerin Hakimiyeti",
     description: "Gelişmiş metropollerde Seviye 5 (direksiyonsuz ve pedalsız) otonom araçlar standart hale gelir. Küresel lojistik tamamen insansızlaşır.",
@@ -345,6 +352,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=autonomous+vehicle+fleet+routing+waymo"
   },
   {
+    id: "milestone_2033",
     year: 2033,
     title: "Kişiselleştirilmiş Yapay Hekimler",
     description: "Her insanın genetik haritasına, akıllı saatlerinden gelen anlık kan verilerine ve yaşam tarzına göre 7/24 teşhis koyan yapay zeka doktorları devreye girer.",
@@ -376,6 +384,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=artificial+intelligence+medical+diagnostic+continuous+biometric"
   },
   {
+    id: "milestone_2034",
     year: 2034,
     title: "Post-Kuantum Şifreleme (PQC) & Güvenlik Düzlemi",
     description: "Mevcut RSA şifrelemesini tam kırmak için milyonlarca hata düzeltmeli mantıksal kübite ihtiyaç duyulur. 2034'te kuantum bilgisayarlar henüz bu sayıya ulaşmamış olsa da, 'Post-Kuantum Kriptografi' (PQC) standartları tüm küresel şebekelere entegre edilir.",
@@ -427,6 +436,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=quantum+computing+ibm+google+sycamore+ionq"
   },
   {
+    id: "milestone_2035",
     year: 2035,
     title: "Laboratuvar Üretimi Biyoloji",
     description: "Küresel ısınma ve tarım krizleri nedeniyle, laboratuvarda hücreden üretilen (kesimsiz) et ve sentetik gıdalar, geleneksel tarımdan daha ucuz hale gelir.",
@@ -458,6 +468,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=precision+fermentation+cultured+meat+bioreactor"
   },
   {
+    id: "milestone_2036",
     year: 2036,
     title: "Tıbbi Dijital İkizler (Digital Twins)",
     description: "İnsanların hücre yapısı ve organ sistemleri sanal ortama kopyalanır. Bir ilaç veya tedavi insana verilmeden önce, yapay zeka bu sanal kopya üzerinde test eder.",
@@ -489,6 +500,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=human+organ+digital+twin+in+silico+simulation"
   },
   {
+    id: "milestone_2037",
     year: 2037,
     title: "Ticari Füzyon Enerjisi",
     description: "Nükleer füzyon (yapay güneş) reaktörleri, harcadıklarından daha fazla enerji üretmeyi stabil hale getirerek temiz enerji çağını başlatır.",
@@ -530,6 +542,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=nuclear+fusion+helion+energy+commonwealth+fusion"
   },
   {
+    id: "milestone_2038",
     year: 2038,
     title: "Tam Dalış Sanal Gerçeklik",
     description: "İşitme ve görme ötesinde; dokunma, sıcaklık ve koku hislerinin sinir sistemine doğrudan aktarıldığı ultra-gerçekçi simülasyonlar ticarileşir.",
@@ -561,6 +574,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=full+dive+virtual+reality+neural+haptic+interface"
   },
   {
+    id: "milestone_2039",
     year: 2039,
     title: "Biyobaskı ve Sentetik Organlar",
     description: "Organ bağışı kavramı tarihe karışır. Hastanın kendi kök hücrelerinden 3D biyoyazıcılarla yeni kalp, böbrek ve karaciğer basımı rutin tıbbi bir işleme dönüşür.",
@@ -592,6 +606,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=3d+bioprinting+vascularized+organ+stem+cell"
   },
   {
+    id: "milestone_2040",
     year: 2040,
     title: "Hedefli Nanobot Onkoloji Terapileri",
     description: "Kan dolaşımına enjekte edilen biyo-uyumlu DNA origami nanoyapıları, kanser hücrelerini moleküler seviyede tespit edip hedeflenmiş ilacı salınım yapar. Hücresel yaşlanma ise epigenetik ve hücresel karmaşıklık nedeniyle ancak sınırlı düzeyde yavaşlatılır.",
@@ -623,6 +638,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=medical+nanobots+dna+origami+oncology"
   },
   {
+    id: "milestone_2041",
     year: 2041,
     title: "Küresel İklim Mühendisliği",
     description: "Atmosferdeki karbonu agresif şekilde emen otonom tesisler ve stratosfere güneş ışığını yansıtan partikül enjeksiyonu projeleri (Geoengineering) mecburiyetten devreye alınır.",
@@ -654,6 +670,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=direct+air+capture+geoengineering+carbon+mineralization"
   },
   {
+    id: "milestone_2042",
     year: 2042,
     title: "Gelişmiş Embriyo Taraması & Poligenik Risk Tespiti",
     description: "CRISPR ve poligenik skorlama ile doğumsal hastalık riskleri engellenir. Ancak zeka ve kas yapısı gibi binlerce genin karmaşık etkileşimiyle oluşan özellikleri sipariş usulü 'tasarlamak' poligenik engeller ve etik yasaklar sebebiyle imkansızdır.",
@@ -695,6 +712,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=polygenic+embryo+screening+CRISPR+broad+uc+berkeley"
   },
   {
+    id: "milestone_2043",
     year: 2043,
     title: "İşgücü Çöküşü ve Evrensel Temel Gelir",
     description: "Fiziksel ve bilişsel işlerin %70'inden fazlası yapay zeka ve robotik sistemlere devredilir. Hükümetler küresel çapta Evrensel Temel Gelir (UBI) sistemine geçer.",
@@ -726,6 +744,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=universal+basic+income+robotics+dividend"
   },
   {
+    id: "milestone_2044",
     year: 2044,
     title: "Gelişmiş Nöral Arayüz & Dijital Sinyal Akışı",
     description: "Yüksek bant genişlikli BCI cihazları motor nöron komutlarını ve duyusal geri bildirimleri iletir. Soyut düşünce ve duyguların doğrudan 'zihinden zihne' aktarımı nörobilimsel kodlama mantığı nedeniyle sembolik ve AI niyet tahminleyicileriyle yürütülür.",
@@ -777,6 +796,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=brain+computer+interface+neuralink+kernel+nextmind"
   },
   {
+    id: "milestone_2045",
     year: 2045,
     title: "Tekillik Projeksiyonu & Yapay Süper Zeka (ASI)",
     description: "Algoritmik öz-gelişim döngüleri, yapay zekanın bilişsel performansını insanlığın toplam çıktısının üzerine çıkarır. Ancak bu süreç fiziksel çip üretimi, Landauer ısı sınırı ve küresel enerji şebekesi kısıtlarına tabidir.",
@@ -808,6 +828,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=artificial+superintelligence+recursive+self+improvement"
   },
   {
+    id: "milestone_2046",
     year: 2046,
     title: "Zihinsel Yedekleme Sistemleri",
     description: "Hatıralar, anılar ve bilişsel deneyimler dijital formata çevrilerek bulut sunucularına yedeklenmeye başlar.",
@@ -839,6 +860,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=whole+brain+emulation+synaptic+mapping+upload"
   },
   {
+    id: "milestone_2047",
     year: 2047,
     title: "Biyo-Sentetik İnsan Kaynaşması",
     description: "Fiziksel beden artık tamamen biyolojik değildir. Beyin implantları ve yapay organlar 'tedavi' için değil, performansı artırmak (enhancement) için zorunluluk haline gelir.",
@@ -870,6 +892,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=synthetic+muscle+electroactive+polymer+augmentation"
   },
   {
+    id: "milestone_2048",
     year: 2048,
     title: "Yaşlanmanın Durdurulması (Longevity Escape Velocity)",
     description: "Hücre yenileme teknolojileri, insanın biyolojik olarak yaşlandığı hızdan daha hızlı onarım yapar. 'Doğal yaşlılıktan ölüm' kavramı teknik olarak çözülmüş bir mühendislik problemi olur.",
@@ -901,6 +924,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=longevity+escape+velocity+senolytic+epigenetic+reprogramming"
   },
   {
+    id: "milestone_2049",
     year: 2049,
     title: "Kuantum-Biyolojik Simülasyonlar",
     description: "Kuantum sistemleri ile Dünya ekosisteminin birebir kopyası çıkarılarak, doğanın kendini nasıl onaracağı ASI (Süper Zeka) tarafından kusursuz şekilde yönetilir.",
@@ -932,6 +956,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=quantum+biosphere+ecological+simulation"
   },
   {
+    id: "milestone_2050",
     year: 2050,
     title: "Kovan Zihni (Hive Mind) Arayüzleri",
     description: "Bireylerin zihinleri, devasa bir merkezi yapay zeka ağına sürekli bağlı kalır. 'Öğrenmek' yerine, bilgi matriks tarzı doğrudan sinir sistemine 'indirilir'.",
@@ -963,6 +988,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=hive+mind+collective+neural+network+synaptic"
   },
   {
+    id: "milestone_2051",
     year: 2051,
     title: "Derin Uzay Madenciliği",
     description: "Dünya dışı kaynak arayışı otonom filolarla başlar. Asteroitlerden çıkarılan nadir metaller, sentetik evrim inşasında kullanılır.",
@@ -994,6 +1020,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=deep+space+asteroid+mining+robotic+refinery"
   },
   {
+    id: "milestone_2052",
     year: 2052,
     title: "Kavramsal Fizik Çözümleri",
     description: "Yapay Süper Zeka, insanların yüzyıllardır çözemediği Sicim Teorisi ve Kütleçekimi gibi konularda yeni ve kanıtlanabilir fizik yasaları ortaya koyar.",
@@ -1025,6 +1052,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=quantum+gravity+spacetime+manipulation+unified+field"
   },
   {
+    id: "milestone_2053",
     year: 2053,
     title: "Madde Programlama",
     description: "Nano-montajcılar (assemblers) sayesinde enerji ve bilgi, istenilen her türlü fiziksel materyale dönüştürülmeye başlanır. Kıtlık ekonomisi tamamen sona erer.",
@@ -1056,6 +1084,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=programmable+matter+molecular+assembler+atomic+precision"
   },
   {
+    id: "milestone_2054",
     year: 2054,
     title: "Yapay Bilincin Tanınması",
     description: "Gelişmiş ASI sistemleri biyolojik varlıklar gibi 'hukuki birer birey' ve bilinçli varlıklar olarak yasal statü kazanır.",
@@ -1087,6 +1116,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=artificial+consciousness+personhood+quantum+sentience"
   },
   {
+    id: "milestone_2055",
     year: 2055,
     title: "Yönlendirilmiş Evrim",
     description: "İnsanlık, çevresine uyum sağlamak (doğal seçilim) yerine, çevresini ve kendi formunu anlık olarak dönüştürebildiği yeni bir evrim aşamasına geçer.",
@@ -1118,6 +1148,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=epigenetic+morphological+reprogramming+directed+evolution"
   },
   {
+    id: "milestone_2056",
     year: 2056,
     title: "Fiziksel Bedenin Terk Edilmeye Başlanması",
     description: "Birçok insan, kazalara ve yavaşlığa açık biyolojik bedenlerinden çıkarak, bilincini gelişmiş sentetik 'avatar' bedenlere aktarmayı tercih eder.",
@@ -1149,6 +1180,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=synthetic+avatar+substrate+mind+transfer"
   },
   {
+    id: "milestone_2057",
     year: 2057,
     title: "Derin Uzay Kuantum İletişim & Lazer Röle Ağı",
     description: "Ay ve Mars üsleri ile Dünya arasında Kuantum Anahtar Dağıtımı (QKD) ve yüksek güçlü lazer röle ağları kurulur. Kuantum dolanıklık bilgi iletiminde ışık hızını aşamadığı için (No-Communication Theorem) anlık sohbet yerine ışık hızıyla sınırlı ama kırılamaz şifreli telemetri kullanılır.",
@@ -1180,6 +1212,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=quantum+key+distribution+deep+space+laser+telemetry"
   },
   {
+    id: "milestone_2058",
     year: 2058,
     title: "Sentetik Evrenler ve Sanal Dünyalar",
     description: "Her birinin fizik kuralları ve zaman akışı farklı tasarlanmış, milyarlarca bilincin yaşadığı devasa sentetik sanal evrenler kurulur.",
@@ -1211,6 +1244,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=synthetic+universe+time+dilation+simulation"
   },
   {
+    id: "milestone_2059",
     year: 2059,
     title: "Homo Sapiens 2.0 Biyolojik Ayrışma",
     description: "Saf biyolojik insan türü ile sentetik/genetik olarak yükseltilmiş 'Post-Sapiens' türleri hukuken ve biyolojik olarak tamamen iki farklı türe ayrılır.",
@@ -1242,6 +1276,7 @@ export const TIMELINE_DATA: Milestone[] = [
     googlePatentsSearchUrl: "https://patents.google.com/?q=homo+sapiens+speciation+directed+evolution"
   },
   {
+    id: "milestone_2060",
     year: 2060,
     title: "Medeniyet Düzeyinde Yapay Zeka Matriksi",
     description: "Dünya, Mars ve tüm yörünge yerleşimleri; iklimi, üretimi ve canlılığı yöneten tek bir bilinçli gezegensel yapay zeka matriksi ile dengede tutulur.",

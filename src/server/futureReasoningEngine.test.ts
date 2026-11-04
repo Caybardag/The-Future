@@ -11,6 +11,7 @@ import {
   evaluateCalendarItemDeterministicFallback,
   getValidatedFutureState,
   setValidatedFutureState,
+  getEngineAudit,
 } from "./futureReasoningEngine";
 import { DynamicReasonedForecast, SourceReference, ValidatedFutureState, CalendarItemAssessment } from "../types";
 import { TIMELINE_DATA } from "../data/timelineData";
@@ -458,5 +459,61 @@ describe("AUTONOMOUS GEMINI BRAIN & IMMUTABLE 2026–2060 CALENDAR SPECIFICATION
     expect(m2060).toBeDefined();
     expect(m2060!.title).toBe(TIMELINE_DATA.find((m) => m.year === 2060)!.title);
   });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 7: GENUINE AUDIT METRICS (NO FABRICATED 42 OR HARDCODED MODERATE)
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 7: getEngineAudit computes genuine verified source count and uncertainty level without hardcoded values", () => {
+    const audit = getEngineAudit();
+    expect(audit).toBeDefined();
+    expect(audit.totalForecasts).toBe(TIMELINE_DATA.length);
+    // Verified sources must be calculated or NOT_AVAILABLE, never hardcoded 42
+    if (typeof audit.totalVerifiedSources === "number") {
+      expect(audit.totalVerifiedSources).toBeGreaterThanOrEqual(0);
+      expect(Number.isInteger(audit.totalVerifiedSources)).toBe(true);
+    } else {
+      expect(audit.totalVerifiedSources).toBe("NOT_AVAILABLE");
+    }
+
+    // Uncertainty level must be computed or NOT_COMPUTED with valid sample size
+    expect(["LOW", "MODERATE", "HIGH", "VERY_HIGH", "NOT_COMPUTED"]).toContain(audit.averageUncertaintyLevel);
+    expect(audit.uncertaintySampleSize).toBeGreaterThanOrEqual(0);
+    expect(audit.evaluationsSummary).toBeDefined();
+    expect(audit.evaluationsSummary!.notAssessedCount + audit.evaluationsSummary!.geminiEvaluatedCount + audit.evaluationsSummary!.pendingCount + audit.evaluationsSummary!.failedCount + audit.evaluationsSummary!.requiresReevaluationCount).toBe(TIMELINE_DATA.length);
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 8: CENTRAL POOL STATUSES & BUDGET ROTATION
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 8: Deterministic fallback items are marked NOT_ASSESSED, never faking GEMINI_EVALUATED", () => {
+    const fallback = evaluateCalendarItemDeterministicFallback(TIMELINE_DATA[0], []);
+    // Must NOT be marked as GEMINI_EVALUATED
+    expect(fallback.evaluationStatus).not.toBe("GEMINI_EVALUATED");
+    expect(fallback.evaluationStatus).toBe("NOT_ASSESSED");
+    expect(fallback.epistemicProvenance).toBe("STATIC_SCENARIO");
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SPEC TEST 9: FAILURE PRESERVATION & FAILURE REASON
+  // ─────────────────────────────────────────────────────────────────────────────
+  it("SPEC TEST 9: When Gemini call fails, previous assessment is preserved and failureReason recorded", async () => {
+    // Run cycle with throwing AI function
+    const mockFailingAi = () => ({
+      models: {
+        generateContent: vi.fn().mockRejectedValue(new Error("Simulated Quota Limit (429)")),
+      },
+    }) as any;
+
+    const stateAfterFailure = await runAutonomousCalendarReasoningCycle(mockFailingAi, true);
+    expect(stateAfterFailure).toBeDefined();
+    expect(Object.keys(stateAfterFailure.assessments).length).toBe(TIMELINE_DATA.length);
+
+    // Failed targets should record EVALUATION_FAILED and failureReason
+    const assessments = Object.values(stateAfterFailure.assessments);
+    const failedItems = assessments.filter((a) => a.evaluationStatus === "EVALUATION_FAILED");
+    expect(failedItems.length).toBeGreaterThan(0);
+    expect(failedItems[0].failureReason).toContain("Simulated Quota Limit (429)");
+  });
 });
+
 

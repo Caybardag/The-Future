@@ -439,4 +439,108 @@ describe("CANONICAL 35-MILESTONE INTEGRITY & VALIDATION SUITE (24 SPEC TESTS)", 
     expect(searchMatch.length).toBeGreaterThanOrEqual(1);
     expect(searchMatch[0].year).toBe(2026);
   });
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // 5. FORENSIC AUDIT TESTS (SCENARIOS 25 - 28)
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  it("25. Herhangi bir kayıtta zorunlu id eksikse → INVALID ve fatal error üretilmeli", () => {
+    // Take canonical data and delete `id` from 2030 item
+    const itemsWithoutId = TIMELINE_DATA.map((m) => {
+      const copy = { ...m };
+      if (m.year === 2030) {
+        delete (copy as any).id;
+      }
+      return copy;
+    });
+
+    const result = validateCanonicalTimeline(itemsWithoutId);
+    expect(result.status).toBe("INVALID");
+    expect(result.isValid).toBe(false);
+    expect(result.mismatchedIdYears.some((e) => e.year === 2030 && e.id === undefined)).toBe(true);
+    expect(result.errors.some((err) => err.includes("zorunlu canonical ID eksiktir"))).toBe(true);
+  });
+
+  it("26. Non-canonical ID formatları ('item_2026', '2026', 'milestone_null') → INVALID", () => {
+    const invalidFormatItems = TIMELINE_DATA.map((m) => {
+      if (m.year === 2026) return { ...m, id: "item_2026" };
+      if (m.year === 2027) return { ...m, id: "2027" };
+      if (m.year === 2028) return { ...m, id: "milestone_null" };
+      return m;
+    });
+
+    const result = validateCanonicalTimeline(invalidFormatItems);
+    expect(result.status).toBe("INVALID");
+    expect(result.isValid).toBe(false);
+    expect(result.mismatchedIdYears.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("27. Hydrator duplicate assessment geldiğinde ilkini korur, ikincisini reddeder", () => {
+    const assessmentsWithDuplicates = [
+      { id: "milestone_2026", year: 2026, description: "İlk Geçerli Değerlendirme", probability: 75 },
+      { id: "milestone_2026", year: 2026, description: "İkinci Yinelenen Değerlendirme (Reddedilmeli)", probability: 30 },
+    ];
+
+    const hydrated = hydrateCanonicalTimeline(assessmentsWithDuplicates);
+    expect(hydrated.length).toBe(35);
+    const m2026 = hydrated.find((m) => m.year === 2026)!;
+    expect(m2026.description).toBe("İlk Geçerli Değerlendirme");
+    expect(m2026.probability).toBe(75);
+  });
+
+  it("28. Hydrator canonical framework'e ait 16 temel alanın tamamını titizlikle korur", () => {
+    const canonical2030 = TIMELINE_DATA.find((m) => m.year === 2030)!;
+
+    const invasiveGeminiPayload = [
+      {
+        id: "milestone_2030",
+        year: 2030,
+        title: "SAHTE_BASLIK_HACK",
+        category: "Uzay & Fizik",
+        phase: 3,
+        iconName: "FakeIcon",
+        impactLevel: 1,
+        humanAugmentationIndex: 2,
+        aiAutonomyIndex: 3,
+        bioDigitalIntegrationRate: 4,
+        keyDrivers: ["fake driver"],
+        dailyLifeImpact: "fake daily life",
+        ethicalRisks: ["fake ethical risk"],
+        societalOpportunities: ["fake opportunity"],
+        relatedYears: [9999],
+        patents: [{ patentNumber: "FAKE_PATENT" }],
+        citations: [{ source: "fake source" }],
+        canonicalDescription: "fake canonical desc",
+        // Permitted evaluation fields:
+        description: "Meşru revize açıklama",
+        probability: 65,
+      },
+    ];
+
+    const hydrated = hydrateCanonicalTimeline(invasiveGeminiPayload);
+    const m2030 = hydrated.find((m) => m.year === 2030)!;
+
+    // Verify all 16 canonical fields were preserved:
+    expect(m2030.id).toBe("milestone_2030");
+    expect(m2030.year).toBe(2030);
+    expect(m2030.title).toBe(canonical2030.title);
+    expect(m2030.category).toBe(canonical2030.category);
+    expect(m2030.phase).toBe(canonical2030.phase);
+    expect(m2030.iconName).toBe(canonical2030.iconName);
+    expect(m2030.impactLevel).toBe(canonical2030.impactLevel);
+    expect(m2030.humanAugmentationIndex).toBe(canonical2030.humanAugmentationIndex);
+    expect(m2030.aiAutonomyIndex).toBe(canonical2030.aiAutonomyIndex);
+    expect(m2030.bioDigitalIntegrationRate).toBe(canonical2030.bioDigitalIntegrationRate);
+    expect(m2030.keyDrivers).toEqual(canonical2030.keyDrivers);
+    expect(m2030.dailyLifeImpact).toBe(canonical2030.dailyLifeImpact);
+    expect(m2030.ethicalRisks).toEqual(canonical2030.ethicalRisks);
+    expect(m2030.societalOpportunities).toEqual(canonical2030.societalOpportunities);
+    expect(m2030.relatedYears).toEqual(canonical2030.relatedYears);
+    expect(m2030.canonicalDescription).toBe(canonical2030.canonicalDescription || canonical2030.description);
+
+    // Permitted evaluation fields WERE safely applied:
+    expect(m2030.description).toBe("Meşru revize açıklama");
+    expect(m2030.probability).toBe(65);
+  });
 });
+

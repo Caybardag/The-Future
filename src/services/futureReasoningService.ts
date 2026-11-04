@@ -188,11 +188,20 @@ export class FutureReasoningService {
         DEFERRED_BY_BOTTLENECK: 0,
         REVOKED: 0,
       },
-      totalVerifiedSources: 42,
-      averageUncertaintyLevel: "MODERATE",
+      totalVerifiedSources: 0,
+      averageUncertaintyLevel: "NOT_COMPUTED",
+      uncertaintySampleSize: 0,
       reEvaluationsCount: 0,
       lastCycleTimestamp: new Date().toISOString(),
       engineMode: "EVIDENCE_DRIVEN_DYNAMIC",
+      revision: 0,
+      evaluationsSummary: {
+        geminiEvaluatedCount: 0,
+        pendingCount: 0,
+        failedCount: 0,
+        notAssessedCount: TIMELINE_DATA.length,
+        requiresReevaluationCount: 0,
+      },
     };
   }
 

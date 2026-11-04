@@ -9,45 +9,78 @@ import {
   Milestone,
   SourceReference,
   ReasoningStatus,
+  MilestoneEvaluationStatus,
   FutureReasoningAudit,
   ForecastStatus,
 } from "../types";
 import { AcademicWorkItem, academicKnowledgeStore } from "./academicKnowledgeEngine";
 import { ExtractedTelegramIntelligence, telegramIntelligenceFeed } from "./telegramIngestionEngine";
 import { TIMELINE_DATA } from "../data/timelineData";
-import { hydrateCanonicalTimeline } from "../utils/canonicalTimelineValidator";
+import {
+  hydrateCanonicalTimeline,
+  parseCanonicalMilestoneId,
+} from "../utils/canonicalTimelineValidator";
 
 const STATE_FILE_PATH = path.resolve(process.cwd(), "validated_future_state.json");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 1. IN-MEMORY & DISK PERSISTED VALIDATED FUTURE STATE
+// 1. IN-MEMORY & ATOMIC DISK PERSISTED VALIDATED FUTURE STATE
 // ─────────────────────────────────────────────────────────────────────────────
 
 let validatedFutureState: ValidatedFutureState = {
-  version: "1.0.0",
+  version: "2.0.0",
+  revision: 1,
   lastEvaluatedAt: new Date().toISOString(),
   stateHash: "",
   assessments: {},
 };
 
-// Load cached future state on module load
+let isReasoningCycleRunning = false;
+
+// Load cached future state on module load with integrity validation
 try {
   if (fs.existsSync(STATE_FILE_PATH)) {
     const raw = fs.readFileSync(STATE_FILE_PATH, "utf-8");
     const parsed = JSON.parse(raw);
     if (parsed && parsed.assessments && typeof parsed.assessments === "object") {
-      validatedFutureState = parsed;
+      // Validate that assessments contain canonical keys
+      const validEntries: Record<string, CalendarItemAssessment> = {};
+      let hasValidKey = false;
+      for (const [key, val] of Object.entries(parsed.assessments)) {
+        if (parseCanonicalMilestoneId(key)) {
+          validEntries[key] = val as CalendarItemAssessment;
+          hasValidKey = true;
+        }
+      }
+      if (hasValidKey) {
+        validatedFutureState = {
+          version: parsed.version === "2.1.0" ? "2.0.0" : parsed.version || "2.0.0",
+          revision: typeof parsed.revision === "number" ? parsed.revision : 1,
+          lastEvaluatedAt: parsed.lastEvaluatedAt || new Date().toISOString(),
+          stateHash: parsed.stateHash || "",
+          assessments: validEntries,
+        };
+      }
     }
   }
 } catch (e) {
   console.warn("[Future Reasoning Brain] Notice loading cached state, initializing fresh:", e);
+  validatedFutureState.revision = 1;
 }
 
-function saveValidatedFutureStateToDisk() {
+/**
+ * Atomic disk save using temporary file + atomic rename.
+ * Guarantees zero corrupted/half-written JSON files on power interruption or process crash.
+ */
+function saveValidatedFutureStateToDisk(): boolean {
   try {
-    fs.writeFileSync(STATE_FILE_PATH, JSON.stringify(validatedFutureState, null, 2), "utf-8");
+    const tmpPath = `${STATE_FILE_PATH}.tmp.${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+    fs.writeFileSync(tmpPath, JSON.stringify(validatedFutureState, null, 2), "utf-8");
+    fs.renameSync(tmpPath, STATE_FILE_PATH);
+    return true;
   } catch (e) {
-    console.warn("[Future Reasoning Brain] Warning saving state to disk:", e);
+    console.warn("[Future Reasoning Brain] Warning saving state to disk atomically:", e);
+    return false;
   }
 }
 
@@ -112,10 +145,28 @@ export async function evaluateCalendarItemWithGemini(
   previousAssessment?: CalendarItemAssessment
 ): Promise<CalendarItemAssessment> {
   const itemId = `milestone_${milestone.year}`;
+  const now = new Date().toISOString();
+  const nextVersion = previousAssessment?.lastEvaluationVersion
+    ? Number(previousAssessment.lastEvaluationVersion) + 1
+    : 1;
+
   const ai = getAiFn ? getAiFn() : null;
 
   if (!ai) {
-    return evaluateCalendarItemDeterministicFallback(milestone, relevantSources, previousAssessment);
+    // No AI SDK instance available: preserve previous or produce unassessed fallback
+    if (previousAssessment) {
+      return {
+        ...previousAssessment,
+        evaluationStatus: previousAssessment.evaluationStatus || "NOT_ASSESSED",
+        failureReason: "AI SDK instance not available (offline/deterministic mode)",
+      };
+    }
+    const fallback = evaluateCalendarItemDeterministicFallback(milestone, relevantSources, undefined);
+    return {
+      ...fallback,
+      evaluationStatus: "NOT_ASSESSED",
+      failureReason: "AI SDK instance not available (offline/deterministic mode)",
+    };
   }
 
   try {
@@ -150,6 +201,7 @@ ${previousAssessment ? JSON.stringify(previousAssessment, null, 2) : "Henüz ön
 Aşağıdaki JSON şemasında çıktı ver:
 {
   "calendarItemId": "${itemId}",
+  "milestoneId": "${itemId}",
   "year": ${milestone.year},
   "title": "${milestone.title}",
   "category": "${milestone.category}",
@@ -178,7 +230,7 @@ Aşağıdaki JSON şemasında çıktı ver:
     "confidence": 82 // VEYA null
   },
   "reasoningVersion": "2.0.0",
-  "evaluatedAt": "${new Date().toISOString()}"
+  "evaluatedAt": "${now}"
 }
 `;
 
@@ -197,10 +249,21 @@ Aşağıdaki JSON şemasında çıktı ver:
       if (parsed && parsed.currentAssessment && parsed.status) {
         return {
           ...parsed,
+          milestoneId: itemId,
           calendarItemId: itemId,
           year: milestone.year,
           title: milestone.title,
           category: milestone.category,
+          evaluationStatus: "GEMINI_EVALUATED",
+          evaluatedAt: now,
+          lastEvidenceUpdateAt: now,
+          lastEvaluationVersion: nextVersion,
+          reasoningSummary: parsed.reasoning || "Gemini otonom akıl yürütme değerlendirmesi.",
+          supportingEvidence: relevantSources,
+          sources: relevantSources,
+          uncertaintyLevel: parsed.currentAssessment?.uncertaintyLevel || "MODERATE",
+          failureReason: undefined,
+          epistemicProvenance: "DYNAMIC_REASONED_FORECAST",
           previousAssessment: previousAssessment
             ? {
                 description: previousAssessment.currentAssessment?.content,
@@ -209,20 +272,55 @@ Aşağıdaki JSON şemasında çıktı ver:
                 reasoning: previousAssessment.reasoning,
               }
             : undefined,
-          evaluatedAt: new Date().toISOString(),
         };
       }
     }
   } catch (err: any) {
     const errMsg = String(err?.message || err || "");
     if (errMsg.includes("API key not valid") || errMsg.includes("API_KEY_INVALID")) {
-      console.warn("[Future Reasoning Brain] API key not configured or invalid, seamlessly continuing with verified deterministic knowledge.");
+      console.warn("[Future Reasoning Brain] API key not configured or invalid, marking EVALUATION_FAILED safely.");
     } else {
-      console.warn("[Future Reasoning Brain] Gemini reasoning notice, continuing with verified deterministic knowledge:", err?.message || err);
+      console.warn("[Future Reasoning Brain] Gemini reasoning notice:", err?.message || err);
     }
+
+    // CRITICAL: On Gemini failure, preserve previous valid assessment if available, mark EVALUATION_FAILED with failureReason
+    if (previousAssessment) {
+      return {
+        ...previousAssessment,
+        milestoneId: itemId,
+        calendarItemId: itemId,
+        year: milestone.year,
+        evaluationStatus: "EVALUATION_FAILED",
+        evaluatedAt: now,
+        failureReason: errMsg || "Gemini reasoning call failed",
+      };
+    }
+
+    // No previous assessment: generate deterministic fallback marked as EVALUATION_FAILED (never fake GEMINI_EVALUATED)
+    const fallback = evaluateCalendarItemDeterministicFallback(milestone, relevantSources, undefined);
+    return {
+      ...fallback,
+      milestoneId: itemId,
+      calendarItemId: itemId,
+      year: milestone.year,
+      evaluationStatus: "EVALUATION_FAILED",
+      evaluatedAt: now,
+      failureReason: errMsg || "Gemini reasoning call failed",
+      epistemicProvenance: "STATIC_SCENARIO",
+    };
   }
 
-  return evaluateCalendarItemDeterministicFallback(milestone, relevantSources, previousAssessment);
+  // Fallback if parsing failed
+  const fallback = evaluateCalendarItemDeterministicFallback(milestone, relevantSources, previousAssessment);
+  return {
+    ...fallback,
+    milestoneId: itemId,
+    calendarItemId: itemId,
+    year: milestone.year,
+    evaluationStatus: "EVALUATION_FAILED",
+    evaluatedAt: now,
+    failureReason: "Gemini response payload was empty or malformed",
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -241,11 +339,21 @@ export function evaluateCalendarItemDeterministicFallback(
   if (!relevantSources || relevantSources.length === 0) {
     const isFarFuture = milestone.year > 2045;
     return {
+      milestoneId: itemId,
       calendarItemId: itemId,
       year: milestone.year,
       title: milestone.title,
       category: milestone.category,
       status: isFarFuture ? "UNCERTAIN" : "UNCHANGED",
+      evaluationStatus: "NOT_ASSESSED",
+      evaluatedAt: now,
+      lastEvaluationVersion: 1,
+      reasoningSummary: isFarFuture
+        ? "Doğrudan kanıt bulunmadığından yapay olasılık üretilmemiş, epistemik belirsizlik korunmuştur."
+        : "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
+      supportingEvidence: [],
+      sources: [],
+      uncertaintyLevel: isFarFuture ? "HIGH" : "MODERATE",
       currentAssessment: {
         content: milestone.description,
         confidence: isFarFuture ? null : milestone.probability,
@@ -265,7 +373,7 @@ export function evaluateCalendarItemDeterministicFallback(
         : "Mevcut taban senaryo çerçevesi değerlendirilmiş ve tutarlı bulunmuştur.",
       revisionNeeded: false,
       reasoningVersion: "1.0.0",
-      evaluatedAt: now,
+      epistemicProvenance: "STATIC_SCENARIO",
     };
   }
 
@@ -275,11 +383,19 @@ export function evaluateCalendarItemDeterministicFallback(
   const calibratedConfidence = hasRobustCitations ? Math.min(90, Math.max(60, milestone.probability)) : Math.min(75, Math.max(40, milestone.probability));
 
   return {
+    milestoneId: itemId,
     calendarItemId: itemId,
     year: milestone.year,
     title: milestone.title,
     category: milestone.category,
     status: previousAssessment ? "REVISED" : "UNCHANGED",
+    evaluationStatus: "NOT_ASSESSED",
+    evaluatedAt: now,
+    lastEvaluationVersion: 1,
+    reasoningSummary: `Hakiki veri kaynakları (${relevantSources.map((s) => s.sourceType).join(", ")}) incelenerek teknolojik olgunluk değerlendirildi.`,
+    supportingEvidence: relevantSources,
+    sources: relevantSources,
+    uncertaintyLevel: hasRobustCitations ? "LOW" : "MODERATE",
     previousAssessment: previousAssessment
       ? {
           description: previousAssessment.currentAssessment?.content,
@@ -312,12 +428,12 @@ export function evaluateCalendarItemDeterministicFallback(
       confidence: calibratedConfidence,
     },
     reasoningVersion: "1.1.0",
-    evaluatedAt: now,
+    epistemicProvenance: "STATIC_SCENARIO",
   };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 5. TOKEN & COST OPTIMIZED AUTONOMOUS REASONING CYCLE
+// 5. FAIR ROTATION & AUTONOMOUS REASONING CYCLE (BUDGET: 8 CALLS PER CYCLE)
 // ─────────────────────────────────────────────────────────────────────────────
 
 function computeSourcesStateHash(sources: SourceReference[]): string {
@@ -332,104 +448,131 @@ export async function runAutonomousCalendarReasoningCycle(
   getAiFn: () => GoogleGenAI | null,
   forceFresh: boolean = false
 ): Promise<ValidatedFutureState> {
-  // Collect all available sources from academic store & telegram feed
-  const sources: SourceReference[] = [];
-  try {
-    const aiPapers = academicKnowledgeStore.getTopCitationsForTopic("Otonom Ajanlar ve AGI", "Yapay Zeka & Bilişim");
-    aiPapers.forEach((p) => sources.push(normalizeAcademicWorkToSource(p)));
-
-    const bioPapers = academicKnowledgeStore.getTopCitationsForTopic("CRISPR ve Biyoteknoloji", "Biyoloji & Tıp");
-    bioPapers.forEach((p) => sources.push(normalizeAcademicWorkToSource(p)));
-
-    telegramIntelligenceFeed.slice(0, 15).forEach((t) => sources.push(normalizeTelegramSignalToSource(t)));
-  } catch (e) {}
-
-  const currentHash = computeSourcesStateHash(sources);
-
-  // TOKEN & COST OPTIMIZATION:
-  // If not forced and state hash matches and assessments exist, reuse cached state immediately
-  const assessmentKeys = Object.keys(validatedFutureState.assessments);
-  if (!forceFresh && validatedFutureState.stateHash === currentHash && assessmentKeys.length >= 20) {
+  // Concurrency serialization lock
+  if (isReasoningCycleRunning) {
     return validatedFutureState;
   }
+  isReasoningCycleRunning = true;
 
-  // Target evaluation: Evaluate baseline milestones in TIMELINE_DATA (immutable framework)
-  const updatedAssessments: Record<string, CalendarItemAssessment> = { ...validatedFutureState.assessments };
+  try {
+    // Collect all available sources from academic store & telegram feed
+    const sources: SourceReference[] = [];
+    try {
+      const aiPapers = academicKnowledgeStore.getTopCitationsForTopic("Otonom Ajanlar ve AGI", "Yapay Zeka & Bilişim");
+      aiPapers.forEach((p) => sources.push(normalizeAcademicWorkToSource(p)));
 
-  // DYNAMIC EVIDENCE-DRIVEN PRIORITIZATION & TOKEN ROTATION:
-  // Instead of an arbitrary index split, prioritize milestones dynamically:
-  // 1. Fresh matching scientific/intelligence sources (+50-80 pts)
-  // 2. Unassessed milestones (+40 pts)
-  // 3. High uncertainty or pending revision (+20 pts)
-  // 4. Time since last evaluation (+0-25 pts) to ensure round-robin rotation across all 35 years (2026-2060)
-  interface MilestoneEvalCandidate {
-    index: number;
-    milestone: Milestone;
-    relevantSources: SourceReference[];
-    previous?: CalendarItemAssessment;
-    priorityScore: number;
-  }
+      const bioPapers = academicKnowledgeStore.getTopCitationsForTopic("CRISPR ve Biyoteknoloji", "Biyoloji & Tıp");
+      bioPapers.forEach((p) => sources.push(normalizeAcademicWorkToSource(p)));
 
-  const candidates: MilestoneEvalCandidate[] = TIMELINE_DATA.map((m, idx) => {
-    const itemId = `milestone_${m.year}`;
-    const previous = validatedFutureState.assessments[itemId];
-    const mTitleLower = m.title.toLowerCase();
-    const mCatLower = m.category.toLowerCase();
-    const relevant = sources.filter((s) => {
-      const sText = `${s.title} ${s.extractedClaim}`.toLowerCase();
-      return sText.includes(mCatLower) || sText.includes(mTitleLower.slice(0, 8));
+      telegramIntelligenceFeed.slice(0, 15).forEach((t) => sources.push(normalizeTelegramSignalToSource(t)));
+    } catch (e) {}
+
+    const currentHash = computeSourcesStateHash(sources);
+
+    // Reuse cache if not forced, hash matches, and all 35 milestones exist
+    const assessmentKeys = Object.keys(validatedFutureState.assessments);
+    if (!forceFresh && validatedFutureState.stateHash === currentHash && assessmentKeys.length === TIMELINE_DATA.length) {
+      return validatedFutureState;
+    }
+
+    const updatedAssessments: Record<string, CalendarItemAssessment> = { ...validatedFutureState.assessments };
+
+    // FAIR ROTATION & DYNAMIC CANDIDATE SCORING:
+    // 1. Unassessed milestones (NOT_ASSESSED / never evaluated by Gemini) get top priority (+100)
+    // 2. Re-evaluation required / fresh evidence arrived (+85)
+    // 3. Failed evaluations needing retry (+70)
+    // 4. Relevant scientific/intelligence sources (+40 to +80)
+    // 5. High uncertainty (+25)
+    // 6. Evaluation age in minutes (+0 to +35): Guarantees round-robin across all 35 years (2026-2060)
+    interface MilestoneEvalCandidate {
+      index: number;
+      milestone: Milestone;
+      relevantSources: SourceReference[];
+      previous?: CalendarItemAssessment;
+      priorityScore: number;
+    }
+
+    const candidates: MilestoneEvalCandidate[] = TIMELINE_DATA.map((m, idx) => {
+      const itemId = `milestone_${m.year}`;
+      const previous = validatedFutureState.assessments[itemId];
+      const mTitleLower = m.title.toLowerCase();
+      const mCatLower = m.category.toLowerCase();
+      const relevant = sources.filter((s) => {
+        const sText = `${s.title} ${s.extractedClaim}`.toLowerCase();
+        return sText.includes(mCatLower) || sText.includes(mTitleLower.slice(0, 8));
+      });
+
+      let score = 0;
+      if (!previous || previous.evaluationStatus === "NOT_ASSESSED") {
+        score += 100; // Top priority for unassessed
+      } else if (previous.evaluationStatus === "REQUIRES_REEVALUATION") {
+        score += 85;
+      } else if (previous.evaluationStatus === "EVALUATION_FAILED") {
+        score += 70;
+      }
+
+      if (relevant.length > 0) {
+        score += 40 + Math.min(40, relevant.length * 10);
+      }
+
+      if (previous?.uncertaintyLevel === "HIGH" || previous?.uncertaintyLevel === "VERY_HIGH" || previous?.status === "UNCERTAIN") {
+        score += 25;
+      }
+
+      // Age of last evaluation: Round-robin rotation ensures no starvation
+      const evalAgeMinutes = previous?.evaluatedAt
+        ? (Date.now() - new Date(previous.evaluatedAt).getTime()) / (60 * 1000)
+        : 999999;
+      score += Math.min(35, evalAgeMinutes / 5);
+
+      return { index: idx, milestone: m, relevantSources: relevant, previous, priorityScore: score };
     });
 
-    let score = 0;
-    if (relevant.length > 0) score += 50 + Math.min(30, relevant.length * 10);
-    if (!previous) score += 40;
-    else if (previous.status === "UNCERTAIN") score += 20;
+    // Sort candidates descending by priority score
+    candidates.sort((a, b) => b.priorityScore - a.priorityScore);
 
-    // Recency penalty: Older evaluations get higher priority to rotate across 2026-2060
-    const evalAgeMinutes = previous?.evaluatedAt
-      ? (Date.now() - new Date(previous.evaluatedAt).getTime()) / (60 * 1000)
-      : 999999;
-    score += Math.min(25, evalAgeMinutes / 10);
+    // Strict Gemini call budget: Max 8 calls per reasoning cycle
+    const MAX_GEMINI_CALLS_PER_CYCLE = 8;
+    const geminiTargetIndices = new Set(candidates.slice(0, MAX_GEMINI_CALLS_PER_CYCLE).map((c) => c.index));
 
-    return { index: idx, milestone: m, relevantSources: relevant, previous, priorityScore: score };
-  });
+    for (let i = 0; i < TIMELINE_DATA.length; i++) {
+      const m = TIMELINE_DATA[i];
+      const itemId = `milestone_${m.year}`;
+      const previous = validatedFutureState.assessments[itemId];
+      const candidate = candidates.find((c) => c.index === i)!;
 
-  // Sort candidates by priority score descending
-  candidates.sort((a, b) => b.priorityScore - a.priorityScore);
-
-  // Maximum Gemini calls per reasoning cycle to stay strictly within API and token budgets (max 8)
-  const MAX_GEMINI_CALLS_PER_CYCLE = 8;
-  const geminiTargetIndices = new Set(candidates.slice(0, MAX_GEMINI_CALLS_PER_CYCLE).map((c) => c.index));
-
-  for (let i = 0; i < TIMELINE_DATA.length; i++) {
-    const m = TIMELINE_DATA[i];
-    const itemId = `milestone_${m.year}`;
-    const previous = validatedFutureState.assessments[itemId];
-    const candidate = candidates.find((c) => c.index === i)!;
-
-    if (geminiTargetIndices.has(i)) {
-      // Prioritized by evidence & rotation: evaluated with Gemini
-      const assessment = await evaluateCalendarItemWithGemini(getAiFn, m, candidate.relevantSources, previous);
-      updatedAssessments[itemId] = assessment;
-    } else if (previous) {
-      // Retain previously validated assessment (preserves token budget, zero regression)
-      updatedAssessments[itemId] = previous;
-    } else {
-      // Deterministic fallback for unassessed items outside the active Gemini batch
-      const assessment = evaluateCalendarItemDeterministicFallback(m, candidate.relevantSources, previous);
-      updatedAssessments[itemId] = assessment;
+      if (geminiTargetIndices.has(i)) {
+        // Selected for Gemini reasoning in this cycle
+        const assessment = await evaluateCalendarItemWithGemini(getAiFn, m, candidate.relevantSources, previous);
+        updatedAssessments[itemId] = assessment;
+      } else if (previous) {
+        // Retain existing evaluation state (preserves prior intelligence and token budget)
+        updatedAssessments[itemId] = previous;
+      } else {
+        // Initialize unassessed item with deterministic fallback marked as NOT_ASSESSED
+        const assessment = evaluateCalendarItemDeterministicFallback(m, candidate.relevantSources, previous);
+        updatedAssessments[itemId] = {
+          ...assessment,
+          evaluationStatus: "NOT_ASSESSED",
+          epistemicProvenance: "STATIC_SCENARIO",
+        };
+      }
     }
+
+    // Monotonic revision update
+    validatedFutureState = {
+      version: "2.0.0",
+      revision: (validatedFutureState.revision || 0) + 1,
+      lastEvaluatedAt: new Date().toISOString(),
+      stateHash: currentHash,
+      assessments: updatedAssessments,
+    };
+
+    saveValidatedFutureStateToDisk();
+    return validatedFutureState;
+  } finally {
+    isReasoningCycleRunning = false;
   }
-
-  validatedFutureState = {
-    version: "2.0.0",
-    lastEvaluatedAt: new Date().toISOString(),
-    stateHash: currentHash,
-    assessments: updatedAssessments,
-  };
-
-  saveValidatedFutureStateToDisk();
-  return validatedFutureState;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -447,7 +590,7 @@ export function hydrateTimelineWithValidatedFutureState(
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 7. GETTERS & AUDIT
+// 7. GETTERS & GENUINE COMPUTED AUDIT (NO FAKE 42 / MODERATE HARDCODED METRICS)
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function getValidatedFutureState(): ValidatedFutureState {
@@ -455,10 +598,19 @@ export function getValidatedFutureState(): ValidatedFutureState {
 }
 
 export function setValidatedFutureState(state: ValidatedFutureState): void {
-  validatedFutureState = state;
+  validatedFutureState = {
+    ...state,
+    revision: (state.revision || validatedFutureState.revision || 0) + 1,
+  };
   saveValidatedFutureStateToDisk();
 }
 
+/**
+ * Computes genuine epistemic reasoning audit metrics without hardcoded values.
+ * - totalVerifiedSources: calculated from distinct verified sources in assessments.
+ * - averageUncertaintyLevel: computed strictly from valid GEMINI_EVALUATED assessments.
+ * - If insufficient data exists, returns "NOT_COMPUTED".
+ */
 export function getEngineAudit(): FutureReasoningAudit {
   const statusCounts: Record<ForecastStatus, number> = {
     CONFIRMED_BY_EVIDENCE: 0,
@@ -469,60 +621,124 @@ export function getEngineAudit(): FutureReasoningAudit {
     REVOKED: 0,
   };
 
-  const assessments = Object.values(validatedFutureState.assessments);
+  const evaluationsSummary = {
+    geminiEvaluatedCount: 0,
+    pendingCount: 0,
+    failedCount: 0,
+    notAssessedCount: 0,
+    requiresReevaluationCount: 0,
+  };
+
+  const assessments = Object.values(validatedFutureState.assessments || {});
+
   assessments.forEach((a) => {
     if (a.status === "REVISED") statusCounts.CONFIRMED_BY_EVIDENCE += 1;
     else if (a.status === "UNCERTAIN") statusCounts.INSUFFICIENT_EVIDENCE += 1;
     else statusCounts.EMERGING_HYPOTHESIS += 1;
+
+    const evalStatus = a.evaluationStatus || "NOT_ASSESSED";
+    if (evalStatus === "GEMINI_EVALUATED") evaluationsSummary.geminiEvaluatedCount += 1;
+    else if (evalStatus === "PENDING") evaluationsSummary.pendingCount += 1;
+    else if (evalStatus === "EVALUATION_FAILED") evaluationsSummary.failedCount += 1;
+    else if (evalStatus === "REQUIRES_REEVALUATION") evaluationsSummary.requiresReevaluationCount += 1;
+    else evaluationsSummary.notAssessedCount += 1;
   });
+
+  // Calculate unique verified sources (de-duplicated by DOI or persistent URL/ID)
+  const verifiedSourcesSet = new Set<string>();
+  assessments.forEach((a) => {
+    const list = a.supportingEvidence || a.sources || [];
+    list.forEach((s) => {
+      if (s) {
+        const isVerified =
+          Boolean(s.doi) ||
+          (Boolean(s.url) && !s.url?.includes("telegram.org")) ||
+          s.sourceType === "openalex" ||
+          s.sourceType === "peer_reviewed_journal" ||
+          s.sourceType === "arxiv" ||
+          s.sourceType === "patent";
+
+        if (isVerified) {
+          const key = s.doi || s.url || s.id;
+          if (key) verifiedSourcesSet.add(key);
+        }
+      }
+    });
+  });
+
+  const totalVerifiedSources: number | "NOT_AVAILABLE" =
+    verifiedSourcesSet.size > 0 ? verifiedSourcesSet.size : "NOT_AVAILABLE";
+
+  // Calculate average uncertainty level strictly over valid Gemini-evaluated items
+  const validEvaluated = assessments.filter(
+    (a) => a.evaluationStatus === "GEMINI_EVALUATED" && a.uncertaintyLevel && a.uncertaintyLevel !== "UNKNOWN"
+  );
+
+  let averageUncertaintyLevel: string = "NOT_COMPUTED";
+  if (validEvaluated.length > 0) {
+    const levelWeight: Record<string, number> = {
+      LOW: 1,
+      MODERATE: 2,
+      HIGH: 3,
+      VERY_HIGH: 4,
+    };
+    const sum = validEvaluated.reduce((acc, a) => acc + (levelWeight[a.uncertaintyLevel] || 2), 0);
+    const avg = sum / validEvaluated.length;
+
+    if (avg >= 3.25) averageUncertaintyLevel = "VERY_HIGH";
+    else if (avg >= 2.25) averageUncertaintyLevel = "HIGH";
+    else if (avg >= 1.5) averageUncertaintyLevel = "MODERATE";
+    else averageUncertaintyLevel = "LOW";
+  }
 
   return {
     totalForecasts: assessments.length || TIMELINE_DATA.length,
     forecastsByStatus: statusCounts,
-    totalVerifiedSources: 42,
-    averageUncertaintyLevel: "MODERATE",
+    totalVerifiedSources,
+    averageUncertaintyLevel,
+    uncertaintySampleSize: validEvaluated.length,
     reEvaluationsCount: assessments.length,
     lastCycleTimestamp: validatedFutureState.lastEvaluatedAt,
     engineMode: "EVIDENCE_DRIVEN_DYNAMIC",
+    revision: validatedFutureState.revision || 1,
+    evaluationsSummary,
   };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 8. ADAPTERS FOR SERVER ENDPOINTS & TEST COMPATIBILITY
+// 8. ADAPTERS FOR SERVER ENDPOINTS & LIVING FORECASTS SYNCHRONIZATION
 // ─────────────────────────────────────────────────────────────────────────────
 
-let inMemoryForecastsStore: any[] = [];
-
 export function getLivingEngineForecasts(): any[] {
-  if (inMemoryForecastsStore.length === 0 && Object.keys(validatedFutureState.assessments).length > 0) {
-    inMemoryForecastsStore = Object.values(validatedFutureState.assessments).map((a) => ({
-      id: a.calendarItemId,
-      title: a.title,
-      category: a.category,
-      temporalWindow: a.currentAssessment.timeWindow,
-      forecastEventSummary: a.currentAssessment.content,
-      supportingEvidence: a.sources || [],
-      uncertainty: {
-        level: a.currentAssessment.uncertaintyLevel,
-        primaryUnknowns: [],
-        entropyFactor: a.currentAssessment.uncertaintyLevel === "LOW" ? 0.2 : 0.6,
-      },
-      confidenceBasis: {
-        evidenceStrength: a.currentAssessment.confidence && a.currentAssessment.confidence > 70 ? "ROBUST" : "MODERATE",
-        technologicalMaturityTrl: 6,
-        convergenceDegree: "Literatür & AR-GE",
-        explanation: a.reasoning,
-      },
-      status: a.status === "REVISED" ? "CONFIRMED_BY_EVIDENCE" : a.status === "UNCERTAIN" ? "INSUFFICIENT_EVIDENCE" : "EMERGING_HYPOTHESIS",
-      epistemicProvenance: "DYNAMIC_REASONED_FORECAST",
-      lastEvaluatedAt: a.evaluatedAt,
-    }));
-  }
-  return inMemoryForecastsStore;
+  // Directly derived from validatedFutureState.assessments to maintain a single source of truth
+  const assessments = Object.values(validatedFutureState.assessments || {});
+  return assessments.map((a) => ({
+    id: a.milestoneId || a.calendarItemId,
+    title: a.title,
+    category: a.category,
+    temporalWindow: a.currentAssessment?.timeWindow,
+    forecastEventSummary: a.currentAssessment?.content,
+    supportingEvidence: a.supportingEvidence || a.sources || [],
+    uncertainty: {
+      level: a.currentAssessment?.uncertaintyLevel || a.uncertaintyLevel || "MODERATE",
+      primaryUnknowns: [],
+      entropyFactor: a.currentAssessment?.uncertaintyLevel === "LOW" ? 0.2 : 0.6,
+    },
+    confidenceBasis: {
+      evidenceStrength: a.currentAssessment?.confidence && a.currentAssessment.confidence > 70 ? "ROBUST" : "MODERATE",
+      technologicalMaturityTrl: 6,
+      convergenceDegree: "Literatür & AR-GE",
+      explanation: a.reasoning,
+    },
+    status: a.status === "REVISED" ? "CONFIRMED_BY_EVIDENCE" : a.status === "UNCERTAIN" ? "INSUFFICIENT_EVIDENCE" : "EMERGING_HYPOTHESIS",
+    epistemicProvenance: a.epistemicProvenance || "DYNAMIC_REASONED_FORECAST",
+    evaluationStatus: a.evaluationStatus,
+    lastEvaluatedAt: a.evaluatedAt,
+  }));
 }
 
-export function setLivingEngineForecasts(forecasts: any[]): void {
-  inMemoryForecastsStore = forecasts;
+export function setLivingEngineForecasts(_forecasts: any[]): void {
+  // No-op adapter for backwards compatibility; validatedFutureState is the single truth
 }
 
 export function forecastsToLivingMilestones(
@@ -559,33 +775,31 @@ export function forecastsToLivingMilestones(
 export async function runGeminiReasoningOnEvidence(
   getAiFn: () => GoogleGenAI | null,
   sources: SourceReference[],
-  _currentForecasts: any[] = []
+  currentForecasts: any[] = []
 ): Promise<any[]> {
-  const state = await runAutonomousCalendarReasoningCycle(getAiFn, true);
-  const forecasts = Object.values(state.assessments).map((a) => ({
-    id: a.calendarItemId,
-    title: a.title,
-    category: a.category,
-    temporalWindow: a.currentAssessment.timeWindow,
-    forecastEventSummary: a.currentAssessment.content,
-    supportingEvidence: sources.slice(0, 3),
-    uncertainty: {
-      level: a.currentAssessment.uncertaintyLevel,
-      primaryUnknowns: [],
-      entropyFactor: a.currentAssessment.uncertaintyLevel === "LOW" ? 0.2 : 0.6,
-    },
-    confidenceBasis: {
-      evidenceStrength: a.currentAssessment.confidence && a.currentAssessment.confidence > 70 ? "ROBUST" : "MODERATE",
-      technologicalMaturityTrl: 6,
-      convergenceDegree: "Literatür & AR-GE",
-      explanation: a.reasoning,
-    },
-    status: a.status === "REVISED" ? "CONFIRMED_BY_EVIDENCE" : a.status === "UNCERTAIN" ? "INSUFFICIENT_EVIDENCE" : "EMERGING_HYPOTHESIS",
-    epistemicProvenance: "DYNAMIC_REASONED_FORECAST",
-    lastEvaluatedAt: a.evaluatedAt,
-  }));
-  setLivingEngineForecasts(forecasts);
-  return forecasts;
+  try {
+    const ai = getAiFn();
+    if (!ai) {
+      return runDeterministicReasoningFallback(sources, currentForecasts);
+    }
+    const prompt = `Değerlendirilecek kanıtlar: ${JSON.stringify(sources)}`;
+    const res = await ai.models.generateContent({
+      model: "gemini-3.8-flash",
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+      },
+    });
+    const text = res.text?.trim() || "";
+    if (text) {
+      const parsed = JSON.parse(text);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    }
+    return runDeterministicReasoningFallback(sources, currentForecasts);
+  } catch (err: any) {
+    console.warn("[Future Reasoning Brain] Gemini reasoning notice:", err?.message || err);
+    return runDeterministicReasoningFallback(sources, currentForecasts);
+  }
 }
 
 export function runDeterministicReasoningFallback(
@@ -699,7 +913,6 @@ export async function reEvaluateFutureModelWithSignal(
   });
 
   if (!matched) {
-    // Novel technology signal discovered
     actions.push({
       actionType: "DISCOVERED_NEW",
       forecastId: `forecast_novel_${Date.now()}`,
@@ -730,6 +943,19 @@ export async function reEvaluateFutureModelWithSignal(
     };
 
     updatedForecasts.push(newForecast);
+  }
+
+  // Also mark matching milestone in central pool as REQUIRES_REEVALUATION
+  const matchingMilestone = TIMELINE_DATA.find(
+    (m) => signalText.includes(m.category.toLowerCase().slice(0, 5)) || signalText.includes(m.title.toLowerCase().slice(0, 8))
+  );
+  if (matchingMilestone) {
+    const itemId = `milestone_${matchingMilestone.year}`;
+    if (validatedFutureState.assessments[itemId]) {
+      validatedFutureState.assessments[itemId].evaluationStatus = "REQUIRES_REEVALUATION";
+      validatedFutureState.assessments[itemId].lastEvidenceUpdateAt = new Date().toISOString();
+      saveValidatedFutureStateToDisk();
+    }
   }
 
   return { updatedForecasts, actions };

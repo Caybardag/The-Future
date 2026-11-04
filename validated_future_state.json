@@ -1,7 +1,8 @@
 {
   "version": "2.0.0",
-  "lastEvaluatedAt": "2026-11-02T12:44:55.471Z",
-  "stateHash": "0432689f75e190a8d11edbd386dc2e29",
+  "revision": 6,
+  "lastEvaluatedAt": "2026-11-04T20:21:13.033Z",
+  "stateHash": "4468e4ace3b7fcb860e852781f5e9bed",
   "assessments": {
     "milestone_2026": {
       "calendarItemId": "milestone_2026",
@@ -44,7 +45,11 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:44:55.469Z"
+      "evaluatedAt": "2026-11-04T20:21:13.027Z",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "lastEvidenceUpdateAt": "2026-11-04T20:21:13.007Z",
+      "milestoneId": "milestone_2026",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2027": {
       "calendarItemId": "milestone_2027",
@@ -133,7 +138,10 @@
         "confidence": 88
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:44:55.469Z"
+      "evaluatedAt": "2026-11-04T20:21:13.027Z",
+      "milestoneId": "milestone_2029",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2030": {
       "calendarItemId": "milestone_2030",
@@ -199,7 +207,11 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:44:55.470Z"
+      "evaluatedAt": "2026-11-04T20:21:13.028Z",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "lastEvidenceUpdateAt": "2026-11-04T20:21:13.012Z",
+      "milestoneId": "milestone_2031",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2032": {
       "calendarItemId": "milestone_2032",
@@ -265,7 +277,10 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:44:55.470Z"
+      "evaluatedAt": "2026-11-04T20:21:13.028Z",
+      "milestoneId": "milestone_2033",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2034": {
       "calendarItemId": "milestone_2034",
@@ -354,7 +369,10 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:44:55.470Z"
+      "evaluatedAt": "2026-11-04T20:21:13.028Z",
+      "milestoneId": "milestone_2036",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2037": {
       "calendarItemId": "milestone_2037",
@@ -443,7 +461,10 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:44:55.470Z"
+      "evaluatedAt": "2026-11-04T20:21:13.029Z",
+      "milestoneId": "milestone_2039",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2040": {
       "calendarItemId": "milestone_2040",
@@ -486,7 +507,10 @@
         "confidence": 90
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:44:55.471Z"
+      "evaluatedAt": "2026-11-04T20:21:13.030Z",
+      "milestoneId": "milestone_2040",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2041": {
       "calendarItemId": "milestone_2041",
@@ -621,7 +645,10 @@
         "confidence": 85
       },
       "reasoningVersion": "1.1.0",
-      "evaluatedAt": "2026-11-02T12:40:22.974Z"
+      "evaluatedAt": "2026-11-04T20:21:13.031Z",
+      "milestoneId": "milestone_2045",
+      "evaluationStatus": "EVALUATION_FAILED",
+      "failureReason": "Simulated Quota Limit (429)"
     },
     "milestone_2046": {
       "calendarItemId": "milestone_2046",

@@ -513,17 +513,22 @@ export function deriveMilestoneActionPlan(
   const modelRecommendation = "A";
   const effectiveSelectedOption = isExplicitUserChoice ? explicitChoice! : modelRecommendation;
 
-  const isNearTerm = year <= 2029;
+  const isImmediate = year <= 2029;
+  const isNearTerm = year >= 2030 && year <= 2035;
   const isFarTerm = year >= 2045;
 
-  let urgencyBand: "immediate" | "medium_term" | "long_term" = "medium_term";
+  let urgencyBand: "immediate" | "near_term" | "medium_term" | "long_term" = "medium_term";
   let urgencyTitle = "Orta Vadeli Planlama";
   let preparationHorizon = "2-5 Yıllık Ufuk";
 
-  if (isNearTerm) {
+  if (isImmediate) {
     urgencyBand = "immediate";
     urgencyTitle = "Şimdi Hazırlan (2026-2029)";
     preparationHorizon = "Acil Eylem Penceresi: İlk 18-24 Ay";
+  } else if (isNearTerm) {
+    urgencyBand = "near_term";
+    urgencyTitle = "Yakın Vadeli Hazırlık (2030-2035)";
+    preparationHorizon = "3-7 Yıllık Ufuk";
   } else if (isFarTerm) {
     urgencyBand = "long_term";
     urgencyTitle = "2045+ Uzun Vadeli Vizyon";
@@ -627,17 +632,24 @@ export function deriveMilestoneActionPlan(
     const allText = validSignals.map((s) => `${s.title || ""} ${s.summary || ""}`).join(" ").toLowerCase();
     const isMatureTrl9 = validSignals.some((s) => s.trlLevel === 9) && (allText.includes("seri üretim") || allText.includes("ticarileş") || allText.includes("küresel"));
     dynamicHorizonShiftYears = isMatureTrl9 ? -2 : -1;
-    liveSignalNotice = `Hızlanma Sinyali (ivmelenme baskısı): ${validSignals[0].title}`;
+    liveSignalNotice = `Canlı İstihbarat Uyarısı: Hızlanma Sinyali (ivmelenme baskısı): ${validSignals[0].title}`;
   } else if (hasExpandingScopeSignal) {
     impactEffect = "EXPANDING_SCOPE" as any;
     hasLiveBreakthroughAcceleration = false;
     dynamicHorizonShiftYears = 0;
-    liveSignalNotice = `Kapsam Genişleme Sinyali: ${validSignals[0]?.title || "Yeni uygulama alanı keşfedildi"}`;
+    liveSignalNotice = `Canlı İstihbarat Uyarısı: Kapsam Genişleme Sinyali: ${validSignals[0]?.title || "Yeni uygulama alanı keşfedildi"}`;
   } else if (validSignals.length > 0) {
     impactEffect = "UNCERTAINTY_CHANGE";
     hasLiveBreakthroughAcceleration = false;
     dynamicHorizonShiftYears = 0;
     liveSignalNotice = `Belirsizlik Sinyali: ${validSignals[0].title}`;
+  }
+
+  if (hasLiveBreakthroughAcceleration) {
+    if (urgencyBand === "near_term" || urgencyBand === "medium_term") {
+      urgencyBand = "immediate";
+      urgencyTitle = "Canlı Sinyal İvmesi ile Hızlandırıldı (Acil Eylem)";
+    }
   }
 
   // 2. Closed-Loop Reassessment Trigger
@@ -700,6 +712,10 @@ export function deriveMilestoneActionPlan(
   let outcomeVerificationEvidence: any = undefined;
   let outcomeFollowUpAdvice: any = undefined;
 
+  let actionType: "skill_acquisition" | "strategic_positioning" | "monitoring" | "life_longevity" = "skill_acquisition";
+  let actionTypeLabel = "Yetenek Geliştirme ve Stratejik Konumlanma";
+  let concreteAction = `${milestone.title} için otonom yetkinlikler edinin ve stratejinizi kurgulayın.`;
+
   const isPivotFriction = note.includes("zorluk") || note.includes("engel") || note.includes("gecikme") || note.includes("farklı bir yol") || note.includes("tıkanıklık") || note.includes("darboğaz");
 
   if (isPivotFriction && actionStatus === "in_progress") {
@@ -707,16 +723,26 @@ export function deriveMilestoneActionPlan(
     outcomeSemantics = "PIVOT_NEEDED";
     outcomeFollowUpAdvice = "Kullanıcı bildiriminde darboğaz veya tıkanıklık tespit edildi. Yeni bir stratejik eksene pivot önerilir.";
   } else if (actionStatus === "completed") {
-    const isPositive = note.includes("başarı") || note.includes("tamamladık") || note.includes("verimli");
+    const isPivot = note.includes("verimsiz") || note.includes("aksak") || note.includes("tıkan") || note.includes("fayda") || note.includes("zorluk") || note.includes("engel");
+    const isPositive = !isPivot && (note.includes("başarı") || note.includes("tamamladık") || note.includes("verimli"));
 
-    if (isPositive) {
+    if (isPivot) {
+      outcomeStage = "completed_pivot_needed";
+      actionTypeLabel = "Yöntem Revizyonu Gerekli (Tamamlandı)";
+      concreteAction = "Yöntem Revizyonu & Stratejik Yeniden Değerlendirme: Süreç tamamlandı fakat verimsizlik bildirildi.";
+      realWorldOutcomeStatus = "user_reported_friction";
+      outcomeSemantics = "USER_REPORTED_FRICTION";
+      outcomeFollowUpAdvice = "Kullanıcı bildiriminde verimsizlik bildirildi. Stratejinizi yeniden kalibre etmeniz tavsiye edilir.";
+    } else if (isPositive) {
       outcomeStage = "completed_unreviewed";
+      actionTypeLabel = "Tamamlandı (Kullanıcı Olumlu Sonuç Bildirdi)";
       realWorldOutcomeStatus = "user_reported_positive";
       outcomeSemantics = "USER_REPORTED_POSITIVE_RESULT";
       outcomeVerificationEvidence = "USER_REPORTED_SIGNAL";
       outcomeFollowUpAdvice = "Kullanıcı beyanına göre olumlu sonuç kaydedildi. Objektif harici sonuç ve yetkinlik çıktısı bağımsız bir süreçtir (NOT_COMPUTED).";
     } else {
       outcomeStage = "completed_unreviewed";
+      actionTypeLabel = "Tamamlandı (Sonuç İnceleniyor)";
       realWorldOutcomeStatus = "not_reported";
       outcomeSemantics = "ACTION_COMPLETED_PENDING_REVIEW";
       outcomeVerificationEvidence = "NOT_COMPUTED";
@@ -734,9 +760,6 @@ export function deriveMilestoneActionPlan(
   const isDoctor = Boolean(prof.includes("doktor") || prof.includes("doctor") || prof.includes("hekim") || prof.includes("kardiyo"));
   const isTechUser = Boolean(prof.includes("yazılım") || prof.includes("kod") || prof.includes("software") || prof.includes("developer") || prof.includes("mühendis"));
 
-  let actionType: "skill_acquisition" | "strategic_positioning" | "monitoring" | "life_longevity" = "skill_acquisition";
-  let actionTypeLabel = "Yetenek Geliştirme ve Stratejik Konumlanma";
-  let concreteAction = `${milestone.title} için otonom yetkinlikler edinin ve stratejinizi kurgulayın.`;
   let recommendationProvenance = "model_profile_derived";
 
   if (isProfileIncomplete) {
@@ -769,7 +792,9 @@ export function deriveMilestoneActionPlan(
   }
 
   let reviewCheckpoint = "Sonraki Kontrol: 12 Ay Sonra Stratejik İnceleme";
-  if (year <= 2029) {
+  if (hasLiveBreakthroughAcceleration) {
+    reviewCheckpoint = "Canlı İstihbarat İvmesi ⚡ ile Hızlandırılmış 3 Aylık Kontrol";
+  } else if (year <= 2029) {
     reviewCheckpoint = "Sonraki Kontrol: 6 Ay Sonra Stratejik İnceleme";
   } else if (year <= 2035) {
     reviewCheckpoint = "Sonraki Kontrol: 12 Ay Sonra Stratejik İnceleme";
@@ -813,6 +838,7 @@ export function deriveMilestoneActionPlan(
     risk: riskNotice,
     liveSignalCount,
     liveSignalNotice,
+    relevantLiveSignals: validSignals,
     outcomeStage,
     outcomeSemantics,
     realWorldOutcomeStatus,
