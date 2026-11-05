@@ -282,6 +282,12 @@ describe("AUTONOMOUS GEMINI BRAIN & IMMUTABLE 2026–2060 CALENDAR SPECIFICATION
       stateHash: "mock_hash_123",
       assessments: {
         milestone_2026: {
+          milestoneId: "milestone_2026",
+          evaluationStatus: "GEMINI_EVALUATED",
+          lastEvaluationVersion: 1,
+          reasoningSummary: "Otonom kanıt revizyonu.",
+          sources: [],
+          supportingEvidence: [],
           calendarItemId: "milestone_2026",
           year: 2026,
           title: TIMELINE_DATA[0].title,
@@ -329,6 +335,12 @@ describe("AUTONOMOUS GEMINI BRAIN & IMMUTABLE 2026–2060 CALENDAR SPECIFICATION
     const milestone2042 = TIMELINE_DATA.find((m) => m.year === 2042) || TIMELINE_DATA[15];
 
     const priorAssessment: CalendarItemAssessment = {
+      milestoneId: `milestone_${milestone2042.year}`,
+      evaluationStatus: "NOT_ASSESSED",
+      lastEvaluationVersion: 1,
+      reasoningSummary: "Eski varsayım.",
+      sources: [],
+      supportingEvidence: [],
       calendarItemId: `milestone_${milestone2042.year}`,
       year: milestone2042.year,
       title: milestone2042.title,
@@ -418,6 +430,12 @@ describe("AUTONOMOUS GEMINI BRAIN & IMMUTABLE 2026–2060 CALENDAR SPECIFICATION
       stateHash: "single_test_hash",
       assessments: {
         milestone_2027: {
+          milestoneId: "milestone_2027",
+          evaluationStatus: "GEMINI_EVALUATED",
+          lastEvaluationVersion: 1,
+          reasoningSummary: "Regülasyon sinyalleri incelendi.",
+          sources: [],
+          supportingEvidence: [],
           calendarItemId: "milestone_2027",
           year: 2027,
           title: "Sentetik Gerçeklik Krizi",

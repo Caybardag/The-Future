@@ -257,6 +257,7 @@ describe("CANONICAL 35-MILESTONE INTEGRITY & VALIDATION SUITE (24 SPEC TESTS)", 
   it("15. Gemini title değiştirmeye çalışır → canonical title korunmalı", () => {
     const maliciousGeminiAssessment = [
       {
+        id: "milestone_2026",
         year: 2026,
         title: "GEMINI_HACKED_TITLE_SAHTE_BASLIK",
         description: "Geçerli revize açıklama",
@@ -278,6 +279,7 @@ describe("CANONICAL 35-MILESTONE INTEGRITY & VALIDATION SUITE (24 SPEC TESTS)", 
   it("16. Gemini year değiştirmeye çalışır → canonical year korunmalı", () => {
     const invalidAssessment = [
       {
+        id: "milestone_2099",
         year: 2099, // Non-canonical year
         title: "Gelecek 2099",
       },
@@ -293,6 +295,7 @@ describe("CANONICAL 35-MILESTONE INTEGRITY & VALIDATION SUITE (24 SPEC TESTS)", 
   it("17. Gemini category değiştirmeye çalışır → canonical category korunmalı", () => {
     const categoryOverrideAttempt = [
       {
+        id: "milestone_2026",
         year: 2026,
         category: "Post-İnsan & Medeniyet" as const, // Canonical is "Yapay Zeka & Bilişim"
       },
@@ -307,6 +310,7 @@ describe("CANONICAL 35-MILESTONE INTEGRITY & VALIDATION SUITE (24 SPEC TESTS)", 
   it("18. Gemini phase değiştirmeye çalışır → canonical phase korunmalı", () => {
     const phaseOverrideAttempt = [
       {
+        id: "milestone_2026",
         year: 2026,
         phase: 3, // Canonical is 1
       },
@@ -320,9 +324,9 @@ describe("CANONICAL 35-MILESTONE INTEGRITY & VALIDATION SUITE (24 SPEC TESTS)", 
 
   it("19. Üç assessment → 35 canonical milestone üzerinde yalnızca üç ilgili kayıt güncellenmeli", () => {
     const threeAssessments = [
-      { year: 2026, description: "2026 Güncellendi", probability: 80, status: "REVISED" },
-      { year: 2027, description: "2027 Güncellendi", probability: 85, status: "REVISED" },
-      { year: 2028, description: "2028 Güncellendi", probability: 90, status: "REVISED" },
+      { id: "milestone_2026", year: 2026, description: "2026 Güncellendi", probability: 80, status: "REVISED" },
+      { id: "milestone_2027", year: 2027, description: "2027 Güncellendi", probability: 85, status: "REVISED" },
+      { id: "milestone_2028", year: 2028, description: "2028 Güncellendi", probability: 90, status: "REVISED" },
     ];
 
     const hydrated = hydrateCanonicalTimeline(threeAssessments);

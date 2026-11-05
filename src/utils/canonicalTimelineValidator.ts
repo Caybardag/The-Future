@@ -213,30 +213,24 @@ export function hydrateCanonicalTimeline(
     let targetId: string | null = null;
 
     const rawId = item.milestoneId || item.calendarItemId || item.id;
-    if (typeof rawId === "string") {
-      const parsed = parseCanonicalMilestoneId(rawId);
-      if (!parsed) {
-        // If rawId is explicitly provided, it MUST strictly match 'milestone_${year}' (2026-2060)
-        return;
-      }
-      targetYear = parsed;
-      targetId = rawId;
-
-      // If explicit year is also provided, it must match parsedYear 1-to-1
-      if (typeof item.year === "number" && item.year !== parsed) {
-        return; // Mismatched ID and year, rejected
-      }
-    } else if (typeof item.year === "number") {
-      // If no ID is given, year must be a valid canonical year
-      if (Number.isInteger(item.year) && item.year >= 2026 && item.year <= 2060 && CANONICAL_YEAR_MAP.has(item.year)) {
-        targetYear = item.year;
-        targetId = `milestone_${item.year}`;
-      } else {
-        return; // Non-canonical or invalid year
-      }
-    } else {
-      return; // Neither valid id nor valid year
+    if (typeof rawId !== "string" || !rawId.trim()) {
+      // Prompt Section 3: ID is strictly required. No year -> milestone_${year} fallback!
+      return;
     }
+
+    const parsedYear = parseCanonicalMilestoneId(rawId);
+    if (!parsedYear) {
+      // Malformed ID format or out of bounds (2026-2060): REJECT
+      return;
+    }
+
+    // Strict 1-to-1 match between explicit year and ID
+    if (typeof item.year === "number" && item.year !== parsedYear) {
+      return; // Mismatched ID and year: REJECT
+    }
+
+    targetYear = parsedYear;
+    targetId = rawId;
 
     // Rejection of duplicate assessments for same year or same ID
     if (seenAssessmentYears.has(targetYear) || seenAssessmentIds.has(targetId)) {
@@ -332,9 +326,18 @@ export function hydrateCanonicalTimeline(
           : rawAssessment.status === "UNCERTAIN" || rawAssessment.status === "INSUFFICIENT_EVIDENCE"
           ? "INSUFFICIENT_EVIDENCE"
           : "EMERGING_HYPOTHESIS"),
-      uncertaintyLevel: current?.uncertaintyLevel || rawAssessment.uncertaintyLevel || canonical.uncertaintyLevel,
-      epistemicProvenance: rawAssessment.epistemicProvenance || "DYNAMIC_REASONED_FORECAST",
-      evaluationStatus: rawAssessment.evaluationStatus || (rawAssessment.status === "REVISED" ? "GEMINI_EVALUATED" : "NOT_ASSESSED"),
+      epistemicProvenance: rawAssessment.evaluationStatus === "GEMINI_EVALUATED"
+        ? (rawAssessment.epistemicProvenance || "DYNAMIC_REASONED_FORECAST")
+        : (rawAssessment.epistemicProvenance === "DYNAMIC_REASONED_FORECAST" && !rawAssessment.evaluationStatus ? "STATIC_SCENARIO" : (rawAssessment.epistemicProvenance || "STATIC_SCENARIO")),
+      evaluationStatus: rawAssessment.evaluationStatus === "GEMINI_EVALUATED"
+        ? "GEMINI_EVALUATED"
+        : rawAssessment.evaluationStatus === "EVALUATION_FAILED"
+        ? "EVALUATION_FAILED"
+        : rawAssessment.evaluationStatus === "REQUIRES_REEVALUATION"
+        ? "REQUIRES_REEVALUATION"
+        : rawAssessment.evaluationStatus === "PENDING"
+        ? "PENDING"
+        : "NOT_ASSESSED",
       evaluatedAt: rawAssessment.evaluatedAt || canonical.evaluatedAt,
       failureReason: rawAssessment.failureReason,
       lastEvaluationVersion: rawAssessment.lastEvaluationVersion,

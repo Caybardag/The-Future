@@ -1,0 +1,1279 @@
+Evet. Önceki promptu vermeden, GitHub üzerinde tespit ettiğimiz noktaları da içine alarak tek ve nihai bir prompt hazırlamak en doğrusu. Aşağıdaki promptu doğrudan Google AI Studio'daki kodlama ajanına verebilirsin.
+
+MASTER AUDIT + FORENSIC HARDENING PROMPT
+GELECEK TAKVİMİ / TECHNOLOGICAL EVOLUTION TIMELINE
+
+ÖNEMLİ ÇALIŞMA KURALI
+======================
+
+Bu çalışma yalnızca mevcut Google AI Studio çalışma alanındaki gerçek proje üzerinde yapılacaktır.
+
+GOOGLE AI STUDIO = TEK VE GERÇEK SOURCE OF TRUTH.
+
+GitHub bu çalışma için kaynak sistem değildir.
+
+GitHub'a:
+- push yapma
+- commit yapma
+- publish yapma
+- sync yapma
+- GitHub'dan kod çekme
+- GitHub repository kontrolünü çalışma akışının bir parçası haline getirme
+- kullanıcıya GitHub'a gönderme talimatı verme
+
+GitHub yayınlama/senkronizasyon işlemlerinin tamamı kullanıcı tarafından yapılacaktır.
+
+Sen yalnızca mevcut AI Studio workspace'indeki gerçek dosyaları, kodu, testleri, Firebase yapılandırmasını ve çalışma durumunu inceleyecek ve gerekli değişiklikleri burada uygulayacaksın.
+
+
+AMAÇ
+====
+
+Mevcut Gelecek Takvimi sistemini yalnızca "çalışıyor" seviyesinde bırakma.
+
+Sistemi:
+
+- epistemik olarak güvenilir,
+- provenance açısından doğrulanabilir,
+- canonical timeline açısından değiştirilemez,
+- Gemini değerlendirmeleri ile deterministic/fallback sonuçlarını kesin biçimde ayıran,
+- stale sonuçları engelleyen,
+- revision/concurrency açısından güvenli,
+- Gemini starvation üretmeyen,
+- Firebase veri erişimi ve index ihtiyaçları doğrulanmış,
+- güvenlik kuralları incelenmiş,
+- testlerle kanıtlanmış
+
+bir mimariye getir.
+
+TEMEL İLKE:
+
+Evidence > Inference > AI Opinion
+
+Bir veri kanıtlanamıyorsa sistem onu kanıtlanmış gibi göstermeyecek.
+
+Bir değerlendirme Gemini tarafından gerçekten yapılmadıysa GEMINI_EVALUATED olarak işaretlenmeyecek.
+
+Bir confidence değeri gerçek kanıt veya açıkça tanımlanmış geçerli bir hesaplama tarafından desteklenmiyorsa gerçek confidence gibi gösterilmeyecek.
+
+
+============================================================
+1. ÖNCE TAM KOD TABANI DENETİMİ YAP
+============================================================
+
+Değişiklik yapmadan önce mevcut AI Studio workspace'ini bütünüyle incele.
+
+Özellikle:
+
+- src/
+- data/
+- utils/
+- server/
+- lib/
+- Firebase yapılandırmaları
+- Firestore rules
+- varsa Realtime Database yapılandırmaları
+- test dosyaları
+- persistence/state dosyaları
+- futureReasoningEngine
+- canonicalTimelineValidator
+- timelineData
+- Gemini entegrasyonları
+- state hydration/persistence
+- revision mekanizmaları
+- audit/provenance mekanizmaları
+
+incelenecek.
+
+Sadece dosya isimlerine bakma.
+
+Kod akışını takip et.
+
+Özellikle şu zinciri uçtan uca çıkar:
+
+Canonical Timeline
+→ Assessment
+→ Hydration
+→ Validation
+→ Reasoning
+→ Gemini
+→ Fallback
+→ Persistence
+→ Reload/Hydration
+→ UI/Audit
+
+Her aşamada hangi alanın üretildiğini ve hangi kaynaktan geldiğini belirle.
+
+
+============================================================
+2. CANONICAL TIMELINE MUTLAK OLARAK IMMUTABLE OLMALI
+============================================================
+
+Canonical timeline'ın tek kaynağı:
+
+src/data/timelineData.ts
+
+olmalıdır.
+
+Mevcut canonical timeline:
+
+35 milestone
+
+2026 → 2060
+
+Canonical ID formatı:
+
+milestone_YYYY
+
+olmalıdır.
+
+Beklenen invariantlar:
+
+- tam olarak 35 milestone
+- 35 benzersiz ID
+- 35 benzersiz yıl
+- ID = milestone_${year}
+- 2026'dan 2060'a kadar eksiksiz sıra
+- duplicate ID yok
+- duplicate year yok
+- eksik yıl yok
+- canonical order değiştirilemez
+
+Gemini veya herhangi bir reasoning/fallback mekanizması:
+
+- canonical ID değiştiremez
+- canonical year değiştiremez
+- canonical title değiştiremez
+- canonical category değiştiremez
+- canonical order değiştiremez
+- canonical phase değiştiremez
+- canonical timeline'a yeni milestone ekleyemez
+- canonical milestone silemez
+
+AI yalnızca canonical milestone'ların ASSESSMENT katmanını değerlendirebilir.
+
+
+============================================================
+3. CANONICAL ID HYDRATION BUG'INI KESİN OLARAK DÜZELT
+============================================================
+
+Özellikle:
+
+src/utils/canonicalTimelineValidator.ts
+
+ve canonical assessment hydration akışını incele.
+
+Şu davranış KESİNLİKLE YASAKTIR:
+
+Bir assessment yalnızca:
+
+{
+  year: 2030
+}
+
+içeriyorsa sistemin bunu otomatik olarak:
+
+milestone_2030
+
+şeklinde kabul etmesi.
+
+ID zorunludur.
+
+Aşağıdaki gibi bir fallback:
+
+year → milestone_${year}
+
+KALDIRILMALIDIR.
+
+Assessment için geçerli kimlik kaynağı explicit milestone ID olmalıdır.
+
+Örneğin:
+
+milestoneId
+veya sistemde gerçekten canonical olarak tanımlanmış tek authoritative ID alanı.
+
+ID yoksa:
+
+REJECT / INVALID_ASSESSMENT
+
+üretilmelidir.
+
+Sistem tahmin ederek ID üretmemelidir.
+
+
+TEST ET:
+
+- ID yok → reject
+- malformed ID → reject
+- unknown ID → reject
+- year/ID mismatch → reject
+- duplicate ID → reject
+- valid canonical ID → accept
+
+
+============================================================
+4. GEMINI PROVENANCE SAHTELEŞTİRİLEMEZ
+============================================================
+
+KRİTİK KURAL:
+
+status === "REVISED"
+
+tek başına
+
+evaluationStatus === "GEMINI_EVALUATED"
+
+oluşturamaz.
+
+Özellikle aşağıdaki türden implicit promotion varsa kaldır:
+
+REVISED → GEMINI_EVALUATED
+
+Gemini provenance yalnızca gerçekten başarılı Gemini değerlendirmesinden sonra oluşabilir.
+
+Örneğin:
+
+Gemini başarılı:
+evaluationStatus = GEMINI_EVALUATED
+
+Gemini başarısız:
+evaluationStatus = EVALUATION_FAILED
+
+Gemini hiç çalışmadı:
+evaluationStatus = NOT_ASSESSED
+
+Yeterli veri yok:
+evaluationStatus = NOT_COMPUTED
+
+Değerlendirme sonucu üretilemedi:
+evaluationStatus = EVALUATION_FAILED
+
+Fallback:
+evaluationStatus kesinlikle GEMINI_EVALUATED olamaz.
+
+
+============================================================
+5. GEMINI SONUCU İLE FALLBACK SONUCUNU AYIR
+============================================================
+
+Sistemde birden fazla reasoning/fallback yolu varsa hepsini bul.
+
+Hiçbir deterministic fallback:
+
+- Gemini yapılmış gibi
+- Gemini confidence'ı gibi
+- Gemini provenance'ı gibi
+- evidence-backed AI result gibi
+
+gösterilmemeli.
+
+Fallback sonucu açıkça farklı provenance taşımalıdır.
+
+Örneğin:
+
+source = DETERMINISTIC_FALLBACK
+
+veya mevcut mimariye uygun eşdeğer bir provenance alanı.
+
+Ancak Gemini tarafından gerçekten üretilmeyen hiçbir sonuç:
+
+GEMINI_EVALUATED
+
+olamaz.
+
+
+============================================================
+6. CONFIDENCE SAHTELEŞTİRİLMEMELİ
+============================================================
+
+Aşağıdaki tipte mantıkları özellikle ara:
+
+canonical probability
+→ confidence
+
+ve benzeri dönüşümler.
+
+Örneğin:
+
+milestone.probability
+→ calibratedConfidence
+
+gibi bir dönüşümün gerçekten epistemik olarak geçerli olup olmadığını denetle.
+
+Canonical timeline'daki probability:
+
+Gemini'nin gerçek confidence değeri değildir.
+
+Kanıt yoksa confidence:
+
+null
+
+veya mevcut veri modelindeki uygun:
+
+NOT_COMPUTED / NOT_ASSESSED
+
+olmalıdır.
+
+Aşağıdaki durumlar için sahte confidence üretme:
+
+- Gemini çalışmadı
+- evidence yok
+- citation yok
+- evaluation başarısız
+- veri yetersiz
+- fallback çalıştı
+
+Confidence yalnızca açıkça tanımlanmış ve doğrulanabilir bir kaynaktan üretilebilir.
+
+"0 confidence" ile "unknown" birbirine karıştırılmamalıdır.
+
+
+============================================================
+7. EVIDENCE / INFERENCE / AI OPINION AYRIMI
+============================================================
+
+Her değerlendirmede mümkün olduğunca şu ayrım korunmalıdır:
+
+EXACT
+DERIVED
+INFERRED
+
+veya mevcut veri modelindeki eşdeğerleri.
+
+Eksik bilgi:
+
+NOT_AVAILABLE
+NOT_COMPUTED
+NOT_ASSESSED
+
+olarak kalmalı.
+
+AI'nin tahmini:
+
+kanıt gibi yazılmamalıdır.
+
+AI bir çıkarım yaptıysa bunun çıkarım olduğu açıkça korunmalıdır.
+
+
+============================================================
+8. GEMINI DEĞERLENDİRME DÖNGÜSÜ
+============================================================
+
+futureReasoningEngine.ts ve ilişkili tüm kodu incele.
+
+Aşağıdakileri garanti et:
+
+- Gemini çağrıları gerçek başarı durumuna göre provenance üretmeli.
+- Başarısız çağrı başarılı gibi kaydedilmemeli.
+- 429 / quota / timeout / network / parse error durumları açıkça failure olarak tutulmalı.
+- Başarısız çağrı GEMINI_EVALUATED üretememeli.
+- Eski Gemini sonucu yeni başarısız çağrıyı gizlememeli.
+- stale response yeni state'in üzerine yazamamalı.
+
+Özellikle:
+
+revision
+
+veya mevcut eşdeğer optimistic concurrency mekanizmasını incele.
+
+Eski revision'a ait sonuç yeni revision'a uygulanmamalı.
+
+
+============================================================
+9. GEMINI ROTATION / STARVATION
+============================================================
+
+Gemini değerlendirmesinde max-call sınırı varsa bunun uzun vadede starvation üretmediğini kanıtla.
+
+Örneğin:
+
+max 8 Gemini çağrısı / cycle
+
+varsa 35 milestone'ın tamamının zaman içinde değerlendirmeye ulaşabileceği deterministic bir rotation mekanizması olmalı.
+
+Aynı ilk 8 milestone'ın sürekli seçilmesi kabul edilmez.
+
+Priority sistemi varsa:
+
+- priority
+- lastEvaluatedAt
+- evaluationStatus
+- revision
+- failure state
+
+gibi alanların seçim mekanizmasını nasıl etkilediğini çıkar.
+
+Şu durumu engelle:
+
+bir milestone sürekli diğerlerini engelliyor.
+
+Gerekiyorsa round-robin / aging / last-evaluated weighting uygula.
+
+Ancak yeni bir algoritma eklemeden önce mevcut mimariyi korumayı tercih et.
+
+
+============================================================
+10. PERSISTENCE / HYDRATION
+============================================================
+
+Persist edilen state'i yeniden yükleme sürecini incele.
+
+Hydration sırasında:
+
+- canonical timeline yeniden doğrulanmalı
+- assessment ID zorunlu olmalı
+- provenance korunmalı
+- Gemini provenance yeniden uydurulmamalı
+- eski schema alanları yanlış anlamlandırılmamalı
+- stale state kabul edilmemeli
+
+Özellikle persisted:
+
+validated_future_state
+
+ve benzeri state'leri incele.
+
+Eski kayıt:
+
+evaluationStatus yok
+
+diye otomatik olarak:
+
+GEMINI_EVALUATED
+
+yapılmamalıdır.
+
+Eksik provenance:
+
+NOT_ASSESSED
+
+veya güvenli eşdeğer state olarak ele alınmalıdır.
+
+
+============================================================
+11. AUDIT METRİKLERİ GERÇEK VERİDEN HESAPLANMALI
+============================================================
+
+Audit/report tarafında:
+
+Gemini evaluated count
+fallback count
+failed count
+not assessed count
+confidence metrics
+citation metrics
+
+gibi değerler varsa bunlar gerçek state üzerinden dinamik hesaplanmalı.
+
+Hard-coded değer kullanma.
+
+Özellikle:
+
+"35/35 evaluated"
+
+gibi bir değer gerçekten 35 başarılı Gemini değerlendirmesi yoksa gösterilmemeli.
+
+Bir assessment'ın yalnızca:
+
+status = REVISED
+
+olması Gemini evaluation sayılmamalıdır.
+
+
+============================================================
+12. FIREBASE TAM DENETİM
+============================================================
+
+Firebase kullanılan tüm alanları çıkar.
+
+Özellikle:
+
+- firebase.json
+- firebase-blueprint.json
+- firestore.rules
+- src/lib/firebase.ts
+- src/server/firebaseAdmin.ts
+- migration dosyaları
+- Firestore query kullanan bütün dosyalar
+- varsa Realtime Database kullanımları
+
+incelenecek.
+
+Amaç yalnızca "Firebase çalışıyor mu?" değildir.
+
+Amaç:
+
+GERÇEK KULLANIM ↔ COLLECTION ↔ QUERY ↔ RULE ↔ INDEX
+
+ilişkisini doğrulamaktır.
+
+
+============================================================
+13. FIRESTORE COLLECTION HARİTASI
+============================================================
+
+Kod içerisindeki gerçek collection kullanımını çıkar.
+
+Örneğin:
+
+users
+userRoadmaps
+userPredictions
+agent_reports
+evidenceProofs
+userPredictionHistory
+brain_knowledge_vault
+telegram_intelligence
+credit_reservations
+credit_transactions
+
+gibi collection'ların gerçekten kullanılıp kullanılmadığını kod üzerinden doğrula.
+
+firebase-blueprint.json ile karşılaştır.
+
+Her collection için:
+
+- blueprint'te var mı?
+- kodda kullanılıyor mu?
+- hangi dosyalarda kullanılıyor?
+- hangi query'ler var?
+- hangi write işlemleri var?
+- hangi rules geçerli?
+- index gerekiyor mu?
+
+çıkar.
+
+
+============================================================
+14. FIRESTORE QUERY → INDEX ANALİZİ
+============================================================
+
+Kodda bulunan bütün Firestore sorgularını tespit et.
+
+Özellikle:
+
+where()
+orderBy()
+limit()
+query()
+collection()
+collectionGroup()
+ve birleşik query pattern'lerini incele.
+
+Her query için:
+
+REQUIRED
+POSSIBLY_REQUIRED
+NOT_REQUIRED
+
+sınıflandırması yap.
+
+ÖNEMLİ:
+
+Sırf collection var diye index oluşturma.
+
+Sırf veri yazılıyor diye index oluşturma.
+
+Yalnızca gerçek query pattern'i composite index gerektiriyorsa REQUIRED olarak işaretle.
+
+Firestore'un otomatik single-field indexing davranışını da hesaba kat.
+
+Repo'da firestore.indexes.json yoksa bunu doğrudan:
+
+"indexler eksik"
+
+diye raporlama.
+
+Doğru ifade:
+
+"Index configuration repository'de deklaratif olarak bulunmuyor; mevcut query pattern'leri incelendiğinde ..."
+
+olmalıdır.
+
+Eğer composite index gerçekten gerekiyorsa:
+
+- hangi query
+- hangi fields
+- hangi order
+- neden gerekli
+
+açıkça belirt.
+
+Gereksiz index oluşturma.
+
+
+============================================================
+15. REALTIME DATABASE KONTROLÜ
+============================================================
+
+Eğer Realtime Database kullanılıyorsa:
+
+- tüm query'leri bul
+- orderBy alanlarını bul
+- equalTo / startAt / endAt gibi filtreleri bul
+- .indexOn gereksinimlerini çıkar
+- mevcut rules/index tanımlarını karşılaştır
+
+RTDB kullanılmıyorsa:
+
+NOT_APPLICABLE
+
+olarak raporla.
+
+
+============================================================
+16. FIRESTORE RULES GÜVENLİK DENETİMİ
+============================================================
+
+firestore.rules dosyasını baştan sona incele.
+
+Özellikle:
+
+allow read
+allow create
+allow update
+allow delete
+
+kurallarını collection bazında çıkar.
+
+Authentication gerektirmeyen geniş izinleri ayrıca işaretle.
+
+ÖZEL OLARAK:
+
+telegram_intelligence
+
+için aşağıdaki gibi bir yapı varsa:
+
+allow read: if true;
+allow create, update: if true;
+
+bunu ciddi güvenlik bulgusu olarak raporla.
+
+Ancak varsayım yapma.
+
+Şunları belirt:
+
+- tam olarak hangi collection açık
+- hangi operasyonlar açık
+- authentication gerekiyor mu
+- kullanıcı ayrımı var mı
+- bunun uygulama tasarımında bilinçli olup olmadığı bilinmiyor mu
+
+Güvenlik kuralını yalnızca gerekli ve kanıtlanmış bir düzeltme gerekiyorsa değiştir.
+
+Fonksiyonelliği bozacak rastgele rules değişikliği yapma.
+
+
+============================================================
+17. FIREBASE BLUEPRINT ↔ CODE ↔ RULES ↔ INDEX
+============================================================
+
+Aşağıdaki dört katmanı karşılaştır:
+
+1. firebase-blueprint.json
+2. gerçek kod collection/query kullanımı
+3. firestore.rules
+4. index configuration / index gereksinimleri
+
+Uyumsuzlukları çıkar.
+
+Örnek:
+
+Blueprint'te var ama kodda yok.
+
+Kodda var ama blueprint'te yok.
+
+Kodda query var ama gerekli rule belirsiz.
+
+Query composite index gerektiriyor ama deklarasyonu yok.
+
+Rule aşırı geniş.
+
+Bunları ayrı ayrı raporla.
+
+
+============================================================
+18. TESTLERİ GÜÇLENDİR
+============================================================
+
+Mevcut testleri sadece çalıştırmakla kalma.
+
+Testlerin gerçekten doğru davranışı ölçüp ölçmediğini denetle.
+
+Özellikle timelineData.test.ts gibi testlerde:
+
+length >= 30
+
+gibi zayıf kontroller varsa canonical invariant'a göre güçlendir.
+
+Canonical timeline testi:
+
+length === 35
+
+olmalı.
+
+Ayrıca:
+
+- exact IDs
+- exact years
+- unique IDs
+- unique years
+- sequential 2026–2060
+
+kontrol edilmeli.
+
+
+============================================================
+19. ZORUNLU TEST MATRİSİ
+============================================================
+
+Aşağıdaki testleri oluştur veya mevcut testleri bunları garanti edecek şekilde düzelt:
+
+TEST 1
+------
+35 canonical milestone.
+
+Beklenen:
+PASS
+
+TEST 2
+------
+Duplicate canonical ID.
+
+Beklenen:
+FAIL / reject
+
+TEST 3
+------
+Assessment ID yok, sadece year var.
+
+Beklenen:
+REJECT
+
+Sistem milestone_${year} üretmemeli.
+
+TEST 4
+------
+Malformed ID.
+
+Beklenen:
+REJECT
+
+TEST 5
+------
+Valid ID + yanlış year.
+
+Beklenen:
+REJECT
+
+TEST 6
+------
+status = REVISED
+evaluationStatus yok.
+
+Beklenen:
+GEMINI_EVALUATED OLMAMALI.
+
+TEST 7
+------
+Gerçek başarılı Gemini evaluation.
+
+Beklenen:
+GEMINI_EVALUATED
+
+TEST 8
+------
+Gemini 429.
+
+Beklenen:
+EVALUATION_FAILED
+
+TEST 9
+------
+Gemini timeout.
+
+Beklenen:
+EVALUATION_FAILED
+
+TEST 10
+-------
+Fallback çalışıyor.
+
+Beklenen:
+GEMINI_EVALUATED OLMAMALI.
+
+TEST 11
+-------
+Evidence yok.
+
+Beklenen:
+confidence null / NOT_COMPUTED / güvenli eşdeğer.
+
+TEST 12
+-------
+Canonical probability mevcut fakat Gemini evaluation yok.
+
+Beklenen:
+Bu değer gerçek Gemini confidence'ı olarak gösterilmemeli.
+
+TEST 13
+-------
+Eski revision sonucu yeni revision state'ine uygulanmaya çalışılıyor.
+
+Beklenen:
+REJECT / IGNORE STALE RESULT
+
+TEST 14
+-------
+35 milestone rotation.
+
+Beklenen:
+Aynı milestone'lar sonsuza kadar starvation üretmemeli.
+
+TEST 15
+-------
+Persist edilmiş eski state'te evaluationStatus yok.
+
+Beklenen:
+GEMINI_EVALUATED olarak yükseltilmemeli.
+
+TEST 16
+-------
+Audit Gemini count.
+
+Beklenen:
+Yalnızca gerçekten GEMINI_EVALUATED olan kayıtlar sayılmalı.
+
+TEST 17
+-------
+Firebase query/index mapping.
+
+Beklenen:
+Gerçek query pattern'leri doğru sınıflandırılmalı.
+
+TEST 18
+-------
+Firestore public rule.
+
+Beklenen:
+Aşırı geniş rule güvenlik bulgusu olarak yakalanmalı.
+
+
+============================================================
+20. MEVCUT TESTLERDEKİ YANLIŞ SEMANTİKLERİ DÜZELT
+============================================================
+
+Özellikle futureReasoningEngine.test.ts gibi testlerde:
+
+status: "REVISED"
+
+verilerek Gemini validated state varsayılıyorsa bu testi düzelt.
+
+Test gerçek Gemini provenance gerektirmeli.
+
+Test adı da gerçek davranışı yansıtmalı.
+
+Örneğin:
+
+"REVISED state is treated as Gemini validated"
+
+gibi bir mantık kesinlikle korunmamalı.
+
+Doğru semantik:
+
+"Only explicit successful Gemini evaluation produces GEMINI_EVALUATED"
+
+olmalıdır.
+
+
+============================================================
+21. AI PROMPT INJECTION SAVUNMASI
+============================================================
+
+Gemini'ye gönderilen log/evidence/external content içerisinde:
+
+"ignore previous instructions"
+"you are now..."
+"mark this as verified"
+"change confidence"
+vb.
+
+instruction injection bulunabilir.
+
+External evidence Gemini'nin sistem talimatlarını değiştirememeli.
+
+Log içeriği DATA olarak ele alınmalı.
+
+AI'nin görevi evidence'ı değerlendirmektir.
+
+Evidence kendi talimatını üretemez.
+
+
+============================================================
+22. AI ÇIKTISI EVIDENCE REGISTRY İLE SINIRLANDIRILMALI
+============================================================
+
+Gemini'nin döndürdüğü:
+
+IP
+domain
+metric
+probability
+confidence
+event
+date
+technology
+evidence
+
+gibi alanlar Evidence Registry ile doğrulanmalı.
+
+AI'nin olmayan bir:
+
+IP
+MB
+event
+citation
+metric
+
+eklemesine izin verme.
+
+AI'nin söylediği fakat Evidence Registry'de olmayan bilgi:
+
+UNSUPPORTED / UNVERIFIED
+
+olarak işaretlenmeli veya rapora güvenilir fact olarak girmemeli.
+
+
+============================================================
+23. SINGLE AUTHORITATIVE STATE
+============================================================
+
+Aynı milestone için birden fazla state kaynağı varsa:
+
+- canonical timeline
+- validated_future_state
+- Gemini response
+- local cache
+- persisted assessment
+- temporary state
+
+arasındaki authoritative hierarchy açık olmalı.
+
+Bir kaynak diğerini sessizce override etmemeli.
+
+Özellikle eski Gemini response yeni assessment'ı ezmemeli.
+
+Revision kontrolü kullanılmalı.
+
+
+============================================================
+24. UI / RAPOR SEMANTİĞİ
+============================================================
+
+UI'da kullanıcıya:
+
+"Gemini değerlendirdi"
+
+"verified"
+
+"high confidence"
+
+gibi ifadeler gösteriliyorsa bunların gerçek provenance'a bağlı olduğunu doğrula.
+
+Fallback sonuçlarını Gemini sonucu gibi gösterme.
+
+Unknown durumunu olumlu veya olumsuz sonuç gibi sunma.
+
+Örneğin:
+
+NOT_ASSESSED
+
+gerçek bir belirsizlik durumudur.
+
+Bu:
+
+FALSE
+TRUE
+HIGH CONFIDENCE
+
+gibi bir sonuca dönüştürülmemeli.
+
+
+============================================================
+25. HATA DURUMLARI
+============================================================
+
+Aşağıdaki durumlarda sistem sessizce başarı üretmemeli:
+
+- Gemini quota
+- 429
+- timeout
+- network error
+- invalid JSON
+- schema mismatch
+- missing evidence
+- stale revision
+- invalid canonical ID
+- Firebase read failure
+- Firebase write failure
+
+Her durumda doğru status/provenance korunmalı.
+
+
+============================================================
+26. DEĞİŞİKLİK YAPMADAN ÖNCE
+============================================================
+
+Önce mevcut koddan:
+
+A) BULGULAR
+B) RİSKLER
+C) GEREKLİ DEĞİŞİKLİKLER
+D) ZATEN DOĞRU OLANLAR
+
+çıkar.
+
+Sonra gerekli değişiklikleri uygula.
+
+Gereksiz refactor yapma.
+
+Çalışan mimariyi sırf yeniden yazmak için yeniden yazma.
+
+Öncelik:
+
+correctness > provenance > data integrity > security > maintainability > cosmetic changes
+
+
+============================================================
+27. TEST VE BUILD GERÇEKTEN ÇALIŞTIRILMALI
+============================================================
+
+Değişikliklerden sonra:
+
+- ilgili unit testleri çalıştır
+- ilgili integration testleri çalıştır
+- mümkünse tüm test suite'i çalıştır
+- TypeScript check çalıştır
+- production build çalıştır
+
+Sonuçları gerçekten alınan çıktıya göre raporla.
+
+Çalıştırılmamış test için:
+
+PASSED
+
+YAZMA.
+
+Çalıştırılmamış build için:
+
+SUCCESS
+
+YAZMA.
+
+Kanıt yoksa:
+
+NOT VERIFIED
+
+YAZ.
+
+
+============================================================
+28. "FIXED" İFADESİNİN KULLANIM KURALI
+============================================================
+
+Bir sorun ancak:
+
+1. kod düzeltildi
+2. ilgili test var
+3. test gerçekten çalıştırıldı
+4. test geçti
+5. build/typecheck engel üretmedi
+
+ise:
+
+VERIFIED FIXED
+
+olarak işaretlenebilir.
+
+Kod değiştirildi ama test çalıştırılmadıysa:
+
+IMPLEMENTED — NOT VERIFIED
+
+olarak raporla.
+
+
+============================================================
+29. FİNAL RAPOR
+============================================================
+
+Çalışmanın sonunda aşağıdaki formatta net rapor üret:
+
+==================================================
+MASTER AUDIT RESULT
+==================================================
+
+1. CANONICAL TIMELINE
+- 35 milestone:
+- IDs:
+- Years:
+- Canonical immutability:
+- Result:
+
+2. HYDRATION
+- Mandatory ID:
+- ID-less assessment:
+- Year/ID mismatch:
+- Result:
+
+3. GEMINI PROVENANCE
+- Explicit Gemini provenance:
+- REVISED promotion bug:
+- Fallback provenance:
+- Result:
+
+4. CONFIDENCE
+- Evidence-backed:
+- Fake confidence risk:
+- Canonical probability contamination:
+- Result:
+
+5. GEMINI ROTATION
+- Max calls:
+- Rotation mechanism:
+- Starvation risk:
+- Result:
+
+6. REVISION / STALE STATE
+- Revision:
+- Stale result protection:
+- Result:
+
+7. PERSISTENCE
+- State source:
+- Hydration:
+- Legacy state handling:
+- Result:
+
+8. FIREBASE
+- Services actually used:
+- Collections:
+- Queries:
+- Index requirements:
+- firestore.indexes.json:
+- RTDB:
+- Result:
+
+9. FIRESTORE RULES
+- Authentication:
+- Public access:
+- telegram_intelligence:
+- Other broad rules:
+- Result:
+
+10. BLUEPRINT CONSISTENCY
+- Blueprint vs code:
+- Blueprint vs rules:
+- Blueprint vs indexes:
+- Result:
+
+11. TESTS
+- Tests added:
+- Tests changed:
+- Tests executed:
+- Passed:
+- Failed:
+- Not executed:
+
+12. TYPECHECK / BUILD
+- Typecheck:
+- Build:
+- Actual result:
+
+13. REMAINING RISKS
+Yalnızca gerçekten kalan riskleri yaz.
+
+14. FINAL STATUS
+
+Sadece aşağıdaki değerlerden BİRİNİ kullan:
+
+VERIFIED
+SUBSTANTIALLY IMPROVED — NOT FULLY VERIFIED
+NOT VERIFIED
+BLOCKED
+
+
+============================================================
+30. ÇOK ÖNEMLİ — UYDURMA YASAK
+============================================================
+
+Aşağıdaki ifadeleri gerçek kanıt olmadan kullanma:
+
+- "tamamen düzeltildi"
+- "her şey doğru"
+- "tüm testler geçti"
+- "Firebase indexleri tamam"
+- "Gemini tüm milestone'ları değerlendirdi"
+- "35/35 Gemini evaluated"
+- "yüksek güven"
+- "verified"
+- "production ready"
+
+Bunların her biri gerçek kod/test çıktısı ile desteklenmelidir.
+
+
+============================================================
+31. GITHUB KURALI — KESİN
+============================================================
+
+GitHub bu işlemin parçası değildir.
+
+GitHub'a herhangi bir işlem yapma.
+
+GitHub'a push/commit/publish/sync talimatı verme.
+
+Kullanıcı GitHub yayınlama işlemini kendisi yapacaktır.
+
+Senin görevin:
+
+AI Studio workspace'inde kodu incelemek,
+gerekli değişiklikleri yapmak,
+testleri çalıştırmak,
+build'i doğrulamak
+ve gerçek sonucu raporlamaktır.
+
+
+============================================================
+32. SON ÇALIŞMA PRENSİBİ
+============================================================
+
+Bu projede hedef "AI'nin her şeyi bilmesi" değildir.
+
+Hedef:
+
+DOĞRU OLANI DOĞRU OLARAK,
+BİLİNMEYENİ BİLİNMİYOR OLARAK,
+TAHMİNİ TAHMİN OLARAK,
+GEMINI SONUCUNU GERÇEK GEMINI SONUCU OLARAK,
+FALLBACK'I FALLBACK OLARAK
+
+göstermektir.
+
+Sistem yanlış bir kesinlik üretmektense:
+
+NOT_ASSESSED
+NOT_COMPUTED
+NOT_AVAILABLE
+EVALUATION_FAILED
+UNSUPPORTED
+UNKNOWN
+
+demeyi tercih etmelidir.
+
+Sonuçların güvenilirliği, AI'nin özgüveninden değil,
+kanıtın izlenebilirliğinden gelmelidir.
+
+Önce denetle.
+Sonra düzelt.
+Sonra test et.
+Sonra gerçekten doğrula.
+En son raporla.

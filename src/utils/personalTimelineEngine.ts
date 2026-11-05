@@ -50,7 +50,7 @@ export interface TelegramSignalPersonalImpact {
 }
 
 export interface MilestoneActionPlan {
-  urgencyBand: "immediate" | "medium_term" | "long_term";
+  urgencyBand: "immediate" | "near_term" | "medium_term" | "long_term";
   urgencyTitle: string;
   concreteAction: string;
   actionType: "skill_acquisition" | "strategic_positioning" | "monitoring" | "life_longevity";
