@@ -1,118 +1,102 @@
-# Hukuki Güvenlik & Kurumsal Şeffaflık: NASA/TRL İbarelerinin Tasfiyesi ve Olasılıksal Simülasyon Standardı
+# 35 Dönüm Noktası İçin Görsel ve Teknik Parametre Odaklı Ayrıntılı Veri Tabloları & Gemini 3.8 Flash Standardizasyonu
 
-Proje genelinde herhangi bir resmi kurum (NASA vb.) onayı, garantisi veya bağlayıcı kehanet algısı oluşturan tüm yanıltıcı ibarelerin ("NASA TRL", "NASA onaylı", "TRL 1-9 Standardı") tamamen temizlenmesi; yerine objektif "Gelişim Aşaması (1-9)" terminolojisinin getirilmesi ve her analiz ekranının başına net bir olasılıksal simülasyon yasal uyarısının yerleştirilmesini kapsayan mimari dönüşüm planıdır.
+Bu plan; takvimdeki 35 kanonik dönüm noktasının (2026–2060) sadece 1-2 cümlelik statik özetlerle sınırlı kalmasını ortadan kaldırarak her maddeye zengin görsel ve teknik parametre veri tabloları kazandırmayı, sistem genelindeki tüm yapay zeka analizlerini kullanıcının onayladığı resmi `gemini-3.8-flash` modeline bağlamayı ve sandbox ortamı kısıtları çerçevesinde en yüksek hız ve derinliği sağlamayı amaçlar.
 
-### User Review & Critical Decisions
+---
+
+## User Review & Critical Decisions
 
 > [!IMPORTANT]
-> Kullanıcı ile soru-cevap sürecinde teyit edilen ve mutabık kalınan temel kararlar:
+> Kullanıcı ile soru-cevap sürecinde kesinleştirilen temel tercihler ve mimari kararlar:
 
-- **Karar 1 (Terminoloji Değişimi)**: "NASA" ve "TRL" kısaltmaları arayüz ve kullanıcıya dönük tüm metinlerden tamamen kaldırılacaktır. Bunun yerine tarafsız, objektif ve endüstri standardı olan **"Gelişim Aşaması (1-9)"** (İngilizce: *Development Stage 1-9*) ifadesi kullanılacaktır.
-- **Karar 2 (Yasal Sorumluluk Reddi & Olasılıksal Simülasyon Uyarısı)**: Her analiz, zaman akışı ve simülasyon ekranının üst bölümüne standart, profesyonel bir **Olasılıksal Fütüroloji Uyarısı** yerleştirilecektir:
-  > *"Bilgilendirme: Platformda sunulan tüm tarihler, kırılma senaryoları ve simülasyonlar olasılıksal fütüroloji projeksiyonlarıdır. Kesin gerçekleşme taahhüdü, resmi kurum onayı veya bağlayıcı gelecek garantisi içermez."*
-- **Karar 3 (Kurumsal Footer ve Tanıtım Metinlerinin Arındırılması)**: `CorporateFooter`, `GoogleAIStylePlansShowcase`, `EpicIntelligenceHubPortal`, `HelpSupportModal` ve tüm modül başlıklarındaki "NASA TRL standartları", "NASA kanıtı" ibareleri tamamen silinecek, saf bilimsel literatür ve analitik modelleme dili korunacaktır.
-
----
-
-### 1. Overview & Core Concept
-
-- **What It Does**: Uygulamanın fütüroloji ve teknoloji kırılma modellerini hukuki ve etik açıdan güvenli bir zemine oturtur. Yanıltıcı kurumsal referansları (NASA onayı vb.) sıfırlar; kullanıcıya verilerin ampirik gözlemlere dayalı birer olasılık simülasyonu olduğunu dürüstçe bildirir.
-- **Target Audience / Persona**: Gelecek projeksiyonlarını inceleyen ancak bunların kesin bir kehanet değil, stratejik planlama senaryosu olduğunun bilincinde olan kurumsal kullanıcılar, araştırmacılar ve bireyler.
-- **Key Value**: Yasal ve kurumsal itibar koruması, sıfır hukuki risk, şeffaf fütüroloji etiği ve kullanıcı güveni.
+- **Confirmed Decision 1 (İçerik Derinliği ve Formatı)**: Kullanıcı, kısa metinler yerine **"Görsel ve teknik parametre odaklı ayrıntılı veri tabloları"** tercihini seçti. 35 dönüm noktasının her biri için; TRL olgunluk seviyesi, termodinamik ve Carnot verimi, FLOPs hesaplama gücü ihtiyacı, enerji yoğunluğu (Wh/kg), regülasyon uyumu, biyo-entegrasyon yüzdesi ve pazar olgunluk metrikleri yapılandırılmış teknik veri tablolarında (`tabular-nums font-mono`) sunulacak.
+- **Confirmed Decision 2 (Yapay Zeka Modeli & Yerel Model Açıklığı)**: 
+  - Projede kullanılan modelin resmi olarak **`gemini-3.8-flash`** olduğu teyit edildi. Kod tabanında kalan eski model atıfları (2.5, 2.0 veya 3.7) tamamen `gemini-3.8-flash` modeline standardize edilecek.
+  - AI Studio sandbox ortamının kısıtları (yalnızca CPU, kısıtlı RAM/disk, geçici sanal konteyner) nedeniyle içeride yerel Ollama/GGUF model indirme ve çalıştırma yapılmayacak; kullanıcı harici sunucuya bağlanmak istemediği için sistem %100 oranında Google Cloud üzerinde yüksek hızda çalışan resmi `@google/genai` API ve `gemini-3.8-flash` motorunu kullanacak.
 
 ---
 
-### 2. User Experience & Visual Design
+## 1. Overview & Core Concept
 
-#### Key User Flows
-
-1. **Analiz Ekranına Giriş & Olasılık Farkındalığı**:
-   - Kullanıcı `Zaman Akışı (Timeline)`, `Kişisel Yol Haritası (Roadmap)`, `Meslek Risk Analizi (Job Risk)`, `Zaman Yolcusu (Persona Chat)` veya `Bilişsel İstatistikler (Analytics)` ekranına girdiğinde, sayfa başlığının hemen altında zarif, dikkat çekici ancak göz yormayan kurumsal bir uyarı bandı görür.
-   - Uyarı bandı: İnce camgöbeği/kehribar sınır çizgisi, bilgi ikonu ve net sorumluluk reddi metni barındırır.
-2. **Kart ve Detaylarda "Gelişim Aşaması" Sunumu**:
-   - Dönüm noktası kartlarında ve modal pencerelerde daha önce "NASA TRL 6" veya "TRL 8" olarak görünen etiketler, **"Gelişim Aşaması 6/9"** veya **"Aşama 6 (Prototip)"** olarak güncellenir.
-   - Kullanıcı teknolojinin hangi olgunluk evresinde olduğunu (Hipotez, Laboratuvar, Saha Testi, Yaygın Kullanım) objektif olarak anlar.
-3. **Kurumsal Footer & Hukuki Bütünlük**:
-   - Sayfa altındaki `CorporateFooter` bileşeninde yer alan "NASA TRL 1-9 Standard" ibaresi kaldırılarak yerine *"Olasılıksal Modelleme & Açık Literatür Metodolojisi"* konumlandırılır.
-
-#### Visual Identity & Theme
-
-- **Uyarı Bandı Mimarisi (`ProbabilisticSimulationDisclaimer.tsx`)**:
-  - Yüzey: `bg-slate-900/60 backdrop-blur-md border border-cyan-500/20 rounded-2xl p-3 sm:p-4 mb-5`
-  - Tipografi: Temiz ve kurumsal sans-serif (`text-xs text-slate-300 font-sans leading-relaxed`)
-  - Vurgu: Küçük monospaced başlık (`FONT-MONO TEXT-[10px] TEXT-CYAN-400 FONT-BOLD UPPERCASE: "OLASILIKSAL FÜTÜROLOJİ PROJEKSİYONU"`)
-- **Aşama Rozetleri**:
-  - Kapsül yerine temiz metin: `Gelişim Aşaması: 7/9 (Saha Doğrulaması)`
+- **Problem**: 
+  1. Takvim kartlarında ve görünüm panellerinde açıklamalar yalnızca 1-2 cümlelik özetlerden (`description`) oluşuyor ve arayüzde `line-clamp-2` / `line-clamp-3` gibi sınırlamalarla metinler kesiliyordu.
+  2. Bilimsel veriler (termodinamik, TRL, enerji, işlemci gücü) dağınık veya statik metinler olarak kalıyor, kullanıcının inceleyebileceği derin teknik veri tabloları halinde gösterilmiyordu.
+  3. `server.ts` ve bazı servislerde model adı değişkenlik gösteriyordu.
+- **Çözüm**:
+  1. **Teknik Parametre Veri Tablosu Matrisi (`MilestoneTechnicalDataTable.tsx`)**: Her 35 kanonik dönüm noktası için spesifik fiziksel, mühendislik ve biyomedikal parametrelerini (Örn: 2028 Katı Hal Batarya için `480 Wh/kg`, `Carnot Verimi %82`, `Dendritik Baskılama 1000 Bar`, `TRL 7/9`, `Sertifikasyon ISO-26262`) içeren yüksek yoğunluklu, bilimsel laboratuvar tarzı veri tablosu oluşturulur.
+  2. **Metin Kırpma Engellerinin Kaldırılması**: Kartlarda ve detay görünümlerinde karakter sınırı sınırlaması gevşetilir; kullanıcı tek tıkla "Teknik Spesifikasyon Tablosu"nu açıp tüm ampirik göstergeleri inceleyebilir.
+  3. **Model Standardizasyonu**: Sistem genelinde (arka plan beyin motoru, gerçek dünya radarı, akademik literatür çıkarımı ve telemetri) tek merkezî model olarak `gemini-3.8-flash` kullanılır.
 
 ---
 
-### 3. Key Product Decisions & Trade-Offs
+## 2. User Experience & Visual Design
 
-#### Karar 1: NASA İsminin Platform Genelinden İstisnasız Temizlenmesi
-- **Seçilen Yaklaşım**: Kod tabanındaki tüm kullanıcıya dönük arayüzlerde, başlıklarda, yardım merkezinde, kartlarda ve modal pencerelerde geçen "NASA", "NASA TRL", "NASA onaylı" ifadeleri istisnasız kaldırılır.
-- **Gerekçe**: Platformun NASA ile resmi bir sponsorluk, ortaklık veya onay anlaşması bulunmamaktadır. Bu tür referanslar yanıltıcı beyan niteliği taşır ve ciddi yasal sorumluluklar doğurabilir.
-- **Değerlendirilen Alternatif**: "NASA metodolojisinden esinlenilmiştir" demek (Kullanıcı tarafından reddedildi; kafa karışıklığı ve sorumluluk riskini tamamen yok etmek için isim bütünüyle kaldırılmalıdır).
+Bilimsel ve laboratuvar veri standartlarına (`8_science_space_biotech.md` referansı) uygun olarak, gereksiz hap kutucuklar (pills) yerine hassas hizalanmış kılavuz çizgileri, tabular monospace rakamlar ve net veri hiyerarşisi uygulanacaktır:
 
-#### Karar 2: "TRL" Kısaltmasının "Gelişim Aşaması (1-9)" Olarak Dönüştürülmesi
-- **Seçilen Yaklaşım**: Kullanıcı tercihi doğrultusunda teknik ve kafa karıştırıcı TRL kısaltması yerine herkesin kolayca anlayabileceği **"Gelişim Aşaması (1-9)"** ifadesine geçilir.
-- **Gerekçe**: TRL uzay ve savunma sanayii jargonu olup genel kullanıcı için anlaşılmazdır; "Gelişim Aşaması" ise hem kurumsal hem pedagojik olarak açıktır.
-
-#### Karar 3: Her Analiz Ekranının Başına Standart Uyarı Bileşeni Eklenmesi
-- **Seçilen Yaklaşım**: Yeniden kullanılabilir bir `<ForesightDisclaimerBanner />` bileşeni hazırlanarak analitik modüllerin üstüne yerleştirilir.
-- **Gerekçe**: Kullanıcının gelecekle ilgili gördüğü tarih ve senaryoları bir garanti veya kesin kehanet zannetmesini önler, şeffaf ve güvenilir bir fütüroloji standardı sağlar.
-
----
-
-### 4. Technical Architecture & Component Hierarchy
+### Görsel ve Teknik Parametre Tablosu Düzeni (ASCII Spesifikasyonu):
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                   KURUMSAL NAVİGASYON (Navbar.tsx)                     │
-└────────────────────────────────────┬───────────────────────────────────┘
-                                     │
-                                     ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│           YENİ BİLEŞEN: <ForesightDisclaimerBanner />                  │
-│  ℹ️ "Platformda sunulan veriler ve senaryolar olasılıksal fütüroloji    │
-│      projeksiyonlarıdır; kesin gerçekleşme taahhüdü içermez."          │
-└────────────────────────────────────┬───────────────────────────────────┘
-                                     │
-        ┌────────────────────────────┼───────────────────────────┐
-        ▼                            ▼                           ▼
-┌──────────────────┐       ┌──────────────────┐       ┌──────────────────┐
-│ 1. ZAMAN AKIŞI   │       │ 2. KİŞİSEL PLAN  │       │ 3. ANALİTİK & AI │
-│ · Gelişim Aşama  │       │ · Olasılık Eğrisi│       │ · Senaryo Tahmin │
-│   1-9 Ölçeği     │       │ · Bireysel Ufuk  │       │ · Olasılık Puanı │
-│ [NASA İBARESİ YOK│       │ [NASA İBARESİ YOK│       │ [NASA İBARESİ YOK│
-└──────────────────┘       └──────────────────┘       └──────────────────┘
-                                     │
-                                     ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                   KURUMSAL FOOTER (CorporateFooter.tsx)                │
-│  · "NASA TRL Standart" SİLİNDİ -> "Açık Bilimsel Metodoloji & Trendler"│
-└────────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────────────────────┐
+│ 2028 · KATI HAL (SOLID-STATE) BATARYA DEVRİMİ                               [TRL-7 / PROTOCOL]│
+│ Bilimsel & Mühendislik Spesifikasyon Tablosu (Gelişmiş Parametre Matrisi)                     │
+├────────────────────────────┬─────────────────────────────┬──────────────┬─────────────────────┤
+│ TEKNİK PARAMETRE           │ NOMİNAL HEDEF DEĞER         │ TAHMİNİ 2026 │ DOĞRULAMA / LİMİT   │
+├────────────────────────────┼─────────────────────────────┼──────────────┼─────────────────────┤
+│ Gravimetrik Enerji         │ 480 Wh/kg                   │ 270 Wh/kg    │ Carnot & Termodinamik│
+│ Volumetrik Yoğunluk        │ 1150 Wh/L                   │ 720 Wh/L     │ Lityum Dendrit Sınırı│
+│ Hızlı Şarj Süresi (10-80%) │ 9.5 Dakika                  │ 24.0 Dakika  │ Joule Isınma Eşiği  │
+│ Şarj Döngü Ömrü            │ 2500+ Çevrim (0.8 Kapasite) │ 1200 Çevrim  │ Katı Elektrolit Arayüz│
+│ Termal Kaçak Dayanımı      │ 180°C (Kendiliğinden Güvenli)│ 65°C         │ Yanmaz Katı Seramik │
+│ TRL Olgunluk Seviyesi      │ Aşama 7 / 9                 │ Aşama 5 / 9  │ Pilot Seri Üretim   │
+│ Küresel AR-GE Sermayesi    │ $48.5 Milyar (Konsorsiyum)  │ $14.2 Milyar │ Doğrulanmış Kaynak  │
+└────────────────────────────┴─────────────────────────────┴──────────────┴─────────────────────┘
 ```
+
+- **Tipografi**: Sayısal ölçümlerde `font-mono tabular-nums`, teknik terimlerde `font-sans font-semibold`.
+- **Görsel Durum Göstergeleri**: Kritik sınır değerleri için amber (`text-amber-400`), doğrulanmış ampirik veriler için laser cyan (`text-cyan-400`), onaylanmış başarılar için zümrüt yeşili (`text-emerald-400`).
 
 ---
 
-### 5. Step-by-Step Implementation Plan
+## 3. Key Product Decisions & Trade-Offs
 
-#### Aşama 1: Ortak Uyarı Bileşeninin Oluşturulması (`ForesightDisclaimerBanner.tsx`)
-- [ ] `src/components/ForesightDisclaimerBanner.tsx` bileşenini oluştur (Türkçe/İngilizce çift dilli, şık kurumsal tasarım, kapatılabilir veya kompakt seçenekli).
-- [ ] Analiz ekranlarına entegre et: `TimelineView.tsx`, `PersonalRoadmapView.tsx`, `JobRiskAnalyzerView.tsx`, `ButterflyEffectView.tsx`, `AnalyticsView.tsx`, `EpicIntelligenceHubPortal.tsx`.
+- **Karar 1: Kısa Metinleri Silmek Yerine "Hızlı Özet + Derin Teknik Parametre Tablosu" Ayrımı**
+  - *Neden*: Kullanıcı takvimde gezinirken hızlıca tarama yapabilmeli, ancak istediği an tek bir tıklamayla ilgili dönüm noktasının devasa teknik parametre tablosuna ve bilimsel sınırlarına ulaşabilmelidir.
+  - *Fayda*: Arayüz akıcılığını bozmadan ansiklopedik derinlik ve ampirik veri sunulur.
+- **Karar 2: AI Modeli Olarak Kesin Olarak `gemini-3.8-flash` Seçimi**
+  - *Neden*: Kullanıcının doğrudan belirttiği gibi, AI Studio altyapısında en güncel ve kararlı API modeli `gemini-3.8-flash`'tır. Eski 2.5 veya 2.0 atıfları sistemden kaldırılarak tekil, tutarlı bir model hattı sağlanır.
+- **Karar 3: Sandbox İçi Yerel Model İndirilmeyişi (Sıfır Konteyner Çökmesi Güvencesi)**
+  - *Neden*: Konteyner yalnızca geçici CPU kaynaklarına sahiptir. GB'larca model ağırlığı indirmek belleği (RAM) tüketerek konteynerın kapanmasına (OOM) yol açar. Resmi `gemini-3.8-flash` API'si hem sıfır gecikmeyle çalışır hem de sistem çökme riskini tamamen ortadan kaldırır.
 
-#### Aşama 2: NASA ve TRL İfadelerinin Proje Genelinde Temizlenmesi
-- [ ] `src/components/CorporateFooter.tsx`: "NASA TRL standartları" ve "NASA TRL 1-9 Standard" metinlerini kaldır; "Olasılıksal Fütüroloji & Açık Bilimsel Literatür Analitiği" ile değiştir.
-- [ ] `src/components/GoogleAIStylePlansShowcase.tsx`: "NASA TRL Seviyesi", "NASA TRL forecasts", FAQ'daki NASA referanslarını temizle; "Gelişim Aşaması (1-9)" yap.
-- [ ] `src/components/EpicIntelligenceHubPortal.tsx`: "NASA TRL 1-9", "TRL Radarı" etiketlerini "Gelişim Aşaması Radarı" ve "Bilimsel Literatür Radarı" olarak güncelle.
-- [ ] `src/components/HelpSupportModal.tsx`: Soru ve cevaplardaki NASA ve TRL ifadelerini kaldır; kurumsal fütüroloji ve olasılık modelleme tanımlarıyla güncelle.
-- [ ] `src/components/CommunitySubmissionsView.tsx`: Formdaki "TRL (Teknoloji Hazırlık Seviyesi)" etiketlerini ve TRL 1-9 seçeneklerini "Gelişim Aşaması (1-9)" olarak revize et; NASA Technical Reports referanslarını genel kurumsal Ar-Ge olarak güncelle.
-- [ ] `src/components/MilestoneTreeExplorer.tsx`, `FutureVerdictView.tsx`, `ContextAwareOrchestrator.tsx`, `MilestoneDetailModal.tsx` içindeki TRL metinlerini "Gelişim Aşaması" olarak düzenle.
+---
 
-#### Aşama 3: Veri ve Çeviri Dosyalarının Denetimi
-- [ ] `src/utils/milestoneTranslations.ts` ve `src/data/timelineData.ts` içerisindeki arayüz etiketlerini kontrol et; kullanıcıya gösterilen TRL ve NASA kalıntılarını temizle.
+## 4. Technical Architecture & Data Strategy
 
-#### Aşama 4: Derleme, Test ve Doğrulama
-- [ ] `compile_applet` ile TypeScript bütünlüğünü doğrula.
-- [ ] Vitest testlerini (`npm run test`) ve üretim paketlemesini (`npm run build`) çalıştır.
-- [ ] Kod tabanında `grep -rn "NASA"` araması yaparak hiçbir kullanıcı arayüzünde NASA ifadesi kalmadığını doğrula.
+### Mimari Bileşen Akışı:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 35 KANONİK DÖNÜM NOKTASI (2026–2060)                                        │
+│ (src/data/timelineData.ts + src/data/milestoneTechnicalParameters.ts)       │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+                                       ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ TEKNİK PARAMETRE & AMPİRİK METRİK DEPOSU                                    │
+│ - Fiziksel Sınırlar, Carnot Verimleri, Enerji Yoğunlukları, FLOPs, TRL      │
+└──────────────────────────────────────┬──────────────────────────────────────┘
+                                       │
+                      ┌────────────────┴────────────────┐
+                      ▼                                 ▼
+┌───────────────────────────────────────────┐ ┌───────────────────────────────┐
+│ MilestoneTechnicalDataTable.tsx           │ │ GEMINI 3.8 FLASH MERKEZİ MOTOR│
+│ (Etkileşimli, Filtrelenebilir, İndirilebilir│ │ (server.ts + ReasoningEngine) │
+│  Zengin Bilimsel Veri Tablosu Bileşeni)   │ │ - TRL Güncellemesi            │
+└───────────────────────────────────────────┘ │ - Parametrik Canlı Sentez     │
+                                              └───────────────────────────────┘
+```
+
+### Yapılacak Somut Değişiklikler:
+1. `src/data/milestoneTechnicalParameters.ts` dosyasının oluşturulması: 35 kanonik dönüm noktasının tümü için en az 6-8 adet ölçülebilir mühendislik ve fiziksel parametresinin (birim, hedef değer, 2026 mevcut durumu, darboğaz/sınır ve TRL seviyesi) tanımlanması.
+2. `src/components/MilestoneTechnicalDataTable.tsx` bileşeninin geliştirilmesi: Veri tablosunun hem `TimelineView` içerisindeki detay panelinde hem de `MilestoneMissionControl` altında birincil sekme olarak sunulması.
+3. `server.ts` ve diğer servislerde model isimlerinin `gemini-3.8-flash` olarak standardize edilmesi.
+4. Testlerin ve derlemenin (`compile_applet`, `vitest`) çalıştırılarak doğrulanması.

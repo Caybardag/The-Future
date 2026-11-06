@@ -57,7 +57,7 @@ export const AIGeneratedStatisticsView: React.FC<AIGeneratedStatisticsViewProps>
   const [statsData, setStatsData] = useState<TimelineStatisticsData | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(2045);
   const [error, setError] = useState<string | null>(null);
-  const [dataSource, setDataSource] = useState<string>("gemini-3.7-flash");
+  const [dataSource, setDataSource] = useState<string>("gemini-3.8-flash");
 
   // Chart Metric Toggles
   const [activeMetrics, setActiveMetrics] = useState({
@@ -91,7 +91,7 @@ export const AIGeneratedStatisticsView: React.FC<AIGeneratedStatisticsViewProps>
 
       if (response.success && response.data) {
         setStatsData(response.data);
-        setDataSource(response.source || "gemini-3.7-flash");
+        setDataSource(response.source || "gemini-3.8-flash");
       } else {
         setError(response.error || "İstatistik verisi alınamadı.");
       }
@@ -160,7 +160,7 @@ export const AIGeneratedStatisticsView: React.FC<AIGeneratedStatisticsViewProps>
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
                 <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-                {dataSource === "gemini-3.7-flash" ? "Canlı Bilişsel AI Trend Motoru" : "Yerel Ampirik Analiz Modeli"}
+                {dataSource === "gemini-3.8-flash" ? "Canlı Bilişsel AI Trend Motoru" : "Yerel Ampirik Analiz Modeli"}
               </span>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-mono text-slate-400 bg-slate-800/80 border border-slate-700/50">
                 <Clock className="w-3 h-3 text-slate-400" />

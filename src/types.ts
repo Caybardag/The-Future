@@ -300,6 +300,7 @@ export type ViewMode =
   | "agent_scan"
   | "prediction_history"
   | "telegram_feed"
+  | "research_agent"
   | "admin";
 
 export interface AuditAssumptionScore {

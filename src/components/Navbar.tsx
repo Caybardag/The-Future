@@ -176,6 +176,22 @@ export const Navbar: React.FC<NavbarProps> = ({
               <MessageSquare className="w-3.5 h-3.5" />
               <span>{isTr ? "Zaman Yolcusu" : "Time Traveler"}</span>
             </button>
+
+            <button
+              onClick={() => {
+                setCurrentView("research_agent");
+                window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+              }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap shrink-0 transition-all cursor-pointer ${
+                currentView === "research_agent"
+                  ? "bg-cyan-600 text-white shadow-sm shadow-cyan-600/40"
+                  : "text-slate-300 hover:text-white hover:bg-white/5"
+              }`}
+              title={isTr ? "Canlı Araştırma Ajanı & İstihbarat Radarı" : "Research AI Agent & Live Intelligence"}
+            >
+              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+              <span>{isTr ? "İstihbarat Radarı" : "Research Agent"}</span>
+            </button>
           </nav>
         </div>
 

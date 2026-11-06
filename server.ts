@@ -56,6 +56,7 @@ import {
   setLivingEngineForecasts,
   getEngineAudit,
 } from "./src/server/futureReasoningEngine";
+import { realWorldIntelligenceEngine } from "./src/server/realWorldIntelligenceEngine";
 import { TIMELINE_DATA } from "./src/data/timelineData";
 import { detectDomainCareerProfile } from "./src/server/domainCareerIntel";
 import {
@@ -129,7 +130,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, x-user-email, x-admin-token, x-passcode, x-client-version");
   res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  // Note: X-Frame-Options is intentionally omitted to allow seamless embedding in AI Studio preview iframe
   res.setHeader("X-XSS-Protection", "1; mode=block");
 
   if (req.method === "OPTIONS") {
@@ -1283,7 +1284,26 @@ export function resolveServerPort(rawPort?: string | number): number {
   return parsed;
 }
 
-export const PORT = resolveServerPort(process.env.PORT);
+export function resolveAppListenPort(): number {
+  // Check CLI arguments for --port <val> (e.g. tsx server.ts --port 3000)
+  const portIndex = process.argv.indexOf("--port");
+  if (portIndex !== -1 && process.argv[portIndex + 1]) {
+    const val = parseInt(process.argv[portIndex + 1], 10);
+    if (!Number.isNaN(val) && val >= 0 && val <= 65535) return val;
+  }
+  // Check DEFAULT_APP_PORT (which is 3000 in AI Studio container)
+  if (process.env.DEFAULT_APP_PORT) {
+    const val = parseInt(process.env.DEFAULT_APP_PORT, 10);
+    if (!Number.isNaN(val) && val >= 0 && val <= 65535) return val;
+  }
+  // In development mode, dev server must run on 3000
+  if (process.env.NODE_ENV !== "production") {
+    return 3000;
+  }
+  return resolveServerPort(process.env.PORT);
+}
+
+export const PORT = resolveAppListenPort();
 
 // Lazy initialization for Gemini client
 let aiClient: GoogleGenAI | null = null;
@@ -1465,18 +1485,13 @@ async function safeGenerateContent(
   },
   maxRetries = 2
 ) {
-  const preferredModel = (params.model && params.model !== "gemini-3.7-flash" && params.model !== "gemini-3-flash-preview")
-    ? params.model
-    : "gemini-3.8-flash";
+  const preferredModel = params.model || "gemini-3.8-flash";
   const modelsToTry = Array.from(
     new Set([
-      preferredModel,
       "gemini-3.8-flash",
-      "gemini-2.5-flash",
-      "gemini-2.5-pro",
+      preferredModel,
       "gemini-flash-latest",
       "gemini-3.1-flash-lite",
-      "gemini-3.1-pro-preview",
     ])
   );
 
@@ -1619,7 +1634,7 @@ app.get("/api/gemini/status", (_req, res) => {
   res.json({
     success: true,
     aiEngineOnline: isOnline,
-    model: "gemini-3.7-flash",
+    model: "gemini-3.8-flash",
     activeFeatures: [
       "Future Prediction Simulator",
       "Futurist Career & Bio-Life Advisor",
@@ -2084,7 +2099,7 @@ Provide an exhaustive strategic intelligence assessment analyzing the second- an
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           systemInstruction: systemPrompt,
@@ -2123,7 +2138,7 @@ Provide an exhaustive strategic intelligence assessment analyzing the second- an
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_search_grounding",
+      source: "gemini-3.8-flash_search_grounding",
       output: response.text || "AI response could not be generated.",
       grounding: {
         searchQueries,
@@ -2248,7 +2263,7 @@ Respond strictly in valid JSON format:
 
       const response = await serverAIQueue.enqueue(() =>
         safeGenerateContent(ai, {
-          model: "gemini-3.7-flash",
+          model: "gemini-3.8-flash",
           contents: prompt,
           config: {
             responseMimeType: "application/json",
@@ -2676,7 +2691,7 @@ Return ONLY a valid JSON object:
 
     return res.json({
       success: true,
-      source: "gemini-2.5-flash_search_grounding",
+      source: "gemini-3.8-flash_search_grounding",
       result: jsonRes,
     });
   } catch (error: any) {
@@ -2868,7 +2883,7 @@ STRICT QUALITY RULES:
       try {
         const response = await serverAIQueue.enqueue(() =>
           safeGenerateContent(ai, {
-            model: "gemini-3.7-flash",
+            model: "gemini-3.8-flash",
             contents: prompt,
             config: {
               systemInstruction: "You are a Senior Futurist, Scientific Intelligence Analyst and Systems Engineer. You return exclusively valid JSON without markdown fences.",
@@ -3078,7 +3093,7 @@ STRICT QUALITY RULES:
 
     return res.json({
       success: true,
-      source: isLiveAI ? "gemini-3.7-flash" : "deterministic_telemetry_engine",
+      source: isLiveAI ? "gemini-3.8-flash" : "deterministic_telemetry_engine",
       report: fullReport
     });
   } catch (error: any) {
@@ -3159,7 +3174,7 @@ Respond in ${isTr ? "Turkish" : "English"}.`;
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           systemInstruction: finalSystemInstruction,
@@ -3172,7 +3187,7 @@ Respond in ${isTr ? "Turkish" : "English"}.`;
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       reply: response.text || (isTr ? "Yanıt oluşturuldu." : "Response generated."),
     });
   } catch (error: any) {
@@ -3414,7 +3429,7 @@ app.post("/api/gemini/analyze", async (req, res) => {
         return res.json({
           success: true,
           type: "future_discovery",
-          source: "gemini-3.7-flash_fallback",
+          source: "gemini-3.8-flash_fallback",
           data: fallbackDiscovery
         });
       }
@@ -3473,7 +3488,7 @@ YALNIZCA aşağıdaki JSON şemasında yanıt ver:
 
       const response = await serverAIQueue.enqueue(() =>
         safeGenerateContent(ai, {
-          model: "gemini-3.7-flash",
+          model: "gemini-3.8-flash",
           contents: discoveryPrompt,
           config: {
             temperature: 0.35,
@@ -3493,7 +3508,7 @@ YALNIZCA aşağıdaki JSON şemasında yanıt ver:
       return res.json({
         success: true,
         type: "future_discovery",
-        source: "gemini-3.7-flash",
+        source: "gemini-3.8-flash",
         data: parsed?.reasoning ? parsed : fallbackDiscovery
       });
     }
@@ -3656,7 +3671,7 @@ Respond strictly in valid JSON format matching this schema:
 
       const response = await serverAIQueue.enqueue(() =>
         safeGenerateContent(ai, {
-          model: "gemini-3.7-flash",
+          model: "gemini-3.8-flash",
           contents: prompt,
           config: {
             temperature: 0.4,
@@ -3677,7 +3692,7 @@ Respond strictly in valid JSON format matching this schema:
       return res.json({
         success: true,
         type: "job_risk",
-        source: "gemini-3.7-flash",
+        source: "gemini-3.8-flash",
         data: parsed && parsed.yearlyRiskTrend ? parsed : fallbackJobRisk,
       });
     }
@@ -3756,7 +3771,7 @@ Return strictly valid JSON:
 
       const response = await serverAIQueue.enqueue(() =>
         safeGenerateContent(ai, {
-          model: "gemini-3.7-flash",
+          model: "gemini-3.8-flash",
           contents: prompt,
           config: {
             systemInstruction: "You are a World-Class Futurist and Alternative Causality Quantum Simulator.",
@@ -3777,7 +3792,7 @@ Return strictly valid JSON:
       return res.json({
         success: true,
         type: "butterfly_effect",
-        source: "gemini-3.7-flash",
+        source: "gemini-3.8-flash",
         simulation: parsed,
         data: parsed,
       });
@@ -3798,7 +3813,7 @@ Return strictly valid JSON:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: generalPrompt,
         config: {
           systemInstruction: "You are a senior Futurologist, Quantum Systems Architect, and Algorithmic Analyst for the 2026-2060 timeline.",
@@ -3811,7 +3826,7 @@ Return strictly valid JSON:
     return res.json({
       success: true,
       type: "general",
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       output: response.text || "",
       data: { analyzed: true, rawOutput: response.text }
     });
@@ -3904,7 +3919,7 @@ Return ONLY a JSON object:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           systemInstruction: "You are a World-Class Futurist and Alternative Causality Quantum Simulator.",
@@ -3925,7 +3940,7 @@ Return ONLY a JSON object:
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       simulation: {
         ...fallbackSimulation,
         ...parsed,
@@ -3992,7 +4007,7 @@ Respond strictly in JSON in ${isTr ? "Turkish" : "English"}:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           systemInstruction: "You are a Chief Futurist and Physics Synergies Auditor.",
@@ -4007,7 +4022,7 @@ Respond strictly in JSON in ${isTr ? "Turkish" : "English"}:
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       analysis: (parsed && parsed.synergyScore) ? parsed : fallbackAnalysis,
     });
   } catch (error: any) {
@@ -4082,7 +4097,7 @@ Respond strictly in valid JSON format matching:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: aiPrompt,
         config: {
           systemInstruction: "You are a Chief Futurologist, Macroeconomist, and Parallel Timeline Simulator.",
@@ -4097,7 +4112,7 @@ Respond strictly in valid JSON format matching:
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       scenario: (parsed && parsed.title) ? parsed : fallbackScenario,
     });
   } catch (error: any) {
@@ -4161,7 +4176,7 @@ Respond strictly in JSON in ${isTr ? "Turkish" : "English"}:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           systemInstruction: "You are a Scientific Peer Reviewer for Future Technologies.",
@@ -4176,7 +4191,7 @@ Respond strictly in JSON in ${isTr ? "Turkish" : "English"}:
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       ...(parsed && parsed.verdict ? parsed : fallbackVerification),
     });
   } catch (error: any) {
@@ -4272,7 +4287,7 @@ JSON FORMATINDA DİZİ OLARAK YANIT VER (Başka hiçbir metin yazma):
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: conflictPrompt,
         config: {
           temperature: 0.35,
@@ -4291,7 +4306,7 @@ JSON FORMATINDA DİZİ OLARAK YANIT VER (Başka hiçbir metin yazma):
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_conflict_detector",
+      source: "gemini-3.8-flash_conflict_detector",
       conflicts,
     });
   } catch (error: any) {
@@ -4438,7 +4453,7 @@ JSON FORMATINDA YANIT VER (Başka hiçbir metin yazma):
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: auditPrompt,
         config: {
           temperature: 0.25,
@@ -4458,7 +4473,7 @@ JSON FORMATINDA YANIT VER (Başka hiçbir metin yazma):
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_scientific_audit",
+      source: "gemini-3.8-flash_scientific_audit",
       ...parsed,
       sources: topPapers,
     });
@@ -4514,7 +4529,7 @@ app.post("/api/gemini/search-grounding", async (req, res) => {
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: searchPrompt,
         config: {
           tools: [{ googleSearch: {} }],
@@ -4529,7 +4544,7 @@ app.post("/api/gemini/search-grounding", async (req, res) => {
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_google_search",
+      source: "gemini-3.8-flash_google_search",
       summary: response.text || "Arama sonucu oluşturulamadı.",
       groundingMetadata,
     });
@@ -4588,7 +4603,7 @@ Lütfen yanıtı YALNIZCA geçerli bir JSON formatında döndür. Markdown etike
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           tools: [{ googleSearch: {} }],
@@ -4619,7 +4634,7 @@ Lütfen yanıtı YALNIZCA geçerli bir JSON formatında döndür. Markdown etike
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_google_search",
+      source: "gemini-3.8-flash_google_search",
       updatedMilestones: parsed.updatedMilestones || [],
     });
   } catch (error: any) {
@@ -4731,7 +4746,7 @@ Lütfen Google Arama Motoru araçlarıyla 2026 ve sonrası en güncel bilimsel/p
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           tools: [{ googleSearch: {} }],
@@ -4762,7 +4777,7 @@ Lütfen Google Arama Motoru araçlarıyla 2026 ve sonrası en güncel bilimsel/p
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_recursive_dag_engine",
+      source: "gemini-3.8-flash_recursive_dag_engine",
       branches: parsed.branches || [],
     });
   } catch (error: any) {
@@ -4916,7 +4931,7 @@ Lütfen Google Arama araçlarını kullanarak 2026 yılındaki son laboratuvar a
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           tools: [{ googleSearch: {} }],
@@ -4947,7 +4962,7 @@ Lütfen Google Arama araçlarını kullanarak 2026 yılındaki son laboratuvar a
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_parametric_scientific_auditor",
+      source: "gemini-3.8-flash_parametric_scientific_auditor",
       audit: parsed.audit,
     });
   } catch (error: any) {
@@ -5072,7 +5087,7 @@ Lütfen yanıtı YALNIZCA şu JSON şemasında döndür:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           tools: [{ googleSearch: {} }],
@@ -5107,7 +5122,7 @@ Lütfen yanıtı YALNIZCA şu JSON şemasında döndür:
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash_academic_trl_radar",
+      source: "gemini-3.8-flash_academic_trl_radar",
       radar: parsed.radar,
     });
   } catch (error: any) {
@@ -5301,7 +5316,7 @@ YALNIZCA geçerli bir JSON nesnesi döndür:
 
       const aiResponse = await serverAIQueue.enqueue(() =>
         safeGenerateContent(ai, {
-          model: "gemini-3.7-flash",
+          model: "gemini-3.8-flash",
           contents: prompt,
           config: {
             temperature: 0.2,
@@ -5332,7 +5347,7 @@ YALNIZCA geçerli bir JSON nesnesi döndür:
       if (parsed && parsed.overallAccuracy) {
         return res.json({
           success: true,
-          source: "gemini-3.7-flash_deep_integrity_engine",
+          source: "gemini-3.8-flash_deep_integrity_engine",
           timestamp: new Date().toISOString(),
           overallAccuracy: Number(parsed.overallAccuracy) || 94.6,
           accuracyChange: parsed.accuracyChange || "+1.2%",
@@ -5574,7 +5589,7 @@ For each major phase (2026-2030, 2031-2040, 2041-2060):
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           systemInstruction: systemPrompt,
@@ -5587,7 +5602,7 @@ For each major phase (2026-2030, 2031-2040, 2041-2060):
 
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       output: response.text || fallbackRoadmap,
     });
   } catch (error: any) {
@@ -5840,7 +5855,7 @@ Respond strictly in valid JSON format:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           temperature: 0.5,
@@ -5942,7 +5957,7 @@ Respond strictly in valid JSON format:
 
       return res.json({
         success: true,
-        source: "gemini-3.7-flash",
+        source: "gemini-3.8-flash",
         data: parsedData,
       });
     }
@@ -6270,7 +6285,7 @@ app.post("/api/gemini/persona-chat", async (req, res) => {
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents,
         config: {
           systemInstruction: systemPrompt,
@@ -6286,7 +6301,7 @@ app.post("/api/gemini/persona-chat", async (req, res) => {
     if (generatedReply) {
       return res.json({
         success: true,
-        source: "gemini-3.7-flash",
+        source: "gemini-3.8-flash",
         reply: generatedReply,
       });
     }
@@ -6470,7 +6485,7 @@ Respond strictly in JSON:
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           temperature: 0.1,
@@ -6483,7 +6498,7 @@ Respond strictly in JSON:
     const parsed = repairAndParseJSON(response.text) || {};
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       ...tierInfo,
       ...parsed,
     });
@@ -6651,7 +6666,7 @@ Format kesinlikle şu olmalıdır (Markdown yok):
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           temperature: 0.6,
@@ -6664,7 +6679,7 @@ Format kesinlikle şu olmalıdır (Markdown yok):
     const parsed = repairAndParseJSON(response.text);
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       advice: parsed || {},
     });
   } catch (error: any) {
@@ -6786,7 +6801,7 @@ Yalnızca geçerli JSON döndür, markdown veya ek açıklama ekleme.`;
 
     const response = await serverAIQueue.enqueue(() =>
       safeGenerateContent(ai, {
-        model: "gemini-3.7-flash",
+        model: "gemini-3.8-flash",
         contents: prompt,
         config: {
           temperature: 0.5,
@@ -6799,7 +6814,7 @@ Yalnızca geçerli JSON döndür, markdown veya ek açıklama ekleme.`;
     const parsed = repairAndParseJSON(response.text) || {};
     return res.json({
       success: true,
-      source: "gemini-3.7-flash",
+      source: "gemini-3.8-flash",
       data: parsed.timelinePoints ? parsed : fallbackTrends,
     });
   } catch (error: any) {
@@ -7197,6 +7212,36 @@ app.get("/api/reasoning/audit", (req, res) => {
   });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// REAL-WORLD INTELLIGENCE ENGINE & RESEARCH AGENT ENDPOINTS
+// ─────────────────────────────────────────────────────────────────────────────
+
+// GET /api/intelligence/status - Returns active research agent state & recent corroborated signals
+app.get("/api/intelligence/status", (req, res) => {
+  const state = realWorldIntelligenceEngine.getState();
+  res.json({
+    success: true,
+    state,
+  });
+});
+
+// POST /api/intelligence/scan - Triggers an on-demand real-world multi-source scan
+app.post("/api/intelligence/scan", async (req, res) => {
+  try {
+    const year = req.body?.year ? Number(req.body.year) : undefined;
+    const updatedState = await realWorldIntelligenceEngine.runDiscoveryScan(() => ai, year);
+    res.json({
+      success: true,
+      state: updatedState,
+    });
+  } catch (err: any) {
+    console.warn("[Real-World Intelligence] Scan error notice:", err);
+    res.status(500).json({
+      success: false,
+      error: err?.message || "Real-world intelligence scan failed",
+    });
+  }
+});
 
 // Admin System Config & Kill Switch API
 let adminSystemRuntimeConfig = {

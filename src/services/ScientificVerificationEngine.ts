@@ -50,7 +50,14 @@ function computeDynamicScientificFeasibility(milestone: Milestone): ScientificVe
 
   // 1. Termodinamik & Sonsuz Enerji / Menzil Filtresi
   physicsParametersChecked.push("Termodinamik 2. Yasası", "Carnot Verim Sınırı");
-  if (descLower.includes("sınırsız menzil") || descLower.includes("sınırsız kapasite") || descLower.includes("sonsuz enerji") || descLower.includes("kayıpsız enerji")) {
+  const isNegatedInfinity =
+    descLower.includes("sınırsız menzil olmasa da") ||
+    descLower.includes("sınırsız değildir") ||
+    descLower.includes("sınırsız anlamına gelmez") ||
+    descLower.includes("sonsuz değildir") ||
+    descLower.includes("sınırsız olmasa da");
+
+  if (!isNegatedInfinity && (descLower.includes("sınırsız menzil") || descLower.includes("sınırsız kapasite") || descLower.includes("sonsuz enerji") || descLower.includes("kayıpsız enerji"))) {
     baseScore = Math.min(baseScore, 78);
     verdictStatus = "EXAGGERATED_HYPERBOLE";
     verdictLabel = "Termodinamik Limit Düzeltildi ⚡";

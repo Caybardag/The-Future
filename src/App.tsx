@@ -33,6 +33,7 @@ import { FutureVerdictView } from "./components/FutureVerdictView";
 import { AlgorithmicAuditWidget } from "./components/AlgorithmicAuditWidget";
 import { DataIntegrityView } from "./components/DataIntegrityView";
 import { TelegramIntelligenceHubView } from "./components/TelegramIntelligenceHubView";
+import { ResearchAgentView } from "./components/ResearchAgentView";
 import { InteractiveGuideModal } from "./components/InteractiveGuideModal";
 import { DailyFutureSpinWheel } from "./components/DailyFutureSpinWheel";
 import { GlobalLeaderboardView } from "./components/GlobalLeaderboardView";
@@ -122,13 +123,16 @@ function MainAppContent() {
     const handleOpenSupport = () => setHelpSupportModalOpen(true);
     const handleOpenPrivacy = () => setPrivacyModalOpen(true);
     const handleOpenProfileCompletion = () => setIsOnboardingModalOpen(true);
+    const handleOpenAnomalyModal = () => setIsAnomalyModalOpen(true);
     window.addEventListener("open_support_modal", handleOpenSupport);
     window.addEventListener("open_privacy_modal", handleOpenPrivacy);
     window.addEventListener("open_profile_completion", handleOpenProfileCompletion);
+    window.addEventListener("open_anomaly_modal", handleOpenAnomalyModal);
     return () => {
       window.removeEventListener("open_support_modal", handleOpenSupport);
       window.removeEventListener("open_privacy_modal", handleOpenPrivacy);
       window.removeEventListener("open_profile_completion", handleOpenProfileCompletion);
+      window.removeEventListener("open_anomaly_modal", handleOpenAnomalyModal);
     };
   }, []);
 
@@ -373,6 +377,7 @@ function MainAppContent() {
     return safeStorage.getJSON<Record<number, string>>("milestone_live_synced_descriptions", {});
   });
   const [detectedAnomalies, setDetectedAnomalies] = useState<ScientificAnomaly[]>([]);
+  const [isAnomalyModalOpen, setIsAnomalyModalOpen] = useState<boolean>(false);
   const [isScanningBrain, setIsScanningBrain] = useState<boolean>(false);
   const [isSyncingLiveScience, setIsSyncingLiveScience] = useState<boolean>(false);
   const [liveTelegramFeeds, setLiveTelegramFeeds] = useState<TelegramFeedItem[]>([]);
@@ -1238,6 +1243,18 @@ function MainAppContent() {
           </PlanFeatureGateOverlay>
         )}
 
+        {/* VIEW 8.5: RESEARCH AI AGENT & CANLI İSTİHBARAT RADARI */}
+        {currentView === "research_agent" && (
+          <ResearchAgentView
+            onSelectMilestone={(m) => {
+              setActiveMilestone(m);
+              setDetailModalMilestone(m);
+              setCurrentView("timeline");
+            }}
+            onNavigateToTimeline={() => setCurrentView("timeline")}
+          />
+        )}
+
         {/* VIEW 9: TOPLULUK KATKILARI & MİLESTONE ÖNERİSİ */}
         {currentView === "community" && <CommunitySubmissionsView />}
 
@@ -1514,11 +1531,11 @@ function MainAppContent() {
         }}
       />
 
-      {/* Main Brain Scientific Anomaly Notification Overlay */}
-      {detectedAnomalies.length > 0 && (
+      {/* Main Brain Scientific Anomaly Notification Overlay (Quiet / On-demand, never forces popup on startup) */}
+      {isAnomalyModalOpen && detectedAnomalies.length > 0 && (
         <AnomalyNotificationOverlay
           anomalies={detectedAnomalies}
-          onDismiss={() => setDetectedAnomalies([])}
+          onDismiss={() => setIsAnomalyModalOpen(false)}
           onApplyCorrection={handleApplyAnomalyCorrection}
           onRequestHitlRevision={handleHitlRevision}
         />

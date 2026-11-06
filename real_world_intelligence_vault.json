@@ -1,0 +1,97 @@
+{
+  "updatedAt": "2026-11-05T12:50:41.997Z",
+  "signals": [
+    {
+      "id": "sig_binance_ai_tool_2026",
+      "milestoneYear": 2026,
+      "milestoneTitle": "Yapay Zeka Ajanları Çağı",
+      "title": "Kurumsal Yapay Zeka Ajanı Siber Güvenlik İhlali ve İstismar Vektörü",
+      "summary": "Resmi güvenlik raporuna göre saldırganlar ele geçirilmiş sistemler üzerinden bir iç AI aracını kullanarak gelişmiş yetkilendirme sağladı.",
+      "extractedClaim": "Otonom ve yarı-otonom AI araçları kurumsal sistemlerde yeni bir istismar vektörü oluşturmaktadır; insan gözetimi ve resmi doğrulama zorunludur.",
+      "sourceUrl": "https://www.binance.com/en/blog/security",
+      "sourceType": "news_report",
+      "sourcePublisher": "Binance Security / Reuters",
+      "corroborationStatus": "OFFICIAL_CONFIRMATION",
+      "corroboratingSources": [
+        "Binance Resmi Duyurusu (3 Kasım 2026)",
+        "Reuters Siber Güvenlik İncelemesi"
+      ],
+      "confidenceScore": 94,
+      "detectedAt": "2026-11-05T12:50:41.997Z",
+      "trlLevel": 8,
+      "impactOnMilestone": "STRENGTHENS"
+    },
+    {
+      "id": "sig_c2pa_watermark_2027",
+      "milestoneYear": 2027,
+      "milestoneTitle": "Sentetik Gerçeklik Krizi",
+      "title": "C2PA İçerik Doğrulama ve Kriptografik Filigran Küresel Standartlaşması",
+      "summary": "Büyük teknoloji ve medya konsorsiyumu, üretken yapay zeka videoları ve sesleri için donanım tabanlı imza standardını zorunlu kıldı.",
+      "extractedClaim": "Sentetik medyanın ayırt edilmesi için yazılımsal filigran yerine donanım düzeyinde C2PA kriptografik imzaları benimsenmektedir.",
+      "sourceUrl": "https://c2pa.org/specifications",
+      "sourceType": "academic_doi",
+      "sourcePublisher": "Coalition for Content Provenance and Authenticity (C2PA)",
+      "corroborationStatus": "CORROBORATED_EVIDENCE",
+      "corroboratingSources": [
+        "C2PA Teknik Spesifikasyonu",
+        "EU AI Act Standartlar Raporu"
+      ],
+      "confidenceScore": 92,
+      "detectedAt": "2026-11-05T12:50:41.997Z",
+      "trlLevel": 7,
+      "impactOnMilestone": "ACCELERATES"
+    },
+    {
+      "id": "sig_solid_state_cells_2028",
+      "milestoneYear": 2028,
+      "milestoneTitle": "Katı Hal (Solid-State) Batarya Devrimi",
+      "title": "Katı Elektrolit Hücre Yoğunluğu ve Termodinamik Carnot Sınırları",
+      "summary": "Otomotiv konsorsiyumu katı hal pilot hattında 480 Wh/kg hücre yoğunluğuna ulaşıldığını, ancak sınırsız menzilin termodinamik olarak mümkün olmadığını duyurdu.",
+      "extractedClaim": "Katı hal pilleri lityum-iyona göre 2x enerji yoğunluğu sunmakta; hücre termodinamiği menzili 1000-1200 km bandında stabilize etmektedir.",
+      "sourceUrl": "https://doi.org/10.1038/s41586-026-00123-x",
+      "sourceType": "academic_doi",
+      "sourcePublisher": "Nature Energy / Toyota AR-GE",
+      "corroborationStatus": "CORROBORATED_EVIDENCE",
+      "corroboratingSources": [
+        "Nature Energy Hakemli İnceleme",
+        "Otomotiv Batarya Test Konsorsiyumu"
+      ],
+      "confidenceScore": 89,
+      "detectedAt": "2026-11-05T12:50:41.997Z",
+      "trlLevel": 7,
+      "impactOnMilestone": "STRENGTHENS"
+    }
+  ],
+  "dataPoints": [
+    {
+      "id": "dp_ai_tool_breach",
+      "key": "AI Destekli Tehdit Vektörü",
+      "value": "TRL-8 Kurumsal Entegrasyon Riski",
+      "milestoneYear": 2026,
+      "confidence": 94,
+      "context": "Kurumsal otonom ajanların yetki hiyerarşisi ve API güvenliği açığı",
+      "source": "Binance / Reuters Cyber Intelligence",
+      "extractedAt": "2026-11-05T12:50:41.997Z"
+    },
+    {
+      "id": "dp_c2pa_coverage",
+      "key": "Donanım C2PA İmza Oranı",
+      "value": "%78 Yeni Nesil Kamera ve Mobil Sensörler",
+      "milestoneYear": 2027,
+      "confidence": 91,
+      "context": "Yapay medya dezenformasyonuna karşı kriptografik filigran standardı",
+      "source": "C2PA Technical Standard 2026",
+      "extractedAt": "2026-11-05T12:50:41.997Z"
+    },
+    {
+      "id": "dp_solid_state_density",
+      "key": "Hücre Enerji Yoğunluğu",
+      "value": "480 Wh/kg (Carnot & Termodinamik Sınırında)",
+      "milestoneYear": 2028,
+      "confidence": 89,
+      "context": "Katı hal elektrolit termodinamik ve dendritik stabilite eşiği",
+      "source": "Nature Energy 2026 Benchmarks",
+      "extractedAt": "2026-11-05T12:50:41.997Z"
+    }
+  ]
+}

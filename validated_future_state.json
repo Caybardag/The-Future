@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
-  "revision": 17,
-  "lastEvaluatedAt": "2026-11-04T21:34:44.599Z",
+  "revision": 24,
+  "lastEvaluatedAt": "2026-11-05T18:38:50.012Z",
   "stateHash": "4468e4ace3b7fcb860e852781f5e9bed",
   "assessments": {
     "milestone_2026": {
@@ -21,10 +21,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:34:44.598Z",
+      "evaluatedAt": "2026-11-05T18:38:50.010Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:34:44.598Z",
-      "lastEvaluationVersion": 4,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.010Z",
+      "lastEvaluationVersion": 8,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -125,10 +125,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:34:44.598Z",
+      "evaluatedAt": "2026-11-05T18:38:50.011Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:34:44.598Z",
-      "lastEvaluationVersion": 2,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.011Z",
+      "lastEvaluationVersion": 6,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -206,10 +206,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:34:44.598Z",
+      "evaluatedAt": "2026-11-05T18:38:50.011Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:34:44.598Z",
-      "lastEvaluationVersion": 4,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.011Z",
+      "lastEvaluationVersion": 8,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -287,10 +287,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:34:44.598Z",
+      "evaluatedAt": "2026-11-05T18:38:50.011Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:34:44.598Z",
-      "lastEvaluationVersion": 2,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.011Z",
+      "lastEvaluationVersion": 6,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -391,10 +391,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:34:44.598Z",
+      "evaluatedAt": "2026-11-05T18:38:50.011Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:34:44.598Z",
-      "lastEvaluationVersion": 2,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.011Z",
+      "lastEvaluationVersion": 6,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -495,10 +495,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:30:35.532Z",
+      "evaluatedAt": "2026-11-05T18:38:50.011Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:30:35.532Z",
-      "lastEvaluationVersion": 1,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.011Z",
+      "lastEvaluationVersion": 5,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -527,15 +527,13 @@
       "uncertaintyLevel": "LOW",
       "epistemicProvenance": "DYNAMIC_REASONED_FORECAST",
       "previousAssessment": {
-        "description": "Organ bağışı kavramı tarihe karışır. Hastanın kendi kök hücrelerinden 3D biyoyazıcılarla yeni kalp, böbrek ve karaciğer basımı rutin tıbbi bir işleme dönüşür. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
-        "confidence": 90,
+        "description": "Evaluated",
+        "confidence": 80,
         "timeWindow": {
-          "startYear": 2039,
-          "endYear": 2042,
-          "peakLikelihoodWindow": "2039-2041",
-          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+          "startYear": 2026,
+          "endYear": 2028
         },
-        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+        "reasoning": "OK"
       }
     },
     "milestone_2040": {
@@ -555,10 +553,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:30:35.533Z",
+      "evaluatedAt": "2026-11-05T18:38:50.011Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:30:35.533Z",
-      "lastEvaluationVersion": 1,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.011Z",
+      "lastEvaluationVersion": 5,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -587,15 +585,13 @@
       "uncertaintyLevel": "LOW",
       "epistemicProvenance": "DYNAMIC_REASONED_FORECAST",
       "previousAssessment": {
-        "description": "Kan dolaşımına enjekte edilen biyo-uyumlu DNA origami nanoyapıları, kanser hücrelerini moleküler seviyede tespit edip hedeflenmiş ilacı salınım yapar. Hücresel yaşlanma ise epigenetik ve hücresel karmaşıklık nedeniyle ancak sınırlı düzeyde yavaşlatılır. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
-        "confidence": 90,
+        "description": "Evaluated",
+        "confidence": 80,
         "timeWindow": {
-          "startYear": 2040,
-          "endYear": 2043,
-          "peakLikelihoodWindow": "2040-2042",
-          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+          "startYear": 2026,
+          "endYear": 2028
         },
-        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+        "reasoning": "OK"
       }
     },
     "milestone_2041": {
@@ -707,10 +703,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:30:35.533Z",
+      "evaluatedAt": "2026-11-05T18:38:50.012Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:30:35.533Z",
-      "lastEvaluationVersion": 1,
+      "lastEvidenceUpdateAt": "2026-11-05T18:38:50.012Z",
+      "lastEvaluationVersion": 4,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -739,15 +735,13 @@
       "uncertaintyLevel": "LOW",
       "epistemicProvenance": "DYNAMIC_REASONED_FORECAST",
       "previousAssessment": {
-        "description": "Algoritmik öz-gelişim döngüleri, yapay zekanın bilişsel performansını insanlığın toplam çıktısının üzerine çıkarır. Ancak bu süreç fiziksel çip üretimi, Landauer ısı sınırı ve küresel enerji şebekesi kısıtlarına tabidir. [Doğrulanmış Literatür: Foundational Advances in Otonom Ajanlar ve AGI: Empirical Benchmarks and Scaling Limits]",
-        "confidence": 85,
+        "description": "Evaluated",
+        "confidence": 80,
         "timeWindow": {
-          "startYear": 2045,
-          "endYear": 2048,
-          "peakLikelihoodWindow": "2045-2047",
-          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+          "startYear": 2026,
+          "endYear": 2028
         },
-        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+        "reasoning": "OK"
       }
     },
     "milestone_2046": {
@@ -843,10 +837,10 @@
         "uncertaintyLevel": "LOW"
       },
       "reasoning": "OK",
-      "evaluatedAt": "2026-11-04T21:31:11.571Z",
+      "evaluatedAt": "2026-11-05T12:51:53.317Z",
       "evaluationStatus": "GEMINI_EVALUATED",
-      "lastEvidenceUpdateAt": "2026-11-04T21:31:11.571Z",
-      "lastEvaluationVersion": 1,
+      "lastEvidenceUpdateAt": "2026-11-05T12:51:53.317Z",
+      "lastEvaluationVersion": 2,
       "reasoningSummary": "OK",
       "supportingEvidence": [
         {
@@ -875,15 +869,13 @@
       "uncertaintyLevel": "LOW",
       "epistemicProvenance": "DYNAMIC_REASONED_FORECAST",
       "previousAssessment": {
-        "description": "Hücre yenileme teknolojileri, insanın biyolojik olarak yaşlandığı hızdan daha hızlı onarım yapar. 'Doğal yaşlılıktan ölüm' kavramı teknik olarak çözülmüş bir mühendislik problemi olur. [Doğrulanmış Literatür: Foundational Advances in CRISPR ve Biyoteknoloji: Empirical Benchmarks and Scaling Limits]",
-        "confidence": 90,
+        "description": "Evaluated",
+        "confidence": 80,
         "timeWindow": {
-          "startYear": 2048,
-          "endYear": 2051,
-          "peakLikelihoodWindow": "2048-2050",
-          "rationale": "İlişkili 1 adet doğrulanmış akademik/patent kanıtı baz alındı."
+          "startYear": 2026,
+          "endYear": 2028
         },
-        "reasoning": "Hakiki veri kaynakları (openalex) incelenerek teknolojik olgunluk değerlendirildi."
+        "reasoning": "OK"
       }
     },
     "milestone_2049": {

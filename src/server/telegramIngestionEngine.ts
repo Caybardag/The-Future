@@ -1490,10 +1490,9 @@ Strict JSON formatında yanıt ver:
 
       let response: any = null;
       const modelsToTry = [
-        "gemini-3.1-flash-lite",
-        "gemini-3-flash-preview",
+        "gemini-3.8-flash",
         "gemini-flash-latest",
-        "gemini-3.1-pro-preview",
+        "gemini-3.1-flash-lite",
       ];
       for (const m of modelsToTry) {
         try {

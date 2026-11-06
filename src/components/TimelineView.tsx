@@ -380,7 +380,7 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
   const [visibleCardsCount, setVisibleCardsCount] = React.useState<number>(6);
 
   // Active milestone tabbed mission control (reduces vertical scroll by ~70%)
-  type HeroTab = "overview" | "brain" | "evidence" | "telemetry" | "tree";
+  type HeroTab = "overview" | "technical_table" | "brain" | "evidence" | "telemetry" | "tree";
   const [activeHeroTab, setActiveHeroTab] = React.useState<HeroTab>("overview");
 
   // Floating back to top visibility
@@ -1197,7 +1197,7 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
                 <span className="text-[10px] font-mono text-slate-400 hidden sm:inline">3 ANA AKSİYON</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {/* Action 1: Deep Story & Scenario */}
                 <button
                   type="button"
@@ -1266,27 +1266,55 @@ export const TimelineView: React.FC<TimelineViewProps> = ({
                     Bu teknolojinin ({activeMilestone.title}) yaşınıza, kariyerinize, yol haritanıza ve risklerinize etkisini görün.
                   </p>
                 </button>
+
+                {/* Action 4: TEKNİK PARAMETRE VERİ TABLOSU */}
+                <button
+                  type="button"
+                  id="timeline-action-tech-table-btn"
+                  onClick={() => {
+                    setActiveHeroTab("technical_table");
+                    const elem = document.getElementById("timeline-mission-control-anchor");
+                    if (elem) elem.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="p-4 rounded-xl bg-gradient-to-br from-cyan-950/70 via-slate-900/90 to-slate-950 hover:from-cyan-900/80 hover:to-slate-900 border border-cyan-500/60 hover:border-cyan-400 text-cyan-200 font-mono text-xs font-extrabold flex flex-col justify-between gap-2.5 shadow-xl shadow-cyan-950/30 transition-all cursor-pointer group hover:scale-[1.02] active:scale-[0.99] relative overflow-hidden"
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/10 rounded-full blur-xl pointer-events-none -mr-8 -mt-8 group-hover:bg-cyan-500/20 transition-all" />
+                  <div className="flex items-center justify-between relative z-10">
+                    <span className="flex items-center gap-2 text-sm text-cyan-300 font-bold">
+                      <Cpu className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
+                      <span>Teknik Parametre Tablosu</span>
+                    </span>
+                    <span className="px-1.5 py-0.5 rounded bg-cyan-500/20 border border-cyan-500/40 text-[10px] text-cyan-300 font-mono font-bold">
+                      Spesifikasyon
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-cyan-200/90 font-sans font-normal text-left relative z-10 leading-relaxed">
+                    TRL, enerji yoğunluğu, FLOPs, termodinamik ve fiziksel sınır matrisini incele.
+                  </p>
+                </button>
               </div>
 
             </div>
 
             {/* 🎛️ AKTİF DÖNÜM NOKTASI DERİN ANALİZ SEKMELERİ (MISSION CONTROL) */}
-            <MilestoneMissionControl
-              activeMilestone={activeMilestone}
-              brainNodes={brainNodes}
-              academicLiterature={academicLiterature}
-              isLoadingAcademic={isLoadingAcademic}
-              verifiedMap={verifiedMap}
-              milestones={milestones}
-              onSelectMilestoneYear={(targetYear) => {
-                const target = milestones.find((m) => m.year === targetYear);
-                if (target) {
-                  setActiveMilestone(target);
-                }
-              }}
-              activeHeroTab={activeHeroTab}
-              setActiveHeroTab={setActiveHeroTab}
-            />
+            <div id="timeline-mission-control-anchor">
+              <MilestoneMissionControl
+                activeMilestone={activeMilestone}
+                brainNodes={brainNodes}
+                academicLiterature={academicLiterature}
+                isLoadingAcademic={isLoadingAcademic}
+                verifiedMap={verifiedMap}
+                milestones={milestones}
+                onSelectMilestoneYear={(targetYear) => {
+                  const target = milestones.find((m) => m.year === targetYear);
+                  if (target) {
+                    setActiveMilestone(target);
+                  }
+                }}
+                activeHeroTab={activeHeroTab}
+                setActiveHeroTab={setActiveHeroTab}
+              />
+            </div>
 
           </div>
         </div>
